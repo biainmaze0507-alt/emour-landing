@@ -24,14 +24,13 @@ import { getEmotion } from "../data/emotions.js";
    -------------------------------------------------------------------------- */
 
 /** 앱 상단바 — 뒤로 · 제목 · 검색 (앱의 ChatHeader와 같은 구성) */
-function windowHead(title, status) {
+function windowHead(title) {
   return el("div", {
     className: "chat-window__head",
     html: `
       <span class="chat-window__head-icon">${icon("chevronLeft", 20)}</span>
       <span class="chat-window__head-info">
         <span class="chat-window__name">${escapeHtml(title)}</span>
-        ${status ? `<span class="chat-window__status">${escapeHtml(status)}</span>` : ""}
       </span>
       <span class="chat-window__head-icon">${icon("search", 20)}</span>
     `,
@@ -177,7 +176,7 @@ function featureScreen(feature) {
   return el("div", {
     className: "chat-window",
     attrs: { "data-panel": feature.id },
-    children: [windowHead(screen.topbar, screen.status), ...render(screen)],
+    children: [windowHead(screen.topbar), ...render(screen)],
   });
 }
 
@@ -189,19 +188,6 @@ function detailPanel(feature, index) {
 
   const points = detail.points
     .map((point) => `<li class="features__point">${escapeHtml(point)}</li>`)
-    .join("");
-
-  const metrics = detail.metrics
-    .map(
-      (metric) => `
-        <div class="features__metric-row" data-metric="${metric.pct}">
-          <div class="features__metric-top">
-            <span>${escapeHtml(metric.label)}</span>
-            <b>${escapeHtml(metric.value)}</b>
-          </div>
-          <div class="meter"><div class="meter__fill"></div></div>
-        </div>`
-    )
     .join("");
 
   return el("div", {
@@ -217,7 +203,6 @@ function detailPanel(feature, index) {
       <h3 class="features__detail-title">${escapeHtml(detail.title)}</h3>
       <p class="features__detail-body">${escapeHtml(detail.body)}</p>
       <ul class="features__points">${points}</ul>
-      <div class="features__metrics">${metrics}</div>
     `,
   });
 }
@@ -311,23 +296,5 @@ export function initFeatureTabs() {
     event.preventDefault();
     select(tabs[next].dataset.feature);
     tabs[next].focus();
-  });
-
-  /* 5. 게이지 채우기 — 처음 보일 때, 그리고 탭을 바꿀 때마다 */
-  function fillMeters(panel) {
-    if (!panel) return;
-    $$("[data-metric]", panel).forEach((row) => {
-      const fill = row.querySelector(".meter__fill");
-      if (!fill) return;
-      fill.style.width = "0%";
-      // 다음 프레임에 값을 넣어야 transition이 걸린다
-      requestAnimationFrame(() => {
-        fill.style.width = `${Math.min(Number(row.dataset.metric) || 0, 100)}%`;
-      });
-    });
-  }
-
-  onceInView(detailWrap, () => fillMeters(detailWrap.querySelector(".features__detail.is-active")), {
-    threshold: 0.2,
   });
 }

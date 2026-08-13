@@ -24,10 +24,6 @@
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   overflow: hidden;
-  transition:
-    transform var(--duration-base) var(--ease-out),
-    border-color var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out);
 }
 
 /* 멤버마다 다른 감정색이 카드 위에서 옅게 번진다 */
@@ -40,23 +36,13 @@
   background: var(--tone);
   opacity: 0.1;
   filter: blur(34px);
-  transition: opacity var(--duration-slow) var(--ease-out);
   pointer-events: none;
 }
 
-.member:hover {
-  transform: translateY(-6px);
-  border-color: color-mix(in srgb, var(--tone) 40%, white);
-  box-shadow: var(--shadow-raised);
-}
 
-.member:hover::before {
-  opacity: 0.2;
-}
 
 /* 아바타 — 발표자료 팀원 소개 슬라이드의 원본 일러스트 (assets/team/*.svg).
-   원본이 이미 회색 톤으로 그려져 있어 색을 덮어쓰지 않는다.
-   카드의 --tone은 테두리에만 아주 옅게 남긴다. */
+   원본이 회색 톤으로 그려져 있어 색을 덮어쓰지 않는다. */
 .member__avatar {
   position: relative;
   width: 104px;
@@ -65,8 +51,7 @@
   flex-shrink: 0;
 }
 
-/* 원본 SVG는 바깥 링까지가 하나의 그림이다. 잘라내지 않고 그대로 넣는다.
-   대신 지름을 키워서 얼굴이 읽히게 한다. */
+/* 바깥 링까지가 하나의 그림이라 잘라내지 않는다 */
 .member__avatar img {
   display: block;
   width: 100%;
@@ -123,48 +108,12 @@
 }
 
 /* 카드 하단 — 포트폴리오 연결부 */
-.member__foot {
-  margin-top: auto;
-  padding-top: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
 
-.member__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--font-caption);
-  font-weight: 800;
-  color: var(--color-text-accent);
-  transition: gap var(--duration-fast) var(--ease-out);
-}
 
-.member:hover .member__link {
-  gap: 10px;
-}
 
-.member__link svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 
 /* 링크가 아직 없을 때 */
-.member__link--soon {
-  color: var(--color-text-placeholder);
-  font-weight: 700;
-}
 
-.member:hover .member__link--soon {
-  gap: 6px;
-}
 
 /* 팀 요약 배너 */
 .team__banner {
@@ -213,7 +162,7 @@
 }
 
 .closing__line {
-  font-size: clamp(22px, 3.4vw, 42px);
+  font-size: clamp(20px, 2.2vw, 30px);
   font-weight: 800;
   line-height: 1.5;
   letter-spacing: var(--tracking-tight);

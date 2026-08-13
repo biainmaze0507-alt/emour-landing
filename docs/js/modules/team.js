@@ -3,24 +3,14 @@
  * ---------------------------------------------------------------------------
  * 팀원 카드.
  *
- * 핵심: portfolio 주소가 있으면 카드 전체가 <a> 로, 없으면 <article> 로 렌더된다.
- *       두 경우의 마크업 구조와 크기가 완전히 같아서, 나중에 주소만 채워도
- *       레이아웃이 전혀 흔들리지 않는다.
- *       → js/data/team.js의 portfolio 값만 수정하면 됩니다.
- *
  * 아바타는 발표자료 팀원 소개 슬라이드의 원본 일러스트 파일을 그대로 쓴다.
  * (assets/team/*.svg) 경로는 js/data/team.js의 avatar에 적혀 있다.
  */
 
-import { TEAM, TEAM_BANNER } from "../data/team.js";
-import { icon } from "../data/icons.js";
+import { TEAM } from "../data/team.js";
 import { $, el, escapeHtml } from "./utils.js";
 
 function memberCard(member) {
-  const hasLink = Boolean(member.portfolio);
-
-  const avatarInner = `<img src="${escapeHtml(member.avatar)}" alt="${escapeHtml(member.name)} 일러스트" loading="lazy" decoding="async">`;
-
   const roles = member.roles
     .map((role) => `<span class="member__role">${escapeHtml(role.toUpperCase())}</span>`)
     .join("");
@@ -29,45 +19,27 @@ function memberCard(member) {
     .map((tag) => `<span class="member__tag">${escapeHtml(tag)}</span>`)
     .join("");
 
-  const foot = hasLink
-    ? `<span class="member__link">포트폴리오 보기 ${icon("arrowUpRight", 14)}</span>`
-    : `<span class="member__link member__link--soon">포트폴리오 준비 중</span>`;
-
-  const html = `
-    <span class="member__avatar">${avatarInner}</span>
-    <span class="member__roles">${roles}</span>
-    <span class="member__name">${escapeHtml(member.name)}</span>
-    <span class="member__blurb">${escapeHtml(member.blurb)}</span>
-    <span class="member__tags">${tags}</span>
-    <span class="member__foot">${foot}</span>
-  `;
-
-  // 링크가 있을 때만 <a> 로 만든다
-  return el(hasLink ? "a" : "article", {
+  return el("article", {
     className: "member",
     style: { "--tone": `var(${member.tone})` },
-    attrs: hasLink
-      ? {
-          href: member.portfolio,
-          target: "_blank",
-          rel: "noopener noreferrer",
-          "aria-label": `${member.name} 포트폴리오 (새 창)`,
-          "data-reveal": "",
-        }
-      : { "data-reveal": "" },
-    html,
+    attrs: { "data-reveal": "" },
+    html: `
+      <span class="member__avatar">
+        <img src="${escapeHtml(member.avatar)}" alt="${escapeHtml(member.name)} 일러스트"
+             loading="lazy" decoding="async">
+      </span>
+      <span class="member__roles">${roles}</span>
+      <span class="member__name">${escapeHtml(member.name)}</span>
+      <span class="member__blurb">${escapeHtml(member.blurb)}</span>
+      <span class="member__tags">${tags}</span>
+    `,
   });
 }
 
 export function initTeam() {
   const grid = $(".team__grid");
-  if (grid) {
-    TEAM.forEach((member) => grid.append(memberCard(member)));
-    window.__emourObserveReveal?.(grid);
-  }
+  if (!grid) return;
 
-  const bannerTitle = $(".team__banner-title");
-  const bannerDesc = $(".team__banner-desc");
-  if (bannerTitle) bannerTitle.textContent = TEAM_BANNER.title;
-  if (bannerDesc) bannerDesc.textContent = TEAM_BANNER.desc;
+  TEAM.forEach((member) => grid.append(memberCard(member)));
+  window.__emourObserveReveal?.(grid);
 }

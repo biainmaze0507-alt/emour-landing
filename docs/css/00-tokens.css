@@ -127,9 +127,11 @@
   --font-micro: 11px;
 
   /* 랜딩 전용 — 뷰포트 반응형(clamp) */
-  --font-hero: clamp(44px, 8.2vw, 116px);
-  --font-section: clamp(30px, 4.4vw, 56px);
-  --font-lead: clamp(16px, 1.5vw, 21px);
+  /* 노트북 화면에서 한눈에 들어오는 크기로 잡았다.
+     본문은 16px 아래로 내리지 않고, 제목만 본문 기준 비율로 키운다. */
+  --font-hero: clamp(34px, 4.6vw, 62px);
+  --font-section: clamp(24px, 2.6vw, 36px);
+  --font-lead: clamp(15px, 1.1vw, 17px);
   --font-eyebrow: 12px;
 
   --leading-tight: 1.28;

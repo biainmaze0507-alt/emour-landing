@@ -12,7 +12,11 @@
  *   2. 내 메시지는 입력창에 한 글자씩 쳐진다 (보내기 버튼이 켜진다)
  *   3. 다 치면 입력창이 비워지고 그 문장이 말풍선으로 올라간다
  *   4. "AI 감정 분석 중" 꼬리표가 잠깐 돌고 감정 태그가 붙는다
- *   5. 마지막 줄까지 가면 잠시 후 처음부터 반복
+ *   5. 상대의 마지막 말이 오면 문장 다듬기 추천이 올라온다
+ *   6. 잠시 후 처음부터 반복
+ *
+ * 추천 칩은 실제 서비스와 같은 순서를 지킨다 — 대화가 오기 전에는 뜨지 않는다.
+ * 다만 칸의 높이는 처음부터 잡아 두어(CSS) 창 윤곽선이 흔들리지 않는다.
  *
  * 창 높이는 처음부터 끝까지 고정이다. 로그 칸의 높이를 CSS로 잡아 두고
  * 넘치는 옛 줄은 위로 밀려 잘린다 — 말풍선이 쌓여도 윤곽선이 흔들리지 않는다.
@@ -36,11 +40,13 @@ export function initHeroChat() {
   const log = $(".hero-chat__log");
   if (!log) return;
 
-  /* 추천 칩은 한 번만 그린다. 재생 중에 넣고 빼면 창 높이가 흔들린다. */
+  /* 추천 칩은 한 번만 그려 두고, 보이는 시점만 클래스로 여닫는다.
+     (매번 넣고 빼면 칸 높이가 바뀌어 창 윤곽선이 흔들린다) */
   const suggestBox = $(".hero-chat__suggests");
   if (suggestBox && !suggestBox.children.length) {
     suggestBox.append(suggestionChips(HERO_SUGGESTS));
   }
+  const showSuggests = (on) => suggestBox?.classList.toggle("is-on", on);
 
   const field = $(".hero-chat__field");
   const input = $(".hero-chat__input");
@@ -74,6 +80,7 @@ export function initHeroChat() {
     );
     trim(log);
     setInput("");
+    showSuggests(true);
     return;
   }
 
@@ -87,12 +94,19 @@ export function initHeroChat() {
 
     log.textContent = "";
     setInput("");
+    showSuggests(false);
 
     for (const step of HERO_SCRIPT) {
       if (state.cancelled) break;
 
       if (step.type === "wait") {
         await wait(step.ms ?? 600);
+        continue;
+      }
+
+      /* 추천이 올라오는 시점 */
+      if (step.type === "suggest") {
+        showSuggests(true);
         continue;
       }
 

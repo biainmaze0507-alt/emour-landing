@@ -97,20 +97,22 @@
 /* --------------------------------------------------------------------------
    기능 탭 레이아웃 (제품 페이지)
    -------------------------------------------------------------------------- */
+/* 세 열의 높이를 서로 맞춘다 */
 .features__layout {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.94fr) minmax(0, 0.9fr);
   gap: clamp(24px, 3.2vw, 52px);
-  align-items: start;
 }
 
 /* --------------------------------------------------------------------------
    탭 목록 (왼쪽)
    -------------------------------------------------------------------------- */
+/* 탭 세 개가 열 높이를 똑같이 나눠 갖는다 */
 .features__tabs {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  align-content: stretch;
 }
 
 .features__tab {
@@ -286,36 +288,9 @@
 }
 
 /* 근거 수치 묶음 */
-.features__metrics {
-  margin-top: 26px;
-  padding: 18px 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  display: grid;
-  gap: 14px;
-}
 
-.features__metric-row {
-  display: grid;
-  gap: 6px;
-}
 
-.features__metric-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: var(--font-caption);
-  color: var(--color-text-secondary);
-}
 
-.features__metric-top b {
-  font-size: var(--font-heading);
-  font-weight: 800;
-  color: var(--color-text-accent);
-  font-variant-numeric: tabular-nums;
-}
 
 /* --------------------------------------------------------------------------
    반응형 — 3단 → 2단 → 1단

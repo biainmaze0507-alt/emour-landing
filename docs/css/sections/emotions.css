@@ -42,11 +42,7 @@
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   text-align: left;
-  transition:
-    transform var(--duration-base) var(--ease-out),
-    border-color var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out),
-    opacity var(--duration-base) var(--ease-out);
+  transition: opacity var(--duration-base) var(--ease-out);
 }
 
 /* 카드 위쪽에 감정색 띠 — 호버하면 두꺼워진다 */
@@ -75,13 +71,7 @@
   pointer-events: none;
 }
 
-.emotion-card:hover {
-  transform: translateY(-5px);
-  border-color: color-mix(in srgb, var(--tone) 42%, white);
-  box-shadow: var(--shadow-raised);
-}
 
-.emotion-card:hover::before { height: 6px; }
 .emotion-card:hover::after  { opacity: 0.24; }
 
 /* 필터에서 제외된 카드 — 사라지지 않고 가라앉는다(레이아웃 유지) */
@@ -234,9 +224,6 @@
   transition: transform var(--duration-base) var(--ease-spring);
 }
 
-.mood-scale__step:hover {
-  transform: translateY(-6px) scale(1.03);
-}
 
 .mood-scale__step b {
   display: block;

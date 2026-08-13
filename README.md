@@ -86,7 +86,6 @@ VS Code 를 쓴다면 Live Server 확장을 설치하고 `docs/index.html` 우�
 
 | 하고 싶은 일 | 고칠 파일 |
 | --- | --- |
-| 팀원 포트폴리오 링크 연결 | `docs/js/data/team.js` 의 `portfolio` |
 | 팀원 아바타 이미지 | `docs/assets/team/*.svg` · 경로는 `docs/js/data/team.js` 의 `avatar` |
 | 서비스 · 저장소 · 발표자료 링크 | `docs/js/data/site.js` 의 `LINKS` |
 | 상단바 목차 · 페이지 구성 | `docs/js/data/site.js` 의 `NAV` (한 곳만 고치면 전 페이지 반영) |

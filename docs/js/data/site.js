@@ -86,10 +86,9 @@ export const NAV = [
     id: "team",
     label: "팀",
     file: "team.html",
-    summary: "여섯 사람이 나눈 역할과 함께 지킨 기준. 카드를 누르면 각자의 포트폴리오로 이어집니다.",
+    summary: "여섯 사람이 나눈 역할과 함께 지킨 기준.",
     children: [
       { hash: "members", label: "팀원 소개", desc: "여섯 명이 나누어 맡은 자리" },
-      { hash: "howwework", label: "함께 일한 방식", desc: "감정 라벨 하나까지 같이 정한 이야기" },
     ],
   },
 ];
@@ -110,9 +109,10 @@ export const HERO_FACTS = [
  * heroChat.js가 이 배열을 위에서부터 재생한다.
  *
  * type
- *   "mine"   내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
- *   "yours"  상대가 보낸 말 — 바로 말풍선으로 올라간다
- *   "wait"   잠깐 멈춤 (ms)
+ *   "mine"    내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
+ *   "yours"   상대가 보낸 말 — 바로 말풍선으로 올라간다
+ *   "suggest" 문장 다듬기 추천이 올라오는 시점
+ *   "wait"    잠깐 멈춤 (ms)
  *
  * emotion에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
  * time은 앱의 formatTime() 표기(오후 h:mm)를 그대로 쓴다.
@@ -122,7 +122,8 @@ export const HERO_SCRIPT = [
   { type: "wait", ms: 400 },
   { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
   { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
-  { type: "wait", ms: 2200 },
+  { type: "suggest" },
+  { type: "wait", ms: 2600 },
 ];
 
 /**

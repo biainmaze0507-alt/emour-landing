@@ -158,20 +158,6 @@
   background: var(--color-surface-sunken);
 }
 
-/* 호버에 반응하는 카드 공통 — 살짝 뜨고 테두리에만 브랜드색이 스민다 */
-.lift {
-  transition:
-    transform var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out),
-    border-color var(--duration-base) var(--ease-out);
-}
-
-.lift:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-primary-soft);
-  box-shadow: var(--shadow-raised);
-}
-
 /* --------------------------------------------------------------------------
    감정 태그 — 앱의 말풍선 위 표기와 동일 (10px · 700 · 아이콘 12px)
    색은 --tone 변수로 주입한다. 예: style="--tone: var(--emotion-joy)"
@@ -293,11 +279,6 @@
   white-space: nowrap;
 }
 
-.chat-window__status {
-  display: block;
-  font-size: var(--font-micro);
-  color: var(--color-text-secondary);
-}
 
 /* 대화 로그 — 높이를 정해 두어 메시지가 쌓여도 레이아웃이 흔들리지 않는다 */
 .chat-window__body {
@@ -391,9 +372,8 @@
   background: var(--color-surface);
 }
 
-/* 입력창 글자.
-   비어 있으면 안내 문구 색, 글자가 들어오면 본문 색으로 바뀐다.
-   히어로에서는 여기에 실제로 한 글자씩 쳐진다(js/modules/heroChat.js). */
+/* 입력창 글자 — 비어 있으면 안내 문구 색, 글자가 들어오면 본문 색.
+   히어로에서는 여기에 한 글자씩 쳐진다 (js/modules/heroChat.js) */
 .chat-window__composer-text {
   font-size: var(--font-label);
   color: var(--color-text-placeholder);
@@ -564,6 +544,17 @@
   border-top: 1px solid var(--color-border);
 }
 
+/* 추천은 대화가 오고 난 뒤에 나타난다.
+   칸의 높이는 처음부터 잡아 두어 창 윤곽선이 흔들리지 않는다. */
+.hero-chat__suggests > * {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.hero-chat__suggests.is-on > * {
+  opacity: 1;
+}
+
 .suggests {
   padding: 10px 16px 4px;
 }
@@ -627,13 +618,7 @@
     transform var(--duration-fast) var(--ease-out);
 }
 
-.suggests__chip:hover {
-  background: var(--color-primary-faint);
-}
 
-.suggests__chip:active {
-  transform: scale(0.96);
-}
 
 .suggests__chip-kind {
   flex-shrink: 0;
@@ -821,7 +806,7 @@
   display: flex;
   align-items: baseline;
   gap: 3px;
-  font-size: clamp(32px, 4vw, 46px);
+  font-size: clamp(26px, 2.6vw, 34px);
   font-weight: 800;
   line-height: 1;
   letter-spacing: var(--tracking-tight);

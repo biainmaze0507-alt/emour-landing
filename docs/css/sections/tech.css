@@ -25,7 +25,7 @@
 
 .tech__number b {
   display: block;
-  font-size: clamp(26px, 3vw, 36px);
+  font-size: clamp(26px, 2.83vw, 34px);
   font-weight: 800;
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
@@ -96,17 +96,9 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
-  transition:
-    border-color var(--duration-base) var(--ease-out),
-    transform var(--duration-base) var(--ease-out),
-    box-shadow var(--duration-base) var(--ease-out);
+
 }
 
-.arch__node:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--tone, var(--color-primary)) 46%, white);
-  box-shadow: var(--shadow-card);
-}
 
 /* 노드 왼쪽 색 띠 — 역할군을 색으로 구분 */
 .arch__node::before {

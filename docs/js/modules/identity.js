@@ -2,26 +2,24 @@
  * js/modules/identity.js
  * ---------------------------------------------------------------------------
  * 브랜드 페이지.
- *   · 이름 조립 — Emotion과 Amour에서 글자를 덜어내 our를 남긴다
- *   · 디자인 모티프 — 진주 층을 실제로 겹쳐 그린다
+ *   · 이름 — 문장에서 잘라 온 두 조각을 한 줄로 조립한다
+ *   · 디자인 모티프 — 단색 원 세 개
  *   · 컬러 아이덴티티 — 색마다 담긴 뜻 (한 줄씩 아래로 흐른다)
  *   · 웜톤 / 쿨톤 두 축
- *   · 로고 두 색 · 타이포 스케일 · 대비 근거 · 사용 규칙
+ *   · 심볼 설계도 · 로고 두 색 · 타이포 스케일
  */
 
 import {
   NAMING,
   MOTIF,
   ORIGIN_PALETTE,
-  PALETTE_NOTE,
   TEMPERATURE,
   LOGO_BUILD,
   LOGO_PARTS,
   TYPE_SCALE,
-  RULES,
 } from "../data/identity.js";
 import { icon } from "../data/icons.js";
-import { $, el, escapeHtml, onceInView } from "./utils.js";
+import { $, el, escapeHtml } from "./utils.js";
 
 /* --------------------------------------------------------------------------
    1. 이름 — 문장에서 잘라 온 두 조각
@@ -85,29 +83,19 @@ function renderNaming() {
 }
 
 /* --------------------------------------------------------------------------
-   2. 디자인 모티프 — 진주 층
-   안쪽부터 바깥쪽으로 원을 겹쳐, 층이 쌓여 하나의 빛이 되는 모양을 만든다.
+   2. 디자인 모티프 — 단색 원 세 개
    -------------------------------------------------------------------------- */
 function renderMotif() {
   const host = $(".motif__pearl");
   const legend = $(".motif__layers");
   if (!host) return;
 
-  const total = MOTIF.layers.length;
-
-  MOTIF.layers.forEach((layer, index) => {
-    // 마지막 층이 가장 크다 (바깥쪽)
-    const scale = 34 + ((index + 1) / total) * 66;
-
+  MOTIF.layers.forEach((layer) => {
     host.append(
       el("span", {
         className: "motif__layer",
         attrs: { "aria-hidden": "true" },
-        style: {
-          "--tone": `var(${layer.token})`,
-          "--size": `${scale}%`,
-          "--index": String(index),
-        },
+        style: { "--tone": `var(${layer.token})` },
       })
     );
 
@@ -126,8 +114,6 @@ function renderMotif() {
     );
   });
 
-  // 화면에 들어올 때 안쪽부터 순서대로 부풀어 오른다
-  onceInView(host, () => host.classList.add("is-in"), { threshold: 0.35 });
 }
 
 /* --------------------------------------------------------------------------
@@ -145,8 +131,7 @@ function renderPalette() {
       el("li", {
         className: "palette__row",
         attrs: { "data-reveal": "" },
-        // 진주 바깥 테 = 브랜드 자산용 값, 안쪽 알 = 화면용 값
-        style: { "--origin": color.logo, "--applied": color.screen },
+        style: { "--tone": color.hex },
         html: `
           <span class="palette__pearl" aria-hidden="true"></span>
           <span class="palette__row-id">
@@ -214,9 +199,6 @@ function renderLogoBuild() {
   if (stage) {
     const g = LOGO_BUILD.guides;
 
-    const lobes = g.lobes
-      .map((c) => `<circle class="bp-lobe" cx="${c.cx}" cy="${c.cy}" r="${c.r}"/>`)
-      .join("");
     const diagonals = g.diagonals
       .map((l) => `<line class="bp-diag" x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}"/>`)
       .join("");
@@ -226,8 +208,7 @@ function renderLogoBuild() {
         <line class="bp-axis" x1="${g.axis}" y1="0" x2="${g.axis}" y2="499"/>
         <line class="bp-axis" x1="0" y1="${g.waist}" x2="596" y2="${g.waist}"/>
         ${diagonals}
-        ${lobes}
-        <circle class="bp-knot" cx="${g.knot.cx}" cy="${g.knot.cy}" r="${g.knot.r}"/>
+        <circle class="bp-knot" cx="${g.knot.cx}" cy="${g.knot.cy}" r="7"/>
       </svg>
       <img class="blueprint__mark" src="assets/logo-mark.svg" alt="Emour 심볼">
     `;
@@ -322,5 +303,4 @@ export function initIdentity() {
   renderLogoBuild();
   renderLogoParts();
   renderTypeScale();
-  renderRules();
 }

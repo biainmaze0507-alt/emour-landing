@@ -9,7 +9,7 @@
  *   kind: "suggest"   말풍선 + 문장 다듬기 추천 칩
  *   kind: "dashboard" 도넛 + 통계 타일 + 흐름 그래프
  *
- * topbar / status는 화면 상단바에 들어가는 제목과 그 아래 한 줄이다.
+ * topbar는 화면 상단바에 들어가는 제목이다.
  */
 
 export const FEATURES = [
@@ -31,17 +31,11 @@ export const FEATURES = [
         "모델이 이상하게 답해도 응답 개수는 항상 요청 개수와 일치하도록 안전장치를 두었습니다.",
         "결과는 백엔드 EmotionType 15종 열거형으로만 저장되어 화면·통계가 어긋나지 않습니다.",
       ],
-      metrics: [
-        { label: "감정 라벨", value: "15종", pct: 100 },
-        { label: "감정 분석 결과가 절반 이상 일치했다는 응답", value: "66.7%", pct: 66.7 },
-        { label: "감정 라벨 및 아이콘 이해도", value: "4.40 / 5", pct: 88 },
-      ],
     },
 
     screen: {
       kind: "chat",
-      topbar: "연인",
-      status: "실시간 연결됨",
+      topbar: "채팅",
       rows: [
         { side: "yours", text: "우리 여행 숙소 있잖아", emotion: "CURIOSITY", time: "오후 9:54" },
         { side: "mine", text: "응 내가 예약해뒀어", emotion: "COMFORT", time: "오후 10:02", read: true },
@@ -69,17 +63,11 @@ export const FEATURES = [
         "추천 문장은 입력창에 채워지기만 하고, 보내는 것은 언제나 사용자가 결정합니다.",
         "교정 버튼으로 이미 쓴 문장을 다듬을 수도 있습니다.",
       ],
-      metrics: [
-        { label: "상냥하게 — 화행 일치율", value: "90.9%", pct: 90.9 },
-        { label: "공감형 — 화행 일치율", value: "81.8%", pct: 81.8 },
-        { label: "해결형 — 화행 일치율", value: "72.7%", pct: 72.7 },
-      ],
     },
 
     screen: {
       kind: "suggest",
-      topbar: "연인",
-      status: "실시간 연결됨",
+      topbar: "채팅",
       rows: [
         { side: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS", time: "오후 10:10" },
         { side: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10", read: true },
@@ -111,17 +99,11 @@ export const FEATURES = [
         "하루를 2시간 단위로 끊어 긍정 · 중립 · 부정 흐름을 그래프로 그립니다.",
         "가장 활발했던 시간대, 평균 답장 시간, 사진 · 공감 수까지 함께 기록됩니다.",
       ],
-      metrics: [
-        { label: "무드 트래커 · 감정 분포 · 대화 흐름", value: "3종 리포트", pct: 100 },
-        { label: "집계 단위", value: "일 · 주 · 월", pct: 80 },
-        { label: "지인 추천 의향", value: "3.65 / 5", pct: 72.9 },
-      ],
     },
 
     screen: {
       kind: "dashboard",
       topbar: "대시보드",
-      status: "무드트래커 리포트",
       period: "8월 9일 ~ 15일",
       // 발표 자료의 주간 리포트 실제 화면 값 그대로
       stats: [

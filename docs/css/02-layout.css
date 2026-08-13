@@ -76,6 +76,16 @@
   border-bottom: 1px solid transparent;
 }
 
+/* 패널이 열리면 상단바와 패널이 하나의 흰 면으로 이어진다
+   (상단바만 반투명이면 두 면의 경계가 어색하게 보인다) */
+.site-nav.is-mega-open {
+  background: var(--color-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
 .site-nav.is-stuck {
   background: rgba(251, 250, 249, 0.82);
   backdrop-filter: saturate(150%) blur(14px);
@@ -141,11 +151,13 @@
   align-items: center;
 }
 
+/* 항목은 각 칸의 가운데에 선다. 아래 패널의 목차도 같은 칸에서 가운데 정렬돼
+   두 줄이 하나의 열로 읽힌다. */
 .nav-item__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 9px 2px;
+  position: relative;
+  display: block;
+  padding: 9px 2px 13px;
+  text-align: center;
   font-size: var(--font-label);
   font-weight: 700;
   letter-spacing: var(--tracking-normal);
@@ -159,10 +171,21 @@
   color: var(--color-text-accent);
 }
 
-/* 지금 보고 있는 페이지 */
+/* 지금 보고 있는 페이지 — 밑줄 대신 아래에 점 하나 */
 .nav-item__link.is-active {
   color: var(--color-text-primary);
-  box-shadow: inset 0 -2px 0 0 var(--color-primary);
+}
+
+.nav-item__link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--color-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -175,7 +198,7 @@
   right: 0;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-raised);
+  box-shadow: var(--shadow-xs);
   animation: mega-drop var(--duration-base) var(--ease-out) both;
 }
 
@@ -209,7 +232,8 @@
 
 .nav-mega__item {
   position: relative;
-  padding: 7px 0 7px 12px;
+  padding: 7px 0;
+  text-align: center;
   font-size: var(--font-label);
   color: var(--color-text-secondary);
   transition: color var(--duration-fast) var(--ease-out);
@@ -224,11 +248,11 @@
 .nav-mega__item::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 50%;
-  width: 4px;
-  height: 4px;
-  margin-top: -2px;
+  left: 50%;
+  bottom: 1px;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
   border-radius: 50%;
   background: var(--color-primary);
   opacity: 0;
@@ -506,7 +530,7 @@ body.is-locked {
 
 .page-next__title {
   margin-top: 8px;
-  font-size: clamp(22px, 2.6vw, 32px);
+  font-size: clamp(20px, 1.9vw, 26px);
   font-weight: 800;
   letter-spacing: var(--tracking-tight);
   word-break: keep-all;
