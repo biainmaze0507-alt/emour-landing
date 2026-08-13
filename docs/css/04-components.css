@@ -422,6 +422,16 @@
   color: var(--color-primary-strong);
   font-size: var(--font-caption);
   font-weight: 700;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+/* 눌리는 순간 — 히어로 재생에서 이 버튼이 문장 다듬기 추천을 부른다
+   (동작: js/modules/heroChat.js) */
+.chat-window__correct.is-pressed {
+  background: var(--color-primary-soft);
+  transform: translateY(-50%) scale(0.94);
 }
 
 .chat-window__correct svg {

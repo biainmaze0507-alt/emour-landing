@@ -138,6 +138,18 @@ export function initHeroChat() {
     input.scrollLeft = text ? input.scrollWidth : 0;
   };
 
+  /** 교정 버튼을 눌렀다 떼는 시늉 — 추천은 이 버튼에서 시작된다 */
+  async function pressCorrect(state) {
+    const correct = $(".hero-chat__field .chat-window__correct");
+    if (!correct) return;
+
+    correct.classList.add("is-pressed");
+    await wait(240);
+    correct.classList.remove("is-pressed");
+
+    if (!state.cancelled) await wait(220);
+  }
+
   /** 입력창에 한 글자씩 쳐 넣는다 */
   async function typeInto(text, state, speed = 46) {
     let typed = "";
@@ -181,8 +193,20 @@ export function initHeroChat() {
         continue;
       }
 
-      /* 추천이 올라오는 시점 — 올라온 뒤 세 종류를 훑어 보여 준다 */
+      /* 쓰다 만 문장 — 입력창에 남겨 둔다. 교정은 이 문장을 다듬는 것이다 */
+      if (step.type === "draft") {
+        await typeInto(step.text, state);
+        continue;
+      }
+
+      /* 교정을 눌러 추천을 부르고, 올라온 뒤 세 종류를 훑어 보여 준다 */
       if (step.type === "suggest") {
+        await wait(420);
+        if (state.cancelled) break;
+
+        await pressCorrect(state);
+        if (state.cancelled) break;
+
         showSuggests(true);
         await wait(560);
         if (state.cancelled) break;

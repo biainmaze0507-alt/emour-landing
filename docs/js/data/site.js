@@ -122,7 +122,8 @@ export const HERO_FACTS = [
  * type
  *   "mine"    내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
  *   "yours"   상대가 보낸 말 — 바로 말풍선으로 올라간다
- *   "suggest" 문장 다듬기 추천이 올라오는 시점
+ *   "draft"   입력창에 쓰다 만 문장 — 보내지 않고 그대로 둔다
+ *   "suggest" 교정 버튼을 눌러 문장 다듬기 추천을 부르는 시점
  *   "wait"    잠깐 멈춤 (ms)
  *
  * emotion에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
@@ -133,6 +134,7 @@ export const HERO_SCRIPT = [
   { type: "wait", ms: 400 },
   { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
   { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
+  { type: "draft", text: "그래 알겠어" },
   { type: "suggest" },
   { type: "wait", ms: 1200 },
 ];
