@@ -65,7 +65,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--tone);
-  box-shadow: inset 0 0 0 1.5px rgba(193, 74, 103, 0.55);
+  box-shadow: inset 0 0 0 1.5px var(--swatch-line-strong);
 }
 
 .motif__body {
@@ -103,17 +103,15 @@
 .motif__layers {
   margin-top: 26px;
   display: grid;
-  gap: 8px;
+  border-top: 1px solid var(--color-divider);
 }
 
 .motif__layer-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 14px;
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-divider);
 }
 
 .motif__layer-row i {
@@ -122,7 +120,7 @@
   height: 22px;
   border-radius: 50%;
   background: var(--tone);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 0 0 1px var(--swatch-line);
 }
 
 .motif__layer-row b {
@@ -163,7 +161,7 @@
   height: 52px;
   border-radius: 50%;
   background: var(--tone);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.07);
+  box-shadow: inset 0 0 0 1px var(--swatch-line);
 }
 
 .palette__row-name {
@@ -237,12 +235,20 @@
 }
 
 .temp__side {
+  --side-pad-x: clamp(20px, 2.4vw, 32px);
+  --side-pad-y: clamp(24px, 3vw, 36px);
   position: relative;
-  padding: clamp(24px, 3vw, 36px) clamp(20px, 2.4vw, 32px);
+  padding: var(--side-pad-y) var(--side-pad-x);
 }
 
 .temp__side + .temp__side {
   border-left: 1px solid var(--color-divider);
+}
+
+/* 색 견본끼리는 세로선을 덮고 맞붙는다 — 두 잉크 사이에 흰 틈이 있으면
+   같은 계열에서 갈라진 둘인지 눈으로 견줄 수 없다. 선은 글이 시작되는 아래쪽만 가른다. */
+.temp__side + .temp__side .temp__chip {
+  margin-left: calc(-1 * var(--side-pad-x) - 1px);
 }
 
 @media (max-width: 700px) {
@@ -250,18 +256,26 @@
     border-left: 0;
     border-top: 1px solid var(--color-divider);
   }
+
+  .temp__side + .temp__side .temp__chip {
+    margin-left: calc(-1 * var(--side-pad-x));
+    margin-top: calc(-1 * var(--side-pad-y) - 1px);
+  }
 }
 
-/* 색 자체가 이 칸의 첫 문장이다 — 이름을 붙이지 않고 면으로만 보여 준다 */
+/* 색 견본 — 색상표(色見本)가 색을 싣는 방식을 따른다.
+   모서리를 굴리지 않고 그림자도 두지 않는다. 잉크 자체만 보이게 두는 것이고,
+   굴린 모서리에 색을 채우면 누르는 자리처럼 읽힌다.
+   칸 끝까지 밀어 두어 두 온도가 가운데 선에서 맞닿는다 — 나란히 놓고
+   견주어야 같은 계열에서 갈라진 둘이라는 것이 보인다. */
 .temp__chip {
-  position: relative;
   display: block;
-  width: 100%;
-  height: 56px;
-  margin-bottom: 18px;
-  border-radius: var(--radius-md);
+  height: clamp(88px, 9vw, 116px);
+  margin:
+    calc(-1 * var(--side-pad-y))
+    calc(-1 * var(--side-pad-x))
+    var(--side-pad-y);
   background: var(--tone);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .temp__title {
@@ -335,13 +349,13 @@
   border-top: 1px solid var(--color-divider);
 }
 
+/* 잉크 견본이라 각진 면으로 둔다 (웜톤 · 쿨톤 견본과 같은 규칙) */
 .identity__logo-part i {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-xs);
+  width: 34px;
+  height: 34px;
   background: var(--tone);
   flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 0 1px var(--swatch-line);
 }
 
 .identity__logo-part b {
