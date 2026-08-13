@@ -22,7 +22,7 @@
  *   CSS 만으로는 맞출 수 없다.
  */
 
-import { NAV, LINKS, HOME_FILE, FOOTER_EXTRA, SITE } from "../data/site.js";
+import { NAV, LINKS, HOME_FILE, SITE } from "../data/site.js";
 import { icon } from "../data/icons.js";
 import { $, $$, el, escapeHtml } from "./utils.js";
 
@@ -213,12 +213,6 @@ function renderFooter() {
       </div>`;
   }).join("");
 
-  const extra = FOOTER_EXTRA.filter((item) => item.href)
-    .map(
-      (item) =>
-        `<a href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.label)}</a>`
-    )
-    .join("");
 
   footer.innerHTML = `
     <div class="shell shell--wide">
@@ -236,7 +230,6 @@ function renderFooter() {
 
       <div class="footer-bottom">
         <span>© ${SITE.year} ${escapeHtml(SITE.name)}. All rights reserved.</span>
-        ${extra ? `<span class="footer-extra">${extra}</span>` : ""}
         <span>아이콘 · lucide (ISC License) © Lucide Contributors</span>
       </div>
     </div>

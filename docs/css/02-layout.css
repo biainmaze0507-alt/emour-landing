@@ -667,11 +667,6 @@ body.is-locked {
   color: var(--color-text-accent);
 }
 
-/* 마지막 줄의 외부 링크 (허깅페이스 모델 카드 등) */
-.footer-extra {
-  display: inline-flex;
-  gap: 14px;
-}
 
 .footer-links li + li {
   margin-top: 9px;

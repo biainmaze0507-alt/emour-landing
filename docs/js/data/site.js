@@ -136,14 +136,6 @@ export const HERO_SUGGESTS = [
   { kind: "상냥하게", text: "그래, 네가 쉬고 싶으면 그렇게 해도 돼" },
 ];
 
-/**
- * 푸터의 마지막 줄에 따로 두는 링크.
- * 페이지 목차는 NAV에서 만들므로 여기에는 사이트 밖으로 나가는 것만 적는다.
- */
-export const FOOTER_EXTRA = [
-  { label: "AI 모델 카드", href: LINKS.model },
-];
-
 export const SITE = {
   name: "Emour",
   meaning: "Emotion + Amour",
