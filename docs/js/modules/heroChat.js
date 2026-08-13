@@ -62,18 +62,14 @@ export function initHeroChat() {
    * 칩은 세 종류(해결형 · 공감형 · 상냥하게)라 한 화면에 다 들어오지 않는다 —
    * 앱에서 손으로 넘겨 보는 자리이므로, 여기서는 그 폭을 대신 보여 준다.
    */
-  async function panSuggests(state, duration = 2200) {
-    if (!suggestRow) return;
-
-    const distance = suggestRow.scrollWidth - suggestRow.clientWidth;
-    if (distance <= 1) return;
-
-    suggestRow.classList.add("is-panning");
-
-    /* 화면이 그려지는 박자에 맞춰 한 프레임씩 옮긴다.
-       프레임이 오지 않는 동안(다른 탭에 있을 때 등)에도 멈춰 있지 않도록
-       시간 제한을 함께 걸어 둔다. */
-    await Promise.race([
+  /**
+   * 한 번 튕겨 미는 동작. 처음이 빠르고 끝이 잦아든다 — 손을 뗀 뒤 관성으로 흐르는 결이다.
+   *
+   * 화면이 그려지는 박자에 맞춰 한 프레임씩 옮기고,
+   * 프레임이 오지 않는 동안(다른 탭에 있을 때 등)에도 멈춰 있지 않게 시간 제한을 함께 건다.
+   */
+  function flick(from, to, duration, state) {
+    return Promise.race([
       new Promise((resolve) => {
         let start = null;
 
@@ -82,11 +78,8 @@ export function initHeroChat() {
           start ??= now;
 
           const progress = Math.min((now - start) / duration, 1);
-          // 시작과 끝을 부드럽게 (ease-in-out)
-          const eased =
-            progress < 0.5 ? 2 * progress * progress : 1 - (-2 * progress + 2) ** 2 / 2;
-
-          suggestRow.scrollLeft = distance * eased;
+          const eased = 1 - (1 - progress) ** 3;
+          suggestRow.scrollLeft = from + (to - from) * eased;
 
           if (progress < 1) requestAnimationFrame(step);
           else resolve();
@@ -94,8 +87,34 @@ export function initHeroChat() {
 
         requestAnimationFrame(step);
       }),
-      wait(duration + 800),
+      wait(duration + 400),
     ]);
+  }
+
+  /**
+   * 추천 칩을 오른쪽 끝까지 넘겨 세 종류를 다 보여 준다.
+   * 한 번에 끝까지 미는 사람은 없으므로 두 번에 나눈다 —
+   * 밀고(관성으로 살짝 지나쳐 제자리로 잦아든다), 읽을 만큼 멈추고, 다시 밀어 끝을 낸다.
+   */
+  async function panSuggests(state) {
+    if (!suggestRow) return;
+
+    const distance = suggestRow.scrollWidth - suggestRow.clientWidth;
+    if (distance <= 1) return;
+
+    // 첫 번째로 멈추는 자리 — 두 번째 칩이 왼쪽에 걸리는 지점
+    const second = suggestRow.querySelectorAll(".suggests__chip")[1];
+    const gap = second
+      ? second.getBoundingClientRect().left - suggestRow.getBoundingClientRect().left
+      : distance * 0.55;
+    const mid = Math.min(Math.max(gap, 40), distance);
+
+    suggestRow.classList.add("is-panning");
+
+    await flick(0, Math.min(mid + 12, distance), 420, state);
+    if (!state.cancelled) await flick(suggestRow.scrollLeft, mid, 160, state);
+    if (!state.cancelled) await wait(360);
+    if (!state.cancelled) await flick(mid, distance, 380, state);
 
     suggestRow.classList.remove("is-panning");
     if (state.cancelled) return;
