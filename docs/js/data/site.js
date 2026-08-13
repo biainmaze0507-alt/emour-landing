@@ -35,6 +35,17 @@ export const LINKS = {
  */
 export const NAV = [
   {
+    id: "home",
+    label: "홈",
+    file: "index.html",
+    summary: "무엇을 만들었고 왜 만들었는지, 한 화면에서 훑어보는 자리.",
+    children: [
+      { hash: "why", label: "기획 배경", desc: "텍스트만 남으면 사라지는 것들" },
+      { hash: "glance", label: "기능 요약", desc: "세 가지 일을 한눈에" },
+      { hash: "film", label: "소개 영상", desc: "1분으로 보는 Emour" },
+    ],
+  },
+  {
     id: "product",
     label: "제품",
     file: "product.html",
@@ -78,7 +89,7 @@ export const NAV = [
       { hash: "naming", label: "이름의 뜻", desc: "Emotion과 Amour 사이에 남은 our" },
       { hash: "motif", label: "디자인 모티프", desc: "층층이 쌓여 완성되는 핑크 진주" },
       { hash: "palette", label: "컬러 아이덴티티", desc: "색마다 담긴 뜻" },
-      { hash: "temperature", label: "웜톤과 쿨톤", desc: "정서의 색과 결심의 색" },
+      { hash: "temperature", label: "색의 두 온도", desc: "정서의 색과 결심의 색" },
       { hash: "logo", label: "로고와 타이포", desc: "두 색이 화면의 두 축이 되는 방식" },
     ],
   },
@@ -93,7 +104,7 @@ export const NAV = [
   },
 ];
 
-/** 홈(index.html)은 상단바 항목이 아니라 로고 클릭으로 갑니다. */
+/** 로고를 눌렀을 때 돌아가는 곳. 상단바 첫 항목("홈")과 같은 문서입니다. */
 export const HOME_FILE = "index.html";
 
 /** 히어로 아래 요약 수치 */
