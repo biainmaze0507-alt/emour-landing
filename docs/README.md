@@ -116,7 +116,6 @@ docs/
     │   ├── tech.js            아키텍처 노드 · 기술 스택 · 규모 수치
     │   ├── identity.js        ★ 이름의 뜻 · 진주 모티프 · 색의 뜻 · 웜쿨 · 규칙
     │   ├── team.js            ★ 팀원 6명 (포트폴리오 링크 여기서 연결)
-    │   ├── avatars.js         팀원 아바타 일러스트 (SVG 조립)
     │   └── icons.js           lucide 아이콘 path 모음 + icon() 함수
     │
     └── modules/               동작
@@ -170,12 +169,14 @@ docs/
 
 ### 🙂 팀원 아바타 바꾸기
 
-아바타는 발표자료 팀원 소개 슬라이드의 일러스트를 SVG 로 다시 그린 것입니다(`js/data/avatars.js`).
-`js/data/team.js` 의 `face` 로 머리모양과 안경을 고릅니다.
+아바타는 발표자료 팀원 소개 슬라이드의 **원본 SVG 파일**입니다(`assets/team/*.svg`).
+`js/data/team.js` 의 `avatar` 에 경로가 적혀 있습니다.
 
 ```js
-face: { hair: "bob", glasses: true },
+avatar: "assets/team/ha-suyeon.svg",
 ```
+
+사진으로 바꾸려면 같은 자리에 이미지 경로를 넣으면 됩니다.
 
 `hair` 는 `short` · `sidePart` · `bob` · `bangs` · `medium` · `long` 여섯 가지입니다.
 색은 카드의 `tone`(감정 토큰)에서 자동으로 나옵니다.
@@ -309,4 +310,4 @@ Chrome / Edge / Safari / Firefox 최신 버전 기준입니다.
 - 색 · 타이포 값: `frontend/src/styles/tokens.css` · `Emour_BI_CI_가이드.pdf`
 - 감정 15종 스펙: `frontend/src/utils/emotions.js` · `감정_15종_표시명_컬러_아이콘_스펙.pdf`
 - 채팅 UI 규격: `frontend/src/components/chat/` (MessageBubble · SuggestionChips · ChatInputBar · ChatHeader)
-- 팀원 아바타 · 수치: `15기_공통PJT_발표자료_B208.pdf`
+- 팀원 아바타 · 수치: 공통 프로젝트 발표자료

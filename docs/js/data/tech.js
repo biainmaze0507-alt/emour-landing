@@ -9,10 +9,10 @@
 
 /** 규모 수치 — DOCS 와 실제 저장소를 세어 넣은 값 */
 export const SCALE_NUMBERS = [
-  { value: 77, suffix: "", label: "REST · WebSocket 엔드포인트" },
-  { value: 19, suffix: "", label: "데이터베이스 테이블" },
+  { value: 77, suffix: "", label: "REST 엔드포인트" },
+  { value: 18, suffix: "", label: "데이터베이스 엔티티" },
   { value: 15, suffix: "종", label: "감정 라벨 (백엔드 열거형)" },
-  { value: 3, suffix: "", label: "독립 배포 서버 (Web · API · AI)" },
+  { value: 3, suffix: "", label: "서비스 컨테이너 (Web · API · AI)" },
   { value: 2, suffix: "회", label: "실사용자 대상 베타 테스트" },
 ];
 

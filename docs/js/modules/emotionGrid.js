@@ -3,7 +3,6 @@
  * ---------------------------------------------------------------------------
  * 감정 15색 섹션.
  *   · 필터 칩(전체 / 긍정 / 중립 / 부정) — 선택하면 나머지가 가라앉는다
- *   · 카드 클릭 → HEX 복사
  *   · 아래로 흐르는 감정 라벨 띠 + 극성 3색 설명 + 오늘의 기분 5단계
  */
 
@@ -21,24 +20,17 @@ const POLARITY_DESC = {
 function emotionCard(emotion) {
   const polarityLabel = POLARITY[emotion.polarity].label;
 
-  return el("button", {
+  return el("li", {
     className: "emotion-card",
-    attrs: {
-      type: "button",
-      "data-polarity": emotion.polarity,
-      "data-hex": emotion.hex,
-      "aria-label": `${emotion.label} · ${emotion.code} · ${emotion.hex} — 누르면 HEX 를 복사합니다`,
-    },
+    attrs: { "data-polarity": emotion.polarity },
     style: { "--tone": `var(${emotion.token})` },
     html: `
       <span class="emotion-card__icon">${icon(emotion.icon, 22)}</span>
       <span class="emotion-card__label">${escapeHtml(emotion.label)}</span>
       <span class="emotion-card__code">${escapeHtml(emotion.code)}</span>
       <span class="emotion-card__foot">
-        <span class="emotion-card__hex"><i class="emotion-card__swatch"></i>${escapeHtml(emotion.hex)}</span>
         <span class="emotion-card__polarity">${escapeHtml(polarityLabel)}</span>
       </span>
-      <span class="emotion-card__copied">복사됨</span>
     `,
   });
 }
@@ -50,28 +42,6 @@ function filterChip(key, label, count) {
     attrs: { type: "button", "data-filter": key, "aria-pressed": key === "ALL" },
     html: count == null ? escapeHtml(label) : `${escapeHtml(label)} <b>${count}</b>`,
   });
-}
-
-/** 클립보드 복사 — 보안 컨텍스트가 아닐 때를 대비한 대체 경로 포함 */
-async function copyText(text) {
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  } catch {
-    /* 아래 대체 경로로 */
-  }
-
-  const helper = el("textarea", {
-    style: { position: "fixed", top: "-1000px", opacity: "0" },
-  });
-  helper.value = text;
-  document.body.append(helper);
-  helper.select();
-  const ok = document.execCommand?.("copy") ?? false;
-  helper.remove();
-  return ok;
 }
 
 export function initEmotionGrid() {
@@ -92,19 +62,6 @@ export function initEmotionGrid() {
   /* ── 2. 카드 ───────────────────────────────────────────────── */
   if (grid) {
     EMOTIONS.forEach((emotion) => grid.append(emotionCard(emotion)));
-
-    // 클릭 → HEX 복사 (이벤트 위임)
-    grid.addEventListener("click", async (event) => {
-      const card = event.target.closest(".emotion-card");
-      if (!card) return;
-
-      const ok = await copyText(card.dataset.hex);
-      if (!ok) return;
-
-      card.classList.add("is-copied");
-      clearTimeout(card._copyTimer);
-      card._copyTimer = setTimeout(() => card.classList.remove("is-copied"), 1200);
-    });
   }
 
   /* ── 3. 필터 동작 ──────────────────────────────────────────── */
@@ -167,7 +124,7 @@ export function initEmotionGrid() {
         el("div", {
           className: "mood-scale__step",
           style: { "--tone": `var(${mood.token})` },
-          html: `<b>${escapeHtml(mood.label)}</b><span>${escapeHtml(mood.hex)}</span>`,
+          html: `<b>${escapeHtml(mood.label)}</b>`,
         })
       );
     });

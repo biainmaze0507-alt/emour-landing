@@ -580,7 +580,7 @@ body.is-locked {
 
 /* 페이지 사이 이동 — 각 페이지 맨 아래 */
 .page-next {
-  padding-block: clamp(56px, 7vw, 96px);
+  padding-block: calc(var(--section-gap) * 0.5) clamp(56px, 7vw, 96px);
   border-top: 1px solid var(--color-border);
 }
 
@@ -619,6 +619,14 @@ body.is-locked {
 .section {
   position: relative;
   padding-block: var(--section-gap);
+}
+
+/* 섹션이 연달아 놓이면 앞 섹션의 아래 여백과 뒤 섹션의 위 여백이 더해져
+   화면 중간에 빈 띠가 남는다. 뒤에 오는 쪽의 위 여백만 절반으로 덜어
+   섹션 사이 간격을 한 칸으로 맞춘다. (첫 섹션의 위 여백은 그대로 둔다) */
+.page-hero + .section,
+.section + .section {
+  padding-block-start: calc(var(--section-gap) * 0.5);
 }
 
 /* 섹션 사이 헤어라인 — 색 대신 선으로만 구분한다 */

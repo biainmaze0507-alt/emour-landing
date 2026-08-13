@@ -5,10 +5,6 @@
    동작: js/modules/film.js
    ========================================================================== */
 
-.film {
-  padding-block: var(--section-gap);
-}
-
 .film__frame {
   position: relative;
   overflow: hidden;

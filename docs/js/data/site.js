@@ -86,7 +86,7 @@ export const NAV = [
     id: "team",
     label: "팀",
     file: "team.html",
-    summary: "B208 여섯 사람. 카드를 누르면 각자의 포트폴리오로 이어집니다.",
+    summary: "여섯 사람이 나눈 역할과 함께 지킨 기준. 카드를 누르면 각자의 포트폴리오로 이어집니다.",
     children: [
       { hash: "members", label: "팀원 소개", desc: "여섯 명이 나누어 맡은 자리" },
       { hash: "howwework", label: "함께 일한 방식", desc: "감정 라벨 하나까지 같이 정한 이야기" },
@@ -101,7 +101,7 @@ export const HOME_FILE = "index.html";
 export const HERO_FACTS = [
   { value: "15", suffix: "종", label: "감정 라벨 체계" },
   { value: "291", suffix: "명", label: "베타 테스트 참가자" },
-  { value: "90.9", suffix: "%", label: "답장 추천 화행 일치율" },
+  { value: "66.7", suffix: "%", label: "감정 분석 절반 이상 일치 응답" },
   { value: "4.56", suffix: "/5", label: "채팅 기능 편리성" },
 ];
 
@@ -163,6 +163,5 @@ export const SITE = {
   name: "Emour",
   meaning: "Emotion + Amour",
   tagline: "커플 대화 기반 감정 분석 및 회고 서비스",
-  team: "SSAFY 15기 공통 프로젝트 · B208",
   year: 2026,
 };

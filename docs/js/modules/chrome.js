@@ -194,7 +194,7 @@ function renderFooter() {
       </div>
 
       <div class="footer-bottom">
-        <span>© ${SITE.year} ${escapeHtml(SITE.team)}. All rights reserved.</span>
+        <span>© ${SITE.year} ${escapeHtml(SITE.name)}. All rights reserved.</span>
         <span>아이콘 · lucide (ISC License) © Lucide Contributors</span>
       </div>
     </div>

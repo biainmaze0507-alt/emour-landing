@@ -13,6 +13,7 @@ import {
   NAMING,
   MOTIF,
   ORIGIN_PALETTE,
+  PALETTE_NOTE,
   TEMPERATURE,
   LOGO_PARTS,
   LOGO_NOTE,
@@ -32,7 +33,28 @@ function renderNaming() {
   const host = $(".naming__steps");
   const resultHost = $(".naming__result");
   const closing = $(".naming__closing");
+  const sloganHost = $(".naming__slogan");
   if (!host) return;
+
+  /* 이름이 나온 문장 — 잘라 온 두 조각(Em · our)만 문장 안에서 표시한다 */
+  if (sloganHost) {
+    let marked = escapeHtml(NAMING.slogan.en);
+    NAMING.slogan.picks.forEach(([word, part]) => {
+      // 그 단어를 찾아, 단어 안의 해당 조각만 감싼다
+      const at = word.indexOf(part);
+      if (at < 0) return;
+      const wrapped =
+        word.slice(0, at) +
+        `<b class="naming__pick">${part}</b>` +
+        word.slice(at + part.length);
+      marked = marked.replace(word, wrapped);
+    });
+
+    sloganHost.innerHTML = `
+      <p class="naming__slogan-en">${marked}</p>
+      <p class="naming__slogan-ko">${escapeHtml(NAMING.slogan.ko)}</p>
+    `;
+  }
 
   NAMING.steps.forEach((step) => {
     // 원래 단어를 글자 단위로 쪼개, 남길 글자와 덜어낼 글자를 나눈다
@@ -144,10 +166,17 @@ function renderPalette() {
   const name = detail.querySelector(".palette__detail-name");
   const meaning = detail.querySelector(".palette__detail-meaning");
   const desc = detail.querySelector(".palette__detail-desc");
+  const note = $(".palette__note");
+
+  if (note) note.innerHTML = PALETTE_NOTE;
 
   const show = (color) => {
-    detail.style.setProperty("--tone", color.hex);
-    if (chip) chip.style.setProperty("--tone", color.hex);
+    detail.style.setProperty("--tone", color.applied);
+    if (chip) {
+      // 원안 → 적용값. 색 두 개를 나란히 두는 것으로 설명을 대신한다.
+      chip.style.setProperty("--origin", color.origin);
+      chip.style.setProperty("--applied", color.applied);
+    }
     if (role) role.textContent = color.role;
     if (name) name.textContent = color.name;
     if (meaning) meaning.textContent = color.meaning;
@@ -169,7 +198,11 @@ function renderPalette() {
         "aria-selected": index === 0,
         "aria-label": `${color.role} — ${color.name}`,
       },
-      style: { "--tone": color.hex, "--ink": color.ink },
+      style: {
+        "--tone": color.applied,
+        "--origin": color.origin,
+        "--ink": color.ink,
+      },
       html: `
         <span class="palette__swatch-role">${escapeHtml(color.role)}</span>
         <span class="palette__swatch-meaning">${escapeHtml(color.meaning)}</span>
@@ -209,7 +242,7 @@ function renderTemperature() {
       el("div", {
         className: `temp__side temp__side--${side.key}`,
         attrs: { "data-reveal": "" },
-        style: { "--tone": `var(${side.token})` },
+        style: { "--tone": side.hex },
         html: `
           <span class="temp__badge">${escapeHtml(side.badge)}</span>
           <span class="temp__chip"></span>
@@ -245,7 +278,6 @@ function renderLogoParts() {
               <span class="identity__logo-meaning">${escapeHtml(part.meaning)}</span>
               <span>${escapeHtml(part.role)}</span>
             </span>
-            <code>${escapeHtml(part.hex)}</code>
           `,
         })
       );
@@ -302,7 +334,7 @@ function renderContrast() {
         html: `
           <span>
             <span class="contrast__sample-text">${escapeHtml(sample.text)}</span>
-            <span class="contrast__sample-cap">${escapeHtml(sample.caption)} · ${escapeHtml(sample.hex)}</span>
+            <span class="contrast__sample-cap">${escapeHtml(sample.caption)}</span>
           </span>
           <span class="contrast__sample-ratio">
             ${ratio.toFixed(2)}:1

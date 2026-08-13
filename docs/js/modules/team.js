@@ -8,22 +8,18 @@
  *       레이아웃이 전혀 흔들리지 않는다.
  *       → js/data/team.js 의 portfolio 값만 수정하면 됩니다.
  *
- * 아바타는 발표자료 팀원 소개 슬라이드의 일러스트를 SVG 로 다시 그린 것이다.
- * (js/data/avatars.js) 사진을 넣으면 사진이 그 자리를 대신한다.
+ * 아바타는 발표자료 팀원 소개 슬라이드의 원본 일러스트 파일을 그대로 쓴다.
+ * (assets/team/*.svg) 경로는 js/data/team.js 의 avatar 에 적혀 있다.
  */
 
 import { TEAM, TEAM_BANNER } from "../data/team.js";
-import { avatarSvg } from "../data/avatars.js";
 import { icon } from "../data/icons.js";
 import { $, el, escapeHtml } from "./utils.js";
 
 function memberCard(member) {
   const hasLink = Boolean(member.portfolio);
 
-  // 사진이 있으면 사진, 없으면 일러스트
-  const avatarInner = member.avatar
-    ? `<img src="${escapeHtml(member.avatar)}" alt="${escapeHtml(member.name)} 프로필 사진" loading="lazy" decoding="async">`
-    : avatarSvg(member.face, member.name);
+  const avatarInner = `<img src="${escapeHtml(member.avatar)}" alt="${escapeHtml(member.name)} 일러스트" loading="lazy" decoding="async">`;
 
   const roles = member.roles
     .map((role) => `<span class="member__role">${escapeHtml(role.toUpperCase())}</span>`)
