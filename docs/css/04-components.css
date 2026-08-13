@@ -2,7 +2,7 @@
    04-components.css — 여러 섹션에서 재사용하는 조각
    버튼 / 칩 / 표면(surface) / 감정 태그 / 대화 창 / 말풍선 / 리포트 / 지표 타일
    --------------------------------------------------------------------------
-   표면 선택 규칙 (frontend/src/styles/surfaces.css 와 동일한 사고):
+   표면 선택 규칙 (frontend/src/styles/surfaces.css와 동일한 사고):
      .surface-plain   상자 없음   — 읽기용 내용의 기본값
      .surface-panel   헤어라인    — 묶인 조작 영역
      .surface-feature 색 있는 면  — 섹션당 하나만
@@ -448,7 +448,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  /* 보낼 것이 없으면 비활성 색 — 앱의 .sendBtn:disabled 와 같은 규칙 */
+  /* 보낼 것이 없으면 비활성 색 — 앱의 .sendBtn:disabled와 같은 규칙 */
   background: var(--color-action-disabled);
   color: var(--color-text-on-primary);
   transition: background var(--duration-base) var(--ease-out);
@@ -464,7 +464,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   말풍선 — 앱의 MessageBubble 과 같은 구조
+   말풍선 — 앱의 MessageBubble과 같은 구조
      .chat-row          가로 한 줄 (내 메시지는 row-reverse)
      .chat-row__column  감정 태그 + 말풍선을 세로로
      .chat-row__meta    읽음 · 시간
@@ -489,7 +489,7 @@
 
 /*
  * 말풍선과 그 위의 꼬리표를 세로로 쌓는 칸.
- * align-items 를 지정하지 않으면 기본값 stretch 라 말풍선이 칸 폭까지 늘어난다.
+ * align-items를 지정하지 않으면 기본값 stretch 라 말풍선이 칸 폭까지 늘어난다.
  * 'AI 감정 분석 중' 꼬리표가 말풍선보다 넓으면 한 글자짜리 메시지도 그만큼 늘어난다.
  * 각자 자기 내용만큼만 차지하게 한다.
  */
@@ -695,7 +695,7 @@
   background: var(--color-surface);
 }
 
-/* span 이라 기본이 inline — 블록으로 바꿔야 제목과 설명이 두 줄로 나뉜다 */
+/* span이라 기본이 inline — 블록으로 바꿔야 제목과 설명이 두 줄로 나뉜다 */
 .report__card-title {
   display: block;
   font-size: var(--font-micro);
@@ -939,4 +939,55 @@
   .suggests {
     padding-inline: 12px;
   }
+}
+
+/* --------------------------------------------------------------------------
+   맨 위로 — 우측 하단. 한 화면쯤 내려간 뒤에만 나타난다.
+   (js/modules/chrome.js가 body 끝에 붙인다)
+   -------------------------------------------------------------------------- */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 32px);
+  bottom: clamp(16px, 2.4vw, 32px);
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--color-text-secondary);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.to-top.is-on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.to-top:hover {
+  color: var(--color-text-accent);
+}
+
+/* chevronDown을 뒤집어 위쪽 화살표로 쓴다 */
+.to-top svg {
+  width: 18px;
+  height: 18px;
+  transform: rotate(180deg);
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

@@ -1,7 +1,7 @@
 /**
  * js/data/emotions.js
  * ---------------------------------------------------------------------------
- * 감정 15종. 백엔드 chat.entity.EmotionType 열거형과 1:1 이다.
+ * 감정 15종. 백엔드 chat.entity.EmotionType 열거형과 1:1이다.
  *
  * 원본 출처
  *   code · label · polarity : frontend/src/utils/emotions.js (EMOTION_TYPES)
@@ -9,8 +9,8 @@
  *   icon                    : lucide-react — 감정 15종 스펙 문서와 동일
  *
  * ⚠️ 감정을 늘리거나 줄이려면 백엔드 열거형과 함께 진행해야 한다.
- *    hex 는 CSS 토큰과 같은 값을 복제해 둔 것이다(복사 배지·대비 계산에 필요).
- *    색을 바꿀 때는 css/00-tokens.css 와 여기를 함께 고친다.
+ *    hex는 CSS 토큰과 같은 값을 복제해 둔 것이다(복사 배지·대비 계산에 필요).
+ *    색을 바꿀 때는 css/00-tokens.css와 여기를 함께 고친다.
  */
 
 export const POLARITY = {

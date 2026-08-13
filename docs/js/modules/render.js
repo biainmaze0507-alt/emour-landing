@@ -3,7 +3,7 @@
  * ---------------------------------------------------------------------------
  * 여러 곳에서 똑같이 그려지는 조각들 — 감정 태그 · 말풍선 · 추천 칩 · 차트.
  *
- * 말풍선 구조는 앱의 components/chat/MessageBubble 을 그대로 옮겼다.
+ * 말풍선 구조는 앱의 components/chat/MessageBubble을 그대로 옮겼다.
  *
  *   .chat-row                       가로 한 줄. 내 메시지는 row-reverse
  *   ├ .chat-row__column             감정 태그와 말풍선을 세로로 쌓는 칸
@@ -89,7 +89,7 @@ export function metaColumn({ read = false, time = "" } = {}) {
 }
 
 /**
- * 문장 다듬기 추천 묶음 — 앱의 SuggestionChips 와 같은 구조.
+ * 문장 다듬기 추천 묶음 — 앱의 SuggestionChips와 같은 구조.
  *
  * 랜딩에서는 눌러도 아무 일이 일어나지 않으므로 <button> 이 아니라 표시로 둔다.
  * 누를 수 있어 보이는 것은 누를 수 있어야 한다. 같은 이유로
@@ -128,10 +128,10 @@ export function suggestionChips(items, { stagger = false } = {}) {
 
 /**
  * 도넛 차트 SVG.
- * conic-gradient 대신 SVG stroke 로 그린다 — 조각마다 접근성 이름을 붙일 수 있고,
+ * conic-gradient 대신 SVG stroke로 그린다 — 조각마다 접근성 이름을 붙일 수 있고,
  * 조각 사이 간격(gap)을 정확히 제어할 수 있기 때문이다.
  *
- * @param {Array<{code:string, pct:number}>} slices  합이 100 이 되도록 넣는다
+ * @param {Array<{code:string, pct:number}>} slices  합이 100이 되도록 넣는다
  * @param {object} [opts] size / thickness / gap(도)
  */
 export function donutSvg(slices, { size = 100, thickness = 16, gap = 1.6 } = {}) {

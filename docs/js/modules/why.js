@@ -52,7 +52,7 @@ export function initWhy() {
     setState(toggle.getAttribute("aria-checked") !== "true");
   });
 
-  // 스페이스/엔터로도 눌린다 (role="switch" 인 button 이라 기본 동작으로 처리됨)
+  // 스페이스/엔터로도 눌린다 (role="switch" 인 button이라 기본 동작으로 처리됨)
   toggle.addEventListener("keydown", (event) => {
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();

@@ -44,10 +44,10 @@
 
   <script type="module" src="js/main.js"></script>
 
-  <!-- 안전장치 — [data-reveal] 은 처음에 opacity:0 이라 JS 가 못 돌면 빈 화면이 남는다.
-       JS 가 꺼져 있으면 html 에 .js 가 안 붙고, 모듈이 실패하면 1.8초 뒤
-       .reveal-fallback 이 붙어서 숨겨 둔 내용이 그대로 보인다.
-       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
+  <!-- 안전장치 — [data-reveal]은 처음에 opacity:0이라 JS가 못 돌면 빈 화면이 남는다.
+       JS가 꺼져 있으면 html에 .js가 안 붙고, 모듈이 실패하면 1.8초 뒤
+       .reveal-fallback이 붙어서 숨겨 둔 내용이 그대로 보인다.
+       ※ file:// 에서는 ES 모듈이 CORS로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
   <script>
     document.documentElement.classList.add("js");
     setTimeout(function () {
@@ -62,7 +62,7 @@
 
   <div class="page-atmosphere" aria-hidden="true"></div>
 
-  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다. -->
+  <!-- 상단바와 푸터는 js/modules/chrome.js가 js/data/site.js의 NAV로 만든다. -->
   <header class="site-nav"></header>
   <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -75,7 +75,7 @@
       <div class="shell shell--wide" data-reveal-group="80">
         <p class="page-hero__index" data-reveal="fade">No. 05 &nbsp;Our Team</p>
         <h1 class="page-hero__title" data-reveal>여섯 사람,<br>하나의 대화</h1>
-        <p class="page-hero__lead" data-reveal>역할은 나누었지만 “이 문장에 어떤 감정이 맞는가”는 끝까지 함께 이야기했습니다. 카드를 누르면 각자의 포트폴리오로 이어집니다.</p>
+        <p class="page-hero__lead" data-reveal>기획 · 백엔드 · 프론트엔드 · AI · 인프라를 여섯 명이 나누어 맡았습니다. 카드를 누르면 각자의 포트폴리오로 이어집니다.</p>
         <div class="page-hero__jump" data-reveal="fade">
             <a class="chip chip--brand" href="#members">팀원 소개</a>
             <a class="chip chip--brand" href="#howwework">함께 일한 방식</a>
@@ -85,15 +85,15 @@
 
     <!-- ══════════════════════════════════════════════════════════
          팀원 소개
-         포트폴리오 주소는 js/data/team.js 의 portfolio 값만 채우면 연결됩니다.
-         값이 비어 있으면 "준비 중" 으로 표시되고 카드 크기는 그대로입니다.
+         포트폴리오 주소는 js/data/team.js의 portfolio 값만 채우면 연결됩니다.
+         값이 비어 있으면 "준비 중"으로 표시되고 카드 크기는 그대로입니다.
          ══════════════════════════════════════════════════════════ -->
     <section class="section" id="members">
       <div class="shell shell--wide">
 
         <div class="section-head section-head--center" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Members</p>
-          <h2 class="section-title" data-reveal>각자의 자리에서, 같은 대화를 붙잡고</h2>
+          <h2 class="section-title" data-reveal>역할과 담당</h2>
         </div>
 
         <div class="team__grid"></div>
@@ -109,7 +109,7 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">How We Work</p>
-          <h2 class="section-title" data-reveal>나눈 것은 역할,<br>나누지 않은 것은 기준</h2>
+          <h2 class="section-title" data-reveal>함께 일한 방식</h2>
         </div>
 
         <div class="team__banner surface-feature" data-reveal>

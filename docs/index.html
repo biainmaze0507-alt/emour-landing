@@ -6,16 +6,16 @@
   <meta name="theme-color" content="#FBFAF9">
 
   <title>Emour — 커플 대화 기반 감정 분석 및 회고 서비스</title>
-  <meta name="description" content="받는 말에 감정을 담고, 보내는 말에 정성을 담아. Emour 는 커플의 대화를 AI 로 분석해 감정을 보여주고, 지나간 대화를 둘의 기록으로 되돌려 주는 서비스입니다.">
+  <meta name="description" content="받는 말에 감정을 담고, 보내는 말에 정성을 담아. Emour는 커플의 대화를 AI로 분석해 감정을 보여주고, 지나간 대화를 둘의 기록으로 되돌려 주는 서비스입니다.">
   <meta name="author" content="Emour">
 
   <!-- 공유 카드 (Open Graph / Twitter)
-       ⚠️ og:image 는 전체 주소(https://…)여야 하고, 카카오톡·슬랙은 SVG 를 읽지 않습니다.
-          저장소 주소가 정해지면 1200×630 PNG 를 assets/og-image.png 로 넣고
+       ⚠️ og:image는 전체 주소(https://…)여야 하고, 카카오톡·슬랙은 SVG를 읽지 않습니다.
+          저장소 주소가 정해지면 1200×630 PNG를 assets/og-image.png로 넣고
           아래 두 줄을 전체 주소로 바꿔 주세요. -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Emour — 커플 대화 기반 감정 분석 및 회고 서비스">
-  <meta property="og:description" content="텍스트만 남으면 표정도 목소리도 사라집니다. Emour 는 사라진 감정 단서를 AI 로 되살립니다.">
+  <meta property="og:description" content="텍스트만 남으면 표정도 목소리도 사라집니다. Emour는 그 감정 단서를 AI로 보완합니다.">
   <meta property="og:image" content="assets/logo-mark.svg">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
@@ -49,13 +49,13 @@
   <script type="module" src="js/main.js"></script>
 
   <!-- 안전장치 ------------------------------------------------------------
-       등장 연출([data-reveal])은 처음에 opacity:0 이라, JS 가 못 돌면
+       등장 연출([data-reveal])은 처음에 opacity:0이라, JS가 못 돌면
        화면이 빈 채로 남는다. 아래 두 가지로 막는다.
-         1) JS 자체가 꺼져 있으면  html 에 .js 가 안 붙어 → 모두 보임
-         2) JS 는 켜졌는데 모듈이 실패하면(예: file:// 로 직접 열었을 때)
-            1.8초 뒤 .reveal-fallback 이 붙어 → 모두 보임
-       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 반드시
-         간이 서버로 여세요 (README 의 "로컬에서 보기" 참고).
+         1) JS 자체가 꺼져 있으면  html에 .js가 안 붙어 → 모두 보임
+         2) JS는 켜졌는데 모듈이 실패하면(예: file:// 로 직접 열었을 때)
+            1.8초 뒤 .reveal-fallback이 붙어 → 모두 보임
+       ※ file:// 에서는 ES 모듈이 CORS로 막힙니다. 로컬 확인은 반드시
+         간이 서버로 여세요 (README의 "로컬에서 보기" 참고).
        --------------------------------------------------------------------- -->
   <script>
     document.documentElement.classList.add("js");
@@ -72,7 +72,7 @@
   <!-- 화면에 고정된 분위기 레이어 (로즈 글로우 + 도트 그리드) -->
   <div class="page-atmosphere" aria-hidden="true"></div>
 
-  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다.
+  <!-- 상단바와 푸터는 js/modules/chrome.js가 js/data/site.js의 NAV로 만든다.
        목차를 고칠 때 페이지 5장을 모두 열지 않도록 한 곳에 모아 두었다. -->
   <header class="site-nav"></header>
   <div class="scroll-progress" aria-hidden="true"></div>
@@ -81,7 +81,7 @@
 
     <!-- ══════════════════════════════════════════════════════════
          HERO — 살아 있는 대화 창
-         창의 구조는 앱의 ChatRoomPage 와 같다 (상단바 · 로그 · 추천 · 입력창)
+         창의 구조는 앱의 ChatRoomPage와 같다 (상단바 · 로그 · 추천 · 입력창)
          ══════════════════════════════════════════════════════════ -->
     <section class="hero" id="top">
       <div class="shell shell--wide">
@@ -95,12 +95,12 @@
 
             <h1 data-reveal>
               <img class="hero__wordmark" src="assets/logo-wordmark.svg" alt="Emour">
-              <span class="hero__title">대화 속에서 사라진 <span class="mark">감정</span>을<br>다시 보이게 합니다</span>
+              <span class="hero__title">대화에서 사라진 <span class="mark">감정</span>을<br>다시 보이게 합니다</span>
             </h1>
 
             <p class="hero__lead" data-reveal>
               같은 문장도 언제 말했는지에 따라 뜻이 달라집니다.
-              Emour 는 직전 대화까지 함께 읽어 메시지마다 감정을 붙이고,
+              Emour는 직전 대화까지 함께 읽어 메시지마다 감정을 붙이고,
               지금 건넬 만한 말을 세 가지로 제안합니다.
             </p>
 
@@ -113,7 +113,7 @@
               </a>
             </div>
 
-            <!-- 수치는 js/data/site.js 의 HERO_FACTS 로 렌더 · 카운트업 -->
+            <!-- 수치는 js/data/site.js의 HERO_FACTS로 렌더 · 카운트업 -->
             <div class="hero__facts" data-reveal="fade"></div>
           </div>
 
@@ -133,7 +133,7 @@
                 </span>
               </div>
 
-              <!-- 대화는 js/modules/heroChat.js 가 재생한다 -->
+              <!-- 대화는 js/modules/heroChat.js가 재생한다 -->
               <div class="chat-window__body hero-chat__log" aria-live="off"></div>
 
               <!-- 문장 다듬기 추천 칩이 여기 올라온다 -->
@@ -193,7 +193,7 @@
           <p class="why__theory-body">
             문자 기반 대화에서는 표정 · 목소리 · 몸짓 같은 <strong>비언어적 단서가 걸러져 사라진다</strong>는 관점입니다.
             남은 것은 글자뿐이라 해석은 받는 사람의 상태에 크게 기댑니다.
-            Emour 는 <strong>사라진 단서를 감정 분석과 시각화로 보완</strong>해 오해가 생길 여지를 줄입니다.
+            Emour는 <strong>사라진 단서를 감정 분석과 시각화로 보완</strong>해 오해가 생길 여지를 줄입니다.
           </p>
         </div>
 
@@ -205,7 +205,7 @@
         </div>
 
         <div class="why__stage" data-reveal>
-          <!-- 대화는 js/modules/why.js 가 한 번만 그린다 -->
+          <!-- 대화는 js/modules/why.js가 한 번만 그린다 -->
           <div class="why__chat surface-panel"></div>
 
           <div class="why__read surface-panel">
@@ -228,7 +228,7 @@
                 단서가 없으면 받는 사람은 자기 상태대로 읽고, 두 사람의 해석은 서로 다른 곳에 도착합니다.
               </span>
               <span data-state="on">
-                직전 대화를 함께 읽은 AI 가 각 문장에 감정을 붙이자, 같은 문장이 다르게 보입니다.
+                직전 대화를 함께 읽은 AI가 각 문장에 감정을 붙이자, 같은 문장이 다르게 보입니다.
                 상대의 감정뿐 아니라 <b>내가 방금 어떤 감정을 보냈는지</b>도 함께 보이기 때문에
                 말이 거칠어지기 전에 스스로 멈출 수 있습니다.
               </span>
@@ -245,14 +245,14 @@
 
     <!-- ══════════════════════════════════════════════════════════
          기능 요약 3장 — 자세한 내용은 제품 페이지에서
-         (탭 · 실제 화면은 product.html 에 있다)
+         (탭 · 실제 화면은 product.html에 있다)
          ══════════════════════════════════════════════════════════ -->
     <section class="section" id="glance">
       <div class="shell shell--wide">
 
         <div class="section-head section-head--center" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Core Features</p>
-          <h2 class="section-title" data-reveal>대화가 오가는 동안,<br>Emour 는 세 가지 일을 합니다</h2>
+          <h2 class="section-title" data-reveal>대화가 오가는 동안,<br>Emour는 세 가지 일을 합니다</h2>
         </div>
 
         <div class="glance" data-reveal-group="90">

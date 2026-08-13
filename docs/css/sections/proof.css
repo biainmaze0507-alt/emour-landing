@@ -88,7 +88,7 @@
   height: auto;
 }
 
-/* 원둘레를 stroke-dasharray 로 그린다. 채우는 값은 JS 가 넣는다. */
+/* 원둘레를 stroke-dasharray로 그린다. 채우는 값은 JS가 넣는다. */
 .proof__donut-track {
   fill: none;
   stroke: var(--color-surface-sunken);

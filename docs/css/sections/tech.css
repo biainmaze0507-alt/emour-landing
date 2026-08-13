@@ -190,7 +190,7 @@
 /* --------------------------------------------------------------------------
    기술 스택
    -------------------------------------------------------------------------- */
-/* 6개라 3 × 2 로 떨어지도록 최소 폭을 잡았다 (4 + 2 는 아래줄이 비어 보인다) */
+/* 6개라 3 × 2로 떨어지도록 최소 폭을 잡았다 (4 + 2는 아래줄이 비어 보인다) */
 .tech__stacks {
   margin-top: clamp(40px, 5vw, 64px);
   display: grid;
@@ -236,23 +236,6 @@
 /* --------------------------------------------------------------------------
    모델 카드 — 학습 파이프라인 요약
    -------------------------------------------------------------------------- */
-.tech__model {
-  margin-top: 12px;
-  padding: 24px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 20px;
-  align-items: center;
-}
-
-.tech__model-name {
-  font-family: var(--font-mono);
-  font-size: var(--font-label);
-  font-weight: 700;
-  color: var(--color-text-accent);
-  word-break: break-all;
-}
-
 .tech__model-desc {
   margin-top: 8px;
   font-size: var(--font-caption);
@@ -271,24 +254,35 @@
   color: var(--color-text-tertiary);
 }
 
-/* 모델 카드 안내 한 줄 */
-.tech__model-note {
-  margin-top: 20px;
-  font-size: var(--font-label);
-  color: var(--color-text-tertiary);
-}
-
-.tech__model-note b {
-  font-weight: 700;
-  color: var(--color-text-secondary);
-}
-
 .tech__model-step {
   padding: 5px 10px;
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   white-space: nowrap;
+}
+
+/* 마지막 칸 = 학습 결과 모델. 허깅페이스로 바로 연결된다. */
+.tech__model-step--result {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  border-color: var(--color-primary-soft);
+  background: var(--color-primary-faint);
+  color: var(--color-primary-strong);
+}
+
+.tech__model-step--result svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.tech__model-chain {
+  margin-top: 4px;
 }
 
 /* 단계 사이 화살표 — 알약이 아니라 선만 남긴다 */

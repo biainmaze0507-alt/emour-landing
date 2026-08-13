@@ -2,12 +2,12 @@
  * js/data/icons.js
  * ---------------------------------------------------------------------------
  * 아이콘 원본. lucide-react v0.5x 계열의 path 데이터를 그대로 옮겨 왔다.
- * (Emour 앱이 lucide-react 를 쓰므로 랜딩도 같은 선 굵기·같은 모양을 쓴다)
+ * (Emour 앱이 lucide-react를 쓰므로 랜딩도 같은 선 굵기·같은 모양을 쓴다)
  *
- * 여기에는 "path 안쪽 마크업"만 담는다. <svg> 껍데기는 icon() 이 씌운다.
- * 색은 CSS 의 currentColor 를 따라가므로, 쓰는 쪽에서 color 만 정해 주면 된다.
+ * 여기에는 "path 안쪽 마크업"만 담는다. <svg> 껍데기는 icon()이 씌운다.
+ * 색은 CSS의 currentColor를 따라가므로, 쓰는 쪽에서 color만 정해 주면 된다.
  *
- * lucide 아이콘은 ISC License 로 배포된다. © Lucide Contributors
+ * lucide 아이콘은 ISC License로 배포된다. © Lucide Contributors
  */
 
 export const ICONS = {
@@ -46,7 +46,7 @@ export const ICONS = {
   /* ── 인터페이스 ──────────────────────────────────────────────── */
   messageCircle: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/>',
 
-  /* 답장 추천 · 문구 교정 — 앱의 WandSparkles 와 같은 아이콘 */
+  /* 답장 추천 · 문구 교정 — 앱의 WandSparkles와 같은 아이콘 */
   wand:
     '<path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/>',
 
@@ -94,7 +94,7 @@ export const ICONS = {
 /**
  * 아이콘 SVG 문자열을 만든다.
  * lucide 기본 속성(24×24 / fill:none / stroke-width:2 / round)을 그대로 쓴다.
- * stroke 는 currentColor 이므로 부모의 color 를 따라간다.
+ * stroke는 currentColor이므로 부모의 color를 따라간다.
  *
  * @param {keyof typeof ICONS} name
  * @param {number} [size=24]

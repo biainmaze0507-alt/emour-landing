@@ -4,21 +4,20 @@
  * 시스템 아키텍처 · 기술 스택 · 프로젝트 규모.
  * 아키텍처 다이어그램은 이미지가 아니라 이 데이터로 그려진다(js/modules/architecture.js).
  *
- * tone 은 노드 왼쪽 색 띠에 쓰는 CSS 토큰 이름이다.
+ * tone은 노드 왼쪽 색 띠에 쓰는 CSS 토큰 이름이다.
  */
 
-/** 규모 수치 — DOCS 와 실제 저장소를 세어 넣은 값 */
+/** 규모 수치 — DOCS와 실제 저장소를 세어 넣은 값 */
 export const SCALE_NUMBERS = [
   { value: 77, suffix: "", label: "REST 엔드포인트" },
   { value: 18, suffix: "", label: "데이터베이스 엔티티" },
   { value: 15, suffix: "종", label: "감정 라벨 (백엔드 열거형)" },
   { value: 3, suffix: "", label: "서비스 컨테이너 (Web · API · AI)" },
-  { value: 2, suffix: "회", label: "실사용자 대상 베타 테스트" },
 ];
 
 /**
  * 아키텍처 레인.
- * flow 는 레인과 레인 사이에 표시되는 화살표 문구다.
+ * flow는 레인과 레인 사이에 표시되는 화살표 문구다.
  */
 export const ARCH_LANES = [
   {
@@ -62,7 +61,7 @@ export const AI_PIPELINE = {
   chain: ["beomi/KcELECTRA", "AI Hub 데이터셋", "문맥 포함 재라벨링", "PyTorch 파인튜닝"],
   model: "chlgks/emour-emotion-kcelectra-context-v2",
   desc:
-    "한국어 구어체에 강한 KcELECTRA 를 기반 모델로 삼고, AI Hub 감정 대화 데이터에 " +
+    "한국어 구어체에 강한 KcELECTRA를 기반 모델로 삼고, AI Hub 감정 대화 데이터에 " +
     "직전 대화를 붙여 다시 라벨링한 뒤 파인튜닝했습니다. 답장 추천은 프롬프트 기반 생성 모델이 맡습니다.",
 };
 

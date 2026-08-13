@@ -127,7 +127,7 @@
 }
 
 /* 말풍선의 기본 좌우 여백은 대화 창(.chat-window) 기준이다.
-   여기서는 패널 자체의 padding 이 그 자리를 맡으므로 좌우만 걷어낸다. */
+   여기서는 패널 자체의 padding이 그 자리를 맡으므로 좌우만 걷어낸다. */
 .why__chat .chat-row {
   margin-inline: 0;
 }

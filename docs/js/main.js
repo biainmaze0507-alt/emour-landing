@@ -4,14 +4,14 @@
  * 진입점. 모든 페이지가 이 파일 하나를 불러온다.
  *
  * <body data-page="..."> 값을 보고 그 페이지에 필요한 모듈만 켠다.
- * 그래서 페이지를 늘리거나 섹션을 옮길 때 HTML 의 <script> 를 건드릴 필요가 없다.
+ * 그래서 페이지를 늘리거나 섹션을 옮길 때 HTML의 <script> 를 건드릴 필요가 없다.
  *
  * 순서가 중요한 부분
- *   1) initReveal() 이 먼저 돌아야 window.__emourObserveReveal 이 준비된다.
- *      (뒤에서 JS 로 만든 [data-reveal] 요소를 등록할 때 쓴다)
- *   2) initChrome() 이 상단바 · 푸터를 만든다. 나머지는 서로 독립적이다.
+ *   1) initReveal()이 먼저 돌아야 window.__emourObserveReveal이 준비된다.
+ *      (뒤에서 JS로 만든 [data-reveal] 요소를 등록할 때 쓴다)
+ *   2) initChrome()이 상단바 · 푸터를 만든다. 나머지는 서로 독립적이다.
  *
- * 모듈 하나가 실패해도 나머지 섹션은 살아 있도록 각각 try 로 감싼다.
+ * 모듈 하나가 실패해도 나머지 섹션은 살아 있도록 각각 try로 감싼다.
  */
 
 import { initChrome } from "./modules/chrome.js";
@@ -67,7 +67,7 @@ function boot() {
   // 2) 모든 페이지가 공유하는 껍데기
   run("chrome", initChrome);
 
-  // 3) 이 페이지의 섹션들
+  // 3)이 페이지의 섹션들
   const page = document.body.dataset.page || "home";
   (PAGE_MODULES[page] ?? []).forEach(([name, fn]) => run(name, fn));
 

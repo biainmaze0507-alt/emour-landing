@@ -2,7 +2,7 @@
  * js/modules/identity.js
  * ---------------------------------------------------------------------------
  * 브랜드 페이지.
- *   · 이름 조립 — Emotion 과 Amour 에서 글자를 덜어내 our 를 남긴다
+ *   · 이름 조립 — Emotion과 Amour에서 글자를 덜어내 our를 남긴다
  *   · 디자인 모티프 — 진주 층을 실제로 겹쳐 그린다
  *   · 컬러 아이덴티티 — 색마다 담긴 뜻 (한 줄씩 아래로 흐른다)
  *   · 웜톤 / 쿨톤 두 축
@@ -15,39 +15,35 @@ import {
   ORIGIN_PALETTE,
   PALETTE_NOTE,
   TEMPERATURE,
+  LOGO_BUILD,
   LOGO_PARTS,
-  LOGO_NOTE,
   TYPE_SCALE,
-  CONTRAST_SAMPLES,
-  CONTRAST_NOTE,
   RULES,
 } from "../data/identity.js";
 import { icon } from "../data/icons.js";
-import { $, el, escapeHtml, contrastRatio, contrastGrade, onceInView } from "./utils.js";
+import { $, el, escapeHtml, onceInView } from "./utils.js";
 
 /* --------------------------------------------------------------------------
-   1. 이름 — 글자를 덜어내는 과정
-   가져온 글자(take)는 남고, 덜어낸 글자(drop)는 옅어지며 지워진다.
+   1. 이름 — 문장에서 잘라 온 두 조각
+
+   카드로 나눠 세우지 않는다. 남긴 글자와 덜어낸 글자를 한 줄 안에서
+   그대로 보여 주는 것이 조립 과정을 읽기에 더 짧다.
    -------------------------------------------------------------------------- */
 function renderNaming() {
-  const host = $(".naming__steps");
-  const resultHost = $(".naming__result");
-  const closing = $(".naming__closing");
   const sloganHost = $(".naming__slogan");
-  if (!host) return;
+  const buildHost = $(".naming__build");
+  const closing = $(".naming__closing");
 
-  /* 이름이 나온 문장 — 잘라 온 두 조각(Em · our)만 문장 안에서 표시한다 */
+  /* 이름이 나온 문장 — 잘라 온 두 조각만 문장 안에서 표시한다 */
   if (sloganHost) {
     let marked = escapeHtml(NAMING.slogan.en);
     NAMING.slogan.picks.forEach(([word, part]) => {
-      // 그 단어를 찾아, 단어 안의 해당 조각만 감싼다
       const at = word.indexOf(part);
       if (at < 0) return;
-      const wrapped =
-        word.slice(0, at) +
-        `<b class="naming__pick">${part}</b>` +
-        word.slice(at + part.length);
-      marked = marked.replace(word, wrapped);
+      marked = marked.replace(
+        word,
+        word.slice(0, at) + `<b class="naming__pick">${part}</b>` + word.slice(at + part.length)
+      );
     });
 
     sloganHost.innerHTML = `
@@ -56,55 +52,36 @@ function renderNaming() {
     `;
   }
 
-  NAMING.steps.forEach((step) => {
-    // 원래 단어를 글자 단위로 쪼개, 남길 글자와 덜어낼 글자를 나눈다
-    const takeIndex = step.word.toLowerCase().indexOf(step.take.toLowerCase());
-    const letters = step.word
-      .split("")
-      .map((letter, index) => {
-        const kept = index >= takeIndex && index < takeIndex + step.take.length;
-        return `<span class="naming__letter${kept ? " is-kept" : " is-dropped"}">${escapeHtml(letter)}</span>`;
-      })
-      .join("");
+  /* 조립 한 줄 — 덜어낸 글자에는 취소선이 간다 */
+  if (buildHost) {
+    const word = (part) => {
+      // 원래 단어에서 남긴 글자의 위치를 찾아 앞뒤로 나눈다
+      const at = part.from.indexOf(part.take);
+      const before = part.from.slice(0, at);
+      const after = part.from.slice(at + part.take.length);
+      return (
+        `<span class="naming__from">` +
+        (before ? `<s>${escapeHtml(before)}</s>` : "") +
+        `<b>${escapeHtml(part.take)}</b>` +
+        (after ? `<s>${escapeHtml(after)}</s>` : "") +
+        `</span>`
+      );
+    };
 
-    host.append(
-      el("div", {
-        className: "naming__step",
-        attrs: { "data-reveal": "" },
-        html: `
-          <p class="naming__word">${letters}</p>
-          <p class="naming__note">${escapeHtml(step.note)}</p>
-          <p class="naming__taken">
-            <span>남긴 글자</span>
-            <b>${escapeHtml(step.take)}</b>
-          </p>
-        `,
-      })
-    );
-  });
+    const keeperAt = NAMING.result.indexOf(NAMING.keeper);
+    const result =
+      escapeHtml(NAMING.result.slice(0, keeperAt)) +
+      `<b>${escapeHtml(NAMING.keeper)}</b>` +
+      escapeHtml(NAMING.result.slice(keeperAt + NAMING.keeper.length));
 
-  if (resultHost) {
-    // 결과 단어 안에서 keeper(our)만 강조한다
-    const index = NAMING.result.toLowerCase().indexOf(NAMING.keeper.toLowerCase());
-    const letters = NAMING.result
-      .split("")
-      .map((letter, i) => {
-        const isKeeper = index >= 0 && i >= index && i < index + NAMING.keeper.length;
-        return `<span class="naming__letter${isKeeper ? " is-keeper" : ""}">${escapeHtml(letter)}</span>`;
-      })
-      .join("");
-
-    resultHost.innerHTML = `
-      <p class="naming__result-word">${letters}</p>
-      <p class="naming__result-note">
-        이름 가운데 남은 <b>${escapeHtml(NAMING.keeper)}</b> —
-        ${escapeHtml(NAMING.keeperMeaning)}
-      </p>
-    `;
+    buildHost.innerHTML =
+      NAMING.parts.map(word).join(`<span class="naming__op" aria-hidden="true">+</span>`) +
+      `<span class="naming__op" aria-hidden="true">=</span>` +
+      `<span class="naming__result">${result}</span>` +
+      `<span class="naming__keeper">가운데 남은 <b>${escapeHtml(NAMING.keeper)}</b> — ${escapeHtml(NAMING.keeperMeaning)}</span>`;
   }
 
   if (closing) closing.innerHTML = NAMING.closing;
-  window.__emourObserveReveal?.(host);
 }
 
 /* --------------------------------------------------------------------------
@@ -168,8 +145,8 @@ function renderPalette() {
       el("li", {
         className: "palette__row",
         attrs: { "data-reveal": "" },
-        // 진주 바깥 테 = CI 원안, 안쪽 알 = 화면 적용값
-        style: { "--origin": color.origin, "--applied": color.applied },
+        // 진주 바깥 테 = 브랜드 자산용 값, 안쪽 알 = 화면용 값
+        style: { "--origin": color.logo, "--applied": color.screen },
         html: `
           <span class="palette__pearl" aria-hidden="true"></span>
           <span class="palette__row-id">
@@ -222,37 +199,81 @@ function renderTemperature() {
 }
 
 /* --------------------------------------------------------------------------
-   5. 로고 두 색
-   -------------------------------------------------------------------------- */
-function renderLogoParts() {
-  const host = $(".identity__logo-parts");
-  const note = $(".identity__logo-note");
+   5. 심볼 설계도 — 격자 위의 보조선 + 실제 심볼
 
-  if (host) {
-    LOGO_PARTS.forEach((part) => {
-      host.append(
-        el("div", {
-          className: "identity__logo-part",
-          style: { "--tone": part.hex },
+   브랜드 가이드의 construction grid와 같은 방식이다. 격자와 원·대각선을 깔고
+   그 위에 실제 심볼을 얹어, 어떤 기준으로 그려졌는지 눈으로 확인하게 한다.
+   -------------------------------------------------------------------------- */
+function renderLogoBuild() {
+  const stage = $(".blueprint__stage");
+  const notesHost = $(".blueprint__notes");
+  const lead = $(".blueprint__lead");
+
+  if (lead) lead.textContent = LOGO_BUILD.lead;
+
+  if (stage) {
+    const g = LOGO_BUILD.guides;
+
+    const lobes = g.lobes
+      .map((c) => `<circle class="bp-lobe" cx="${c.cx}" cy="${c.cy}" r="${c.r}"/>`)
+      .join("");
+    const diagonals = g.diagonals
+      .map((l) => `<line class="bp-diag" x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}"/>`)
+      .join("");
+
+    stage.innerHTML = `
+      <svg class="blueprint__guides" viewBox="0 0 596 499" aria-hidden="true">
+        <line class="bp-axis" x1="${g.axis}" y1="0" x2="${g.axis}" y2="499"/>
+        <line class="bp-axis" x1="0" y1="${g.waist}" x2="596" y2="${g.waist}"/>
+        ${diagonals}
+        ${lobes}
+        <circle class="bp-knot" cx="${g.knot.cx}" cy="${g.knot.cy}" r="${g.knot.r}"/>
+      </svg>
+      <img class="blueprint__mark" src="assets/logo-mark.svg" alt="Emour 심볼">
+    `;
+  }
+
+  if (notesHost) {
+    LOGO_BUILD.notes.forEach((note, index) => {
+      notesHost.append(
+        el("li", {
+          className: "blueprint__note",
           html: `
-            <i></i>
+            <span class="blueprint__note-no">${String(index + 1).padStart(2, "0")}</span>
             <span>
-              <b>${escapeHtml(part.part)}</b>
-              <span class="identity__logo-meaning">${escapeHtml(part.meaning)}</span>
-              <span>${escapeHtml(part.role)}</span>
+              <b>${escapeHtml(note.label)}</b>
+              <span>${escapeHtml(note.desc)}</span>
             </span>
           `,
         })
       );
     });
   }
+}
 
-  if (note) {
-    note.innerHTML = `
-      <b>${escapeHtml(LOGO_NOTE.title)}</b>
-      <span>${LOGO_NOTE.body}</span>
-    `;
-  }
+/* --------------------------------------------------------------------------
+   6. 로고 두 색 → 화면 두 축
+   -------------------------------------------------------------------------- */
+function renderLogoParts() {
+  const host = $(".identity__logo-parts");
+  if (!host) return;
+
+  LOGO_PARTS.forEach((part) => {
+    host.append(
+      el("div", {
+        className: "identity__logo-part",
+        style: { "--tone": part.hex },
+        html: `
+          <i></i>
+          <span>
+            <b>${escapeHtml(part.part)}</b>
+            <span class="identity__logo-meaning">${escapeHtml(part.meaning)}</span>
+            <span>${escapeHtml(part.role)}</span>
+          </span>
+        `,
+      })
+    );
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -278,40 +299,6 @@ function renderTypeScale() {
 }
 
 /* --------------------------------------------------------------------------
-   7. 대비 근거
-   대비값을 손으로 적지 않고 계산한다 — 색을 바꾸면 숫자도 자동으로 맞는다.
-   -------------------------------------------------------------------------- */
-function renderContrast() {
-  const host = $(".contrast__demo");
-  const note = $(".contrast__note");
-  if (!host) return;
-
-  CONTRAST_SAMPLES.forEach((sample) => {
-    const ratio = contrastRatio(sample.hex, "#FFFFFF");
-    const grade = contrastGrade(ratio);
-
-    host.append(
-      el("div", {
-        className: "contrast__sample",
-        style: { "--tone": sample.hex },
-        html: `
-          <span>
-            <span class="contrast__sample-text">${escapeHtml(sample.text)}</span>
-            <span class="contrast__sample-cap">${escapeHtml(sample.caption)}</span>
-          </span>
-          <span class="contrast__sample-ratio">
-            ${ratio.toFixed(2)}:1
-            <span class="contrast__verdict ${grade.pass ? "is-pass" : "is-fail"}">${escapeHtml(grade.label)}</span>
-          </span>
-        `,
-      })
-    );
-  });
-
-  if (note) note.innerHTML = CONTRAST_NOTE;
-}
-
-/* --------------------------------------------------------------------------
    8. 사용 규칙
    -------------------------------------------------------------------------- */
 function renderRules() {
@@ -332,8 +319,8 @@ export function initIdentity() {
   renderMotif();
   renderPalette();
   renderTemperature();
+  renderLogoBuild();
   renderLogoParts();
   renderTypeScale();
-  renderContrast();
   renderRules();
 }

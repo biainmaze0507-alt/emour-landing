@@ -5,7 +5,7 @@
    그 값을 그대로 가져오되, 랜딩 전용(넓은 화면·큰 타이포)만 뒤에 덧붙였다.
 
    ⚠️ 색을 바꾸려면 여기 [1] CI 원색 블록만 고치면 화면 전체가 따라온다.
-      HEX 를 다른 파일에 직접 쓰지 않는다 — 반드시 var(--...) 를 경유한다.
+      HEX를 다른 파일에 직접 쓰지 않는다 — 반드시 var(--...)를 경유한다.
    ========================================================================== */
 
 :root {
@@ -116,7 +116,7 @@
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
 
-  /* 앱 스케일 (frontend/src/styles/tokens.css 와 동일) */
+  /* 앱 스케일 (frontend/src/styles/tokens.css와 동일) */
   --font-display: 26px;
   --font-title: 20px;
   --font-heading: 17px;
@@ -175,13 +175,15 @@
   /* ------------------------------------------------------------------
      [7] 랜딩 레이아웃
      ------------------------------------------------------------------ */
-  --shell-max: 1180px;      /* 본문 최대 폭 */
-  --shell-wide: 1360px;     /* 넓게 쓰는 블록(그리드·영상) */
-  --shell-pad: clamp(20px, 4vw, 56px);
+  /* 노트북 전체화면(1440~1680px)에서 한 줄이 너무 길어지지 않도록 폭을 조인다.
+     좌우 여백도 화면이 커질수록 함께 벌어진다. */
+  --shell-max: 1000px;      /* 본문 최대 폭 */
+  --shell-wide: 1180px;     /* 넓게 쓰는 블록(그리드·영상) */
+  --shell-pad: clamp(20px, 6vw, 96px);
   --section-gap: clamp(88px, 11vh, 168px);
   --nav-height: 68px;
 
-  /* 앱 목업 기준 규격 — Emour 는 412 × 892 모바일 세로 */
+  /* 앱 목업 기준 규격 — Emour는 412 × 892 모바일 세로 */
   --app-frame-width: 412px;
   --app-frame-height: 892px;
 }

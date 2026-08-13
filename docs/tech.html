@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#FBFAF9">
 
   <title>기술 — Emour</title>
-  <meta name="description" content="Nginx 가 경로로 나누는 세 컨테이너, 그리고 문맥을 포함해 학습시킨 감정 분석 모델.">
+  <meta name="description" content="Nginx가 경로로 나누는 세 컨테이너, 그리고 문맥을 포함해 학습시킨 감정 분석 모델.">
   <meta name="author" content="Emour">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="기술 — Emour">
-  <meta property="og:description" content="Nginx 가 경로로 나누는 세 컨테이너, 그리고 문맥을 포함해 학습시킨 감정 분석 모델.">
+  <meta property="og:description" content="Nginx가 경로로 나누는 세 컨테이너, 그리고 문맥을 포함해 학습시킨 감정 분석 모델.">
   <meta property="og:image" content="assets/logo-mark.svg">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
@@ -44,10 +44,10 @@
 
   <script type="module" src="js/main.js"></script>
 
-  <!-- 안전장치 — [data-reveal] 은 처음에 opacity:0 이라 JS 가 못 돌면 빈 화면이 남는다.
-       JS 가 꺼져 있으면 html 에 .js 가 안 붙고, 모듈이 실패하면 1.8초 뒤
-       .reveal-fallback 이 붙어서 숨겨 둔 내용이 그대로 보인다.
-       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
+  <!-- 안전장치 — [data-reveal]은 처음에 opacity:0이라 JS가 못 돌면 빈 화면이 남는다.
+       JS가 꺼져 있으면 html에 .js가 안 붙고, 모듈이 실패하면 1.8초 뒤
+       .reveal-fallback이 붙어서 숨겨 둔 내용이 그대로 보인다.
+       ※ file:// 에서는 ES 모듈이 CORS로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
   <script>
     document.documentElement.classList.add("js");
     setTimeout(function () {
@@ -62,7 +62,7 @@
 
   <div class="page-atmosphere" aria-hidden="true"></div>
 
-  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다. -->
+  <!-- 상단바와 푸터는 js/modules/chrome.js가 js/data/site.js의 NAV로 만든다. -->
   <header class="site-nav"></header>
   <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -74,8 +74,8 @@
     <section class="page-hero" id="top">
       <div class="shell shell--wide" data-reveal-group="80">
         <p class="page-hero__index" data-reveal="fade">No. 03 &nbsp;Engineering</p>
-        <h1 class="page-hero__title" data-reveal>커밋 한 번이<br>서비스까지 닿는 길</h1>
-        <p class="page-hero__lead" data-reveal>웹 · API · AI 세 개의 컨테이너를 한 대의 EC2 위에서 Nginx 가 경로로 나누어 보냅니다. 아래 도식은 이미지가 아니라 마크업이라, 화면이 좁아지면 알아서 접힙니다.</p>
+        <h1 class="page-hero__title" data-reveal>배포 구조와<br>감정 분석 모델</h1>
+        <p class="page-hero__lead" data-reveal>웹 · API · AI 세 개의 컨테이너를 한 대의 EC2에서 돌리고, Nginx가 경로로 나누어 보냅니다.</p>
         <div class="page-hero__jump" data-reveal="fade">
             <a class="chip chip--brand" href="#architecture">시스템 아키텍처</a>
             <a class="chip chip--brand" href="#model">감정 분석 모델</a>
@@ -112,9 +112,9 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">AI Model</p>
-          <h2 class="section-title" data-reveal>문장 하나만 보지 않도록<br>다시 라벨링했습니다</h2>
+          <h2 class="section-title" data-reveal>문맥을 함께 보도록<br>다시 라벨링했습니다</h2>
           <p class="section-lead" data-reveal>
-            한국어 구어체에 강한 KcELECTRA 를 기반 모델로 삼고, 공개 데이터에
+            한국어 구어체에 강한 KcELECTRA를 기반 모델로 삼고, 공개 데이터에
             직전 대화를 붙여 다시 라벨링한 뒤 파인튜닝했습니다.
             같은 문장이 맥락에 따라 다른 감정이 되도록 학습 데이터부터 바꾼 것입니다.
           </p>
@@ -123,10 +123,6 @@
         <div class="arch" data-reveal>
           <div class="arch__ai"></div>
         </div>
-
-        <p class="tech__model-note" data-reveal="fade">
-          모델 카드는 허깅페이스에 공개되어 있습니다 — 푸터의 <b>AI 모델 카드</b> 링크에서 볼 수 있습니다.
-        </p>
 
       </div>
     </section>
@@ -139,7 +135,7 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Tech Stack</p>
-          <h2 class="section-title" data-reveal>무엇으로 만들었나</h2>
+          <h2 class="section-title" data-reveal>기술 스택</h2>
         </div>
 
         <div class="tech__stacks"></div>

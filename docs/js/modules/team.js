@@ -6,10 +6,10 @@
  * 핵심: portfolio 주소가 있으면 카드 전체가 <a> 로, 없으면 <article> 로 렌더된다.
  *       두 경우의 마크업 구조와 크기가 완전히 같아서, 나중에 주소만 채워도
  *       레이아웃이 전혀 흔들리지 않는다.
- *       → js/data/team.js 의 portfolio 값만 수정하면 됩니다.
+ *       → js/data/team.js의 portfolio 값만 수정하면 됩니다.
  *
  * 아바타는 발표자료 팀원 소개 슬라이드의 원본 일러스트 파일을 그대로 쓴다.
- * (assets/team/*.svg) 경로는 js/data/team.js 의 avatar 에 적혀 있다.
+ * (assets/team/*.svg) 경로는 js/data/team.js의 avatar에 적혀 있다.
  */
 
 import { TEAM, TEAM_BANNER } from "../data/team.js";

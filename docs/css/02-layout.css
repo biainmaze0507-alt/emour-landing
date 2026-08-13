@@ -31,7 +31,7 @@
 }
 
 /* 커서를 따라다니는 로즈 글로우 (데스크톱 · 포인터 기기 전용).
-   위치는 js/modules/cursorGlow.js 가 --mx / --my 로 넣어 준다. */
+   위치는 js/modules/cursorGlow.js가 --mx / --my로 넣어 준다. */
 .cursor-glow {
   position: fixed;
   top: 0;
@@ -101,8 +101,8 @@
   flex-shrink: 0;
 }
 
-/* logo-wordmark.svg 는 하트 + 글자가 함께 든 완성형 로고다.
-   (하트만 필요한 자리에는 logo-mark.svg 를 쓴다) */
+/* logo-wordmark.svg는 하트 + 글자가 함께 든 완성형 로고다.
+   (하트만 필요한 자리에는 logo-mark.svg를 쓴다) */
 .nav-brand__word {
   height: 22px;
   width: auto;
@@ -131,7 +131,7 @@
    항목을 같은 폭의 다섯 칸에 나눠 세우고, 패널의 열도 같은 격자를 쓴다.
    그래서 "제품" 아래에 제품의 목차가, "검증" 아래에 검증의 목차가 선다.
    격자의 시작 위치·폭은 로고와 오른쪽 버튼 폭에 따라 달라지므로
-   chrome.js 가 실측해 --mega-left / --mega-width 로 넣어 준다.
+   chrome.js가 실측해 --mega-left / --mega-width로 넣어 준다.
    -------------------------------------------------------------------------- */
 .nav-links {
   flex: 1;
@@ -192,7 +192,7 @@
 
    좌우 여백을 링크 묶음의 좌우 여백과 똑같이 주면, 남는 내용 폭이 링크 묶음의
    폭과 정확히 같아진다. 그 위에 같은 칸 수의 균등 격자를 얹으므로
-   각 열이 위 항목 바로 아래에 선다. (두 값은 chrome.js 가 실측해 넣는다) */
+   각 열이 위 항목 바로 아래에 선다. (두 값은 chrome.js가 실측해 넣는다) */
 .nav-mega__cols {
   width: 100%;
   max-width: var(--shell-wide);
@@ -251,7 +251,7 @@
   flex-shrink: 0;
 }
 
-/* 모바일 메뉴 토글 — 3줄이 X 로 바뀐다 */
+/* 모바일 메뉴 토글 — 3줄이 X로 바뀐다 */
 .nav-toggle {
   display: none;
   width: 42px;
@@ -564,8 +564,8 @@ body.is-locked {
 
 /* 섹션 헤더 — 왼쪽 정렬(기본) / 가운데 정렬(--center)
    폭 제한은 헤더가 아니라 .section-lead 에만 건다.
-   헤더에 62ch 를 걸면 그 안의 큰 제목까지 좁아져서 원치 않는 곳에서 줄이 갈린다.
-   제목의 줄바꿈은 마크업의 <br> 과 text-wrap: balance 로 잡는다. */
+   헤더에 62ch를 걸면 그 안의 큰 제목까지 좁아져서 원치 않는 곳에서 줄이 갈린다.
+   제목의 줄바꿈은 마크업의 <br> 과 text-wrap: balance로 잡는다. */
 .section-head {
   margin-bottom: clamp(40px, 5vw, 68px);
 }

@@ -4,7 +4,7 @@
  * 사이트 전역 설정 — 페이지 목차, 외부 링크, 히어로 대화 시나리오.
  *
  * ✅ 여기부터 고치세요
- *    LINKS 의 값을 채우면 상단바 · 푸터 · 마무리 CTA 가 한꺼번에 살아납니다.
+ *    LINKS의 값을 채우면 상단바 · 푸터 · 마무리 CTA가 한꺼번에 살아납니다.
  *    빈 문자열("")로 두면 해당 버튼은 자동으로 감춰집니다.
  */
 
@@ -23,25 +23,25 @@ export const LINKS = {
  * 사이트 구조 — 페이지 5장과 각 페이지의 상세 목차.
  *
  * 상단바는 이 배열 하나로 만들어집니다.
- *   · 데스크톱 : 항목에 올리면 children 이 드롭다운 패널로 펼쳐진다
- *   · 모바일   : 항목을 누르면 children 이 아코디언으로 펼쳐진다
+ *   · 데스크톱 : 항목에 올리면 children이 드롭다운 패널로 펼쳐진다
+ *   · 모바일   : 항목을 누르면 children이 아코디언으로 펼쳐진다
  *
  * 필드
  *   id       페이지 식별자. <body data-page="..."> 값과 같아야 한다
  *   label    상단바에 보이는 이름
  *   file     실제 파일명 (같은 폴더에 나란히 있으므로 상대경로 그대로)
  *   summary  드롭다운 패널 왼쪽에 붙는 한 줄 소개
- *   children 그 페이지 안의 섹션들. hash 는 해당 <section> 의 id
+ *   children 그 페이지 안의 섹션들. hash는 해당 <section> 의 id
  */
 export const NAV = [
   {
     id: "product",
     label: "제품",
     file: "product.html",
-    summary: "대화가 오가는 동안 Emour 가 하는 세 가지 일과, 그 바탕이 되는 감정 15종 체계.",
+    summary: "대화가 오가는 동안 Emour가 하는 세 가지 일과, 그 바탕이 되는 감정 15종 체계.",
     children: [
       { hash: "features", label: "핵심 기능 3종", desc: "감정 분석 · 답장 추천 · 대시보드" },
-      { hash: "emotions", label: "감정 15종 체계", desc: "서버 열거형과 1:1 로 묶인 색과 아이콘" },
+      { hash: "emotions", label: "감정 15종 체계", desc: "서버 열거형과 1:1로 묶인 색과 아이콘" },
       { hash: "mood", label: "오늘의 기분 5단계", desc: "직접 기록하는 하루의 온도" },
     ],
   },
@@ -62,9 +62,9 @@ export const NAV = [
     id: "tech",
     label: "기술",
     file: "tech.html",
-    summary: "커밋 한 번이 서비스까지 닿는 길. 컨테이너 세 개와 감정 분석 모델의 구조.",
+    summary: "컨테이너 세 개와 감정 분석 모델의 구조.",
     children: [
-      { hash: "architecture", label: "시스템 아키텍처", desc: "Nginx 가 경로로 나누는 세 컨테이너" },
+      { hash: "architecture", label: "시스템 아키텍처", desc: "Nginx가 경로로 나누는 세 컨테이너" },
       { hash: "model", label: "감정 분석 모델", desc: "KcELECTRA 파인튜닝 · 문맥 포함 학습" },
       { hash: "stacks", label: "기술 스택", desc: "프론트 · 백엔드 · AI · 인프라" },
     ],
@@ -75,7 +75,7 @@ export const NAV = [
     file: "brand.html",
     summary: "이름 하나에 담은 뜻과, 핑크 진주에서 가져온 색의 이야기.",
     children: [
-      { hash: "naming", label: "이름의 뜻", desc: "Emotion 과 Amour 사이에 남은 our" },
+      { hash: "naming", label: "이름의 뜻", desc: "Emotion과 Amour 사이에 남은 our" },
       { hash: "motif", label: "디자인 모티프", desc: "층층이 쌓여 완성되는 핑크 진주" },
       { hash: "palette", label: "컬러 아이덴티티", desc: "색마다 담긴 뜻" },
       { hash: "temperature", label: "웜톤과 쿨톤", desc: "정서의 색과 결심의 색" },
@@ -107,15 +107,15 @@ export const HERO_FACTS = [
 
 /**
  * 히어로 대화 시나리오.
- * heroChat.js 가 이 배열을 위에서부터 재생한다.
+ * heroChat.js가 이 배열을 위에서부터 재생한다.
  *
  * type
  *   "mine"   내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
  *   "yours"  상대가 보낸 말 — 바로 말풍선으로 올라간다
  *   "wait"   잠깐 멈춤 (ms)
  *
- * emotion 에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
- * time 은 앱의 formatTime() 표기(오후 h:mm)를 그대로 쓴다.
+ * emotion에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
+ * time은 앱의 formatTime() 표기(오후 h:mm)를 그대로 쓴다.
  */
 export const HERO_SCRIPT = [
   { type: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS", time: "오후 10:10" },
@@ -137,7 +137,7 @@ export const HERO_SUGGESTS = [
 
 /**
  * 푸터 링크 묶음.
- * page 를 적으면 그 페이지 파일로, hash 까지 적으면 해당 섹션으로 이어진다.
+ * page를 적으면 그 페이지 파일로, hash까지 적으면 해당 섹션으로 이어진다.
  */
 export const FOOTER_GROUPS = [
   {

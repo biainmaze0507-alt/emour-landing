@@ -2,11 +2,12 @@
  * js/modules/architecture.js
  * ---------------------------------------------------------------------------
  * 시스템 아키텍처 · 기술 스택 · 규모 수치.
- * 다이어그램은 이미지가 아니라 레인(가로줄) 구조의 DOM 이라, 화면이 좁아지면
+ * 다이어그램은 이미지가 아니라 레인(가로줄) 구조의 DOM이라, 화면이 좁아지면
  * 자동으로 세로로 접힌다.
  */
 
 import { SCALE_NUMBERS, ARCH_LANES, AI_PIPELINE, STACKS } from "../data/tech.js";
+import { LINKS } from "../data/site.js";
 import { icon } from "../data/icons.js";
 import { $, el, escapeHtml, countUp, onceInView } from "./utils.js";
 
@@ -82,29 +83,30 @@ export function initArchitecture() {
   const aiHost = $(".arch__ai") ?? laneHost;
 
   if (aiHost) {
-    aiHost.append(
-      archLane({
-        title: "AI 학습 파이프라인",
-        nodes: [
-          {
-            name: AI_PIPELINE.model,
-            role: AI_PIPELINE.desc,
-            tone: "--emotion-excitement",
-            highlight: true,
-          },
-        ],
-      })
-    );
-
-    // 학습 체인 뱃지
+    /* 학습 순서 한 줄. 마지막 칸이 결과 모델이고, 허깅페이스로 바로 연결된다.
+       모델 이름만 따로 카드로 띄우지 않는다 — 순서의 마지막 칸일 뿐이다. */
     const chain = el("div", { className: "tech__model-chain" });
+
     AI_PIPELINE.chain.forEach((step, index) => {
       if (index > 0) {
         chain.append(el("span", { className: "tech__model-arrow", html: icon("arrowRight", 12) }));
       }
       chain.append(el("span", { className: "tech__model-step", text: step }));
     });
+
+    chain.append(el("span", { className: "tech__model-arrow", html: icon("arrowRight", 12) }));
+    chain.append(
+      el(LINKS.model ? "a" : "span", {
+        className: "tech__model-step tech__model-step--result",
+        attrs: LINKS.model
+          ? { href: LINKS.model, target: "_blank", rel: "noopener noreferrer" }
+          : {},
+        html: `${escapeHtml(AI_PIPELINE.model)}${LINKS.model ? icon("arrowUpRight", 12) : ""}`,
+      })
+    );
+
     aiHost.append(chain);
+    aiHost.append(el("p", { className: "tech__model-desc", text: AI_PIPELINE.desc }));
   }
 
   /* ── 3. 기술 스택 ──────────────────────────────────────────── */

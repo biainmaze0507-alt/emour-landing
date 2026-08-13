@@ -23,7 +23,7 @@ import { getEmotion } from "../data/emotions.js";
    화면 껍데기 — 상단바 + 본문(+ 입력창)
    -------------------------------------------------------------------------- */
 
-/** 앱 상단바 — 뒤로 · 제목 · 검색 (앱의 ChatHeader 와 같은 구성) */
+/** 앱 상단바 — 뒤로 · 제목 · 검색 (앱의 ChatHeader와 같은 구성) */
 function windowHead(title, status) {
   return el("div", {
     className: "chat-window__head",
@@ -38,7 +38,7 @@ function windowHead(title, status) {
   });
 }
 
-/** 앱 입력창 — 사진 추가 · 입력 · 교정 · 전송 (앱의 ChatInputBar 와 같은 구성) */
+/** 앱 입력창 — 사진 추가 · 입력 · 교정 · 전송 (앱의 ChatInputBar와 같은 구성) */
 function windowComposer() {
   return el("div", {
     className: "chat-window__composer",
@@ -320,7 +320,7 @@ export function initFeatureTabs() {
       const fill = row.querySelector(".meter__fill");
       if (!fill) return;
       fill.style.width = "0%";
-      // 다음 프레임에 값을 넣어야 transition 이 걸린다
+      // 다음 프레임에 값을 넣어야 transition이 걸린다
       requestAnimationFrame(() => {
         fill.style.width = `${Math.min(Number(row.dataset.metric) || 0, 100)}%`;
       });

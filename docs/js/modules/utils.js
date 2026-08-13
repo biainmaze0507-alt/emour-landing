@@ -31,18 +31,18 @@ export function el(tag, props = {}) {
       if (value == null) continue;
 
       /*
-       * ARIA 상태는 반드시 문자열 "true" / "false" 로 넣는다.
-       * true 를 빈 문자열로 바꿔 버리면 aria-selected="" 가 되고,
-       * 그러면 CSS 의 [aria-selected="true"] 에 걸리지 않아
+       * ARIA 상태는 반드시 문자열 "true" / "false"로 넣는다.
+       * true를 빈 문자열로 바꿔 버리면 aria-selected=""가 되고,
+       * 그러면 CSS의 [aria-selected="true"]에 걸리지 않아
        * 선택된 탭·스와치·칩이 선택되지 않은 것처럼 보인다.
-       * false 도 의미가 있는 값이므로 지우지 않는다.
+       * false도 의미가 있는 값이므로 지우지 않는다.
        */
       if (typeof value === "boolean" && key.startsWith("aria-")) {
         node.setAttribute(key, String(value));
         continue;
       }
 
-      // hidden · disabled 처럼 존재만으로 켜지는 속성
+      // hidden · disabled처럼 존재만으로 켜지는 속성
       if (value === false) continue;
       node.setAttribute(key, value === true ? "" : String(value));
     }
@@ -69,7 +69,7 @@ export function el(tag, props = {}) {
   return node;
 }
 
-/** innerHTML 에 사용자 문자열을 넣기 전에 반드시 통과시킨다. */
+/** innerHTML에 사용자 문자열을 넣기 전에 반드시 통과시킨다. */
 export function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -154,7 +154,7 @@ export function relativeLuminance(hex) {
 
 /**
  * 두 색의 명도 대비. 1(같은 색) ~ 21(검정 대 흰색).
- * 본문 크기 글자의 AA 기준은 4.5:1 이다.
+ * 본문 크기 글자의 AA 기준은 4.5:1이다.
  */
 export function contrastRatio(hexA, hexB) {
   const a = relativeLuminance(hexA);
@@ -176,7 +176,7 @@ export function contrastGrade(ratio) {
    -------------------------------------------------------------------------- */
 
 /**
- * 0 에서 target 까지 세어 올린다.
+ * 0에서 target까지 세어 올린다.
  * @param {HTMLElement} node   숫자를 표시할 요소
  * @param {number} target      목표 값
  * @param {object} [options]   duration(ms) / decimals(소수 자리) / prefix / suffix

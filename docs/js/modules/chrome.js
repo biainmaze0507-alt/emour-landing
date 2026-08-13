@@ -4,7 +4,7 @@
  * 모든 페이지가 공유하는 껍데기 — 상단바와 푸터.
  *
  * 페이지가 5장이라 상단바 마크업을 파일마다 복사해 두면 목차를 한 번 고칠 때
- * 5곳을 고쳐야 한다. 그래서 상단바와 푸터는 js/data/site.js 의 NAV 하나로
+ * 5곳을 고쳐야 한다. 그래서 상단바와 푸터는 js/data/site.js의 NAV 하나로
  * 여기서 만든다. HTML 쪽에는 빈 <header> · <footer> 껍데기만 둔다.
  *
  * 상단바 구조
@@ -139,9 +139,9 @@ function renderNav() {
         ${
           /*
            * 주 행동 버튼.
-           * 서버를 상시로 열어 둘 수 없으므로, LINKS.service 가 비어 있으면
+           * 서버를 상시로 열어 둘 수 없으므로, LINKS.service가 비어 있으면
            * "체험하기"를 내걸지 않는다. 대신 언제나 볼 수 있는 소개 영상으로 보낸다.
-           * 나중에 서비스 주소가 생기면 js/data/site.js 의 LINKS.service 만 채우면
+           * 나중에 서비스 주소가 생기면 js/data/site.js의 LINKS.service만 채우면
            * 이 버튼이 자동으로 "서비스 체험하기"로 바뀐다.
            */
           LINKS.service
@@ -177,7 +177,7 @@ function renderNav() {
   // 서체가 늦게 오면 링크 폭이 바뀌므로 한 번 더 맞춘다
   document.fonts?.ready.then(alignMega).catch(() => {});
 
-  // 모바일 시트는 상단바 바깥에 둔다 (상단바가 overflow 를 자르기 때문)
+  // 모바일 시트는 상단바 바깥에 둔다 (상단바가 overflow를 자르기 때문)
   const sheet = el("nav", {
     className: "nav-sheet",
     attrs: { id: "nav-sheet", "aria-label": "모바일 목차" },
@@ -198,7 +198,7 @@ function renderFooter() {
   const groups = FOOTER_GROUPS.map((group) => {
     const items = group.items
       .map((item) => {
-        // href 를 직접 적은 항목은 외부 링크, page 를 적은 항목은 내부 페이지
+        // href를 직접 적은 항목은 외부 링크, page를 적은 항목은 내부 페이지
         const href = item.href ?? hrefFor(item.page, item.hash);
         if (!href) return "";
         const external = item.external ? ' target="_blank" rel="noopener noreferrer"' : "";
@@ -222,7 +222,7 @@ function renderFooter() {
           <img class="footer-word" src="assets/logo-wordmark.svg" alt="Emour">
           <p class="footer-tagline">
             ${escapeHtml(SITE.meaning)}.<br>
-            커플의 대화를 AI 로 분석해 감정을 보여주고,
+            커플의 대화를 AI로 분석해 감정을 보여주고,
             지나간 대화를 둘의 기록으로 되돌려 주는 모바일 웹 서비스입니다.
           </p>
         </div>
@@ -239,7 +239,7 @@ function renderFooter() {
 
 /* --------------------------------------------------------------------------
    외부 링크
-   LINKS 에 값이 없는 버튼은 눌러도 아무 일이 없으므로 감춘다.
+   LINKS에 값이 없는 버튼은 눌러도 아무 일이 없으므로 감춘다.
    (주소를 채우면 자동으로 다시 나타난다)
    -------------------------------------------------------------------------- */
 export function applyExternalLinks(root = document) {
@@ -395,8 +395,24 @@ function initSheet(nav) {
 /* --------------------------------------------------------------------------
    스크롤 상태 — 유리 효과 · 진행바 · 현재 섹션 표시
    -------------------------------------------------------------------------- */
+/** 맨 위로 — 스크롤을 좀 내려가면 우측 하단에 나타난다 */
+function initToTop() {
+  const button = el("button", {
+    className: "to-top",
+    attrs: { type: "button", "aria-label": "맨 위로" },
+    html: icon("chevronDown", 18),
+  });
+  button.addEventListener("click", () => {
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+  });
+  document.body.append(button);
+  return button;
+}
+
 function initScrollState(nav) {
   const progress = $(".scroll-progress");
+  const toTop = initToTop();
   let ticking = false;
 
   const onScroll = () => {
@@ -412,6 +428,8 @@ function initScrollState(nav) {
         progress.style.setProperty("--progress", max > 0 ? String(y / max) : "0");
       }
 
+      toTop.classList.toggle("is-on", y > window.innerHeight * 0.9);
+
       ticking = false;
     });
   };
@@ -421,7 +439,7 @@ function initScrollState(nav) {
 
   /* 현재 페이지 안의 섹션 표시 —
      화면 세로 가운데를 지나는 섹션을 "현재"로 본다.
-     (rootMargin 으로 위아래를 -50% 씩 잘라 가운데 한 줄만 남긴다) */
+     (rootMargin으로 위아래를 -50% 씩 잘라 가운데 한 줄만 남긴다) */
   const page = currentPage();
   const marks = $$(`[data-section-page="${page}"]`);
   if (!marks.length || !("IntersectionObserver" in window)) return;

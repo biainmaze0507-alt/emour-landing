@@ -5,127 +5,30 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. 이름 — Emotion 과 Amour 에서 글자를 덜어내 our 를 남긴다
+   1. 이름 — Emotion과 Amour에서 글자를 덜어내 our를 남긴다
    -------------------------------------------------------------------------- */
-.naming {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.9fr);
-  gap: clamp(24px, 3.4vw, 56px);
-  align-items: center;
-  padding: clamp(28px, 3.6vw, 52px);
-}
 
-.naming__steps {
-  display: grid;
-  gap: 14px;
-}
 
-.naming__step {
-  padding: 20px 22px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-}
 
-.naming__word {
-  font-size: clamp(28px, 3.6vw, 44px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-}
 
 /* 남긴 글자는 브랜드색으로 또렷하게, 덜어낸 글자는 옅게 지워진 듯이 */
-.naming__letter {
-  display: inline-block;
-  transition: opacity var(--duration-slow) var(--ease-out);
-}
 
-.naming__letter.is-kept {
-  color: var(--color-text-accent);
-}
 
-.naming__letter.is-dropped {
-  color: var(--color-text-tertiary);
-  opacity: 0.34;
-  text-decoration: line-through;
-  text-decoration-thickness: 1.5px;
-}
 
-.naming__note {
-  margin-top: 8px;
-  font-size: var(--font-label);
-  color: var(--color-text-secondary);
-}
 
-.naming__taken {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--color-divider);
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-size: var(--font-micro);
-  color: var(--color-text-tertiary);
-}
 
-.naming__taken b {
-  font-family: var(--font-mono);
-  font-size: var(--font-heading);
-  font-weight: 800;
-  color: var(--color-text-accent);
-}
 
 /* 두 조각과 결과 사이의 등호 */
-.naming__equals {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--color-primary-soft);
-  background: var(--color-surface);
-  font-size: var(--font-title);
-  font-weight: 300;
-  color: var(--color-primary);
-}
 
 /* 이 조각들은 색 있는 면(.surface-feature) 위에 놓인다.
    그 위에 또 그림자를 얹으면 카드 안의 카드가 되어 위계가 흐려진다. */
-.naming__result {
-  padding: clamp(24px, 3vw, 38px);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  border: 1px solid var(--color-primary-soft);
-  text-align: center;
-}
 
-.naming__result-word {
-  font-size: clamp(40px, 6vw, 76px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--color-text-primary);
-}
 
-/* 이름 안에 남은 our 만 강조 — 글자 뒤에 옅은 로즈 밴드를 깐다.
-   inset box-shadow 는 배경 위 · 글자 아래에 그려지므로 형광펜처럼 보인다.
-   (가상 요소 + z-index 로 하면 카드 배경에 가려진다) */
-.naming__result-word .naming__letter.is-keeper {
-  color: var(--color-text-accent);
-  box-shadow: inset 0 -0.26em 0 0 var(--color-primary-soft);
-}
+/* 이름 안에 남은 our만 강조 — 글자 뒤에 옅은 로즈 밴드를 깐다.
+   inset box-shadow는 배경 위 · 글자 아래에 그려지므로 형광펜처럼 보인다.
+   (가상 요소 + z-index로 하면 카드 배경에 가려진다) */
 
-.naming__result-note {
-  margin-top: 18px;
-  font-size: var(--font-label);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-}
 
-.naming__result-note b {
-  font-weight: 800;
-  color: var(--color-text-accent);
-}
 
 .naming__closing {
   margin-top: clamp(28px, 3.4vw, 44px);
@@ -323,13 +226,12 @@
   color: var(--color-text-primary);
 }
 
+/* 역할 이름은 한글이라 자간을 벌리지 않는다 (벌리면 글자가 흩어져 읽힌다) */
 .palette__row-role {
   display: block;
   margin-top: 3px;
-  font-size: var(--font-micro);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
+  font-size: var(--font-caption);
+  font-weight: 600;
   color: var(--color-text-tertiary);
 }
 
@@ -502,94 +404,19 @@
 /* --------------------------------------------------------------------------
    5. 로고
    -------------------------------------------------------------------------- */
-.identity__logo {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: center;
-  padding-block: clamp(10px, 1.4vw, 20px);
-}
 
-.identity__logo-stage {
-  display: grid;
-  place-items: center;
-  gap: 22px;
-  padding: clamp(26px, 3vw, 44px);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-}
 
 /* 기본형 — 하트 + 글자가 함께 든 완성형 로고 */
-.identity__logo-lockup {
-  height: clamp(38px, 4.2vw, 56px);
-  width: auto;
-}
 
 /* 심볼 단독 — 앱 아이콘 형태로 보여 준다 */
-.identity__logo-variants {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-divider);
-  width: 100%;
-  justify-content: center;
-}
 
-.identity__logo-tile {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  background: var(--ci-bg-base);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-xs);
-  flex-shrink: 0;
-}
 
-.identity__logo-tile img {
-  width: 30px;
-}
 
-.identity__logo-variant-cap {
-  font-size: var(--font-caption);
-  line-height: var(--leading-normal);
-  color: var(--color-text-tertiary);
-}
 
 /* 심볼이 무엇을 그린 것인지 */
-.identity__logo-note {
-  display: block;
-  margin-bottom: 16px;
-  padding: 16px 18px;
-  border-radius: var(--radius-md);
-  background: var(--panel-tint);
-  border: 1px solid var(--color-primary-soft);
-}
 
-.identity__logo-note b {
-  display: block;
-  margin-bottom: 6px;
-  font-size: var(--font-label);
-  font-weight: 800;
-  color: var(--color-text-accent);
-}
 
-.identity__logo-note > span {
-  display: block;
-  font-size: var(--font-label);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-}
 
-.identity__logo-note em {
-  font-style: normal;
-  font-weight: 800;
-  color: var(--color-text-accent);
-}
 
 .identity__logo-parts {
   display: grid;
@@ -600,10 +427,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  padding: 12px 0;
+}
+
+.identity__logo-part + .identity__logo-part {
+  border-top: 1px solid var(--color-divider);
 }
 
 .identity__logo-part i {
@@ -646,13 +474,9 @@
 /* --------------------------------------------------------------------------
    6. 타이포 스케일 — 실제 크기로 렌더한다
    -------------------------------------------------------------------------- */
-/* 로고 섹션은 로고 · 타이포 · 대비 · 규칙 네 블록이 세로로 쌓인다.
-   블록마다 여백을 두지 않아 카드가 서로 맞붙어 있었다. 한 칸씩 띄운다. */
+/* 로고 섹션은 로고 · 타이포 · 규칙 세 블록이 세로로 쌓인다.
+   블록마다 여백을 두지 않아 서로 맞붙어 있었다. 한 칸씩 띄운다. */
 .identity__logo + .typescale,
-.typescale + .contrast,
-.contrast + .rules {
-  margin-top: clamp(20px, 2.4vw, 32px);
-}
 
 .typescale {
   padding-block: clamp(6px, 1vw, 14px);
@@ -705,76 +529,14 @@
    7. 대비 근거 — 로고 색과 버튼 색이 왜 다른지
    실제 대비값을 계산해서 보여준다(js/modules/identity.js).
    -------------------------------------------------------------------------- */
-.contrast {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(24px, 3vw, 44px);
-  align-items: center;
-  padding-block: clamp(10px, 1.4vw, 20px);
-}
 
-.contrast__demo {
-  display: grid;
-  gap: 12px;
-}
 
-.contrast__sample {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 18px 22px;
-  border-radius: var(--radius-md);
-  background: var(--tone);
-  color: #fff;
-}
 
-.contrast__sample-text {
-  display: block;
-  font-size: var(--font-body);
-  font-weight: 700;
-}
 
-.contrast__sample-cap {
-  display: block;
-  margin-top: 2px;
-  font-size: var(--font-micro);
-  opacity: 0.78;
-}
 
-.contrast__sample-ratio {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-caption);
-  font-weight: 700;
-}
 
-.contrast__verdict {
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-family);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  background: rgba(255, 255, 255, 0.9);
-}
 
-.contrast__verdict.is-pass { color: var(--color-success); }
-.contrast__verdict.is-fail { color: var(--color-danger); }
 
-.contrast__note {
-  font-size: var(--font-body);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-}
-
-.contrast__note strong {
-  color: var(--color-text-primary);
-}
 
 /* --------------------------------------------------------------------------
    8. 규칙 목록 — 지켜야 할 것 / 하지 말아야 할 것
@@ -843,28 +605,6 @@
    반응형
    -------------------------------------------------------------------------- */
 @media (max-width: 1000px) {
-  .naming {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-  }
-
-  .naming__steps {
-    width: 100%;
-  }
-
-  .naming__step {
-    text-align: left;
-  }
-
-  .naming__equals {
-    transform: rotate(90deg);
-  }
-
-  .naming__result {
-    width: 100%;
-  }
-
   .naming__closing {
     text-align: left;
   }
@@ -875,8 +615,7 @@
 }
 
 @media (max-width: 900px) {
-  .identity__logo,
-  .contrast {
+  .identity__logo {
     grid-template-columns: 1fr;
   }
 
@@ -910,10 +649,6 @@
     margin-top: 4px;
   }
 
-  .contrast__sample {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   .typescale__row {
     grid-template-columns: 1fr auto;
@@ -970,4 +705,181 @@
 
 .palette__note strong {
   color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   이름 조립 한 줄
+   남긴 글자는 브랜드색, 덜어낸 글자는 취소선을 그어 옅게 둔다.
+   -------------------------------------------------------------------------- */
+.naming__build {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(10px, 1.6vw, 20px);
+  font-size: clamp(26px, 4.4vw, 46px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.2;
+}
+
+.naming__from {
+  color: var(--color-text-tertiary);
+}
+
+.naming__from s {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--color-primary-soft);
+  opacity: 0.55;
+}
+
+.naming__from b,
+.naming__result b {
+  color: var(--color-primary-strong);
+}
+
+.naming__op {
+  font-size: 0.5em;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+}
+
+.naming__result {
+  color: var(--color-text-primary);
+}
+
+/* 결론 한 줄 — 조립 줄 오른쪽에 작게 붙는다 */
+.naming__keeper {
+  flex-basis: 100%;
+  margin-top: 4px;
+  font-size: var(--font-label);
+  font-weight: 600;
+  /* 조립 줄에서 상속된 굵기·좁은 자간을 본문 기준으로 되돌린다 */
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-text-secondary);
+}
+
+.naming__keeper b {
+  color: var(--color-text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   심볼 설계도 — 격자 · 보조선 · 실제 심볼
+   -------------------------------------------------------------------------- */
+.blueprint {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+
+/* 격자는 배경으로 깐다 — 요소를 늘리지 않아 어느 크기에서나 눈금이 같다 */
+.blueprint__stage {
+  position: relative;
+  aspect-ratio: 596 / 499;
+  padding: 6%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-image:
+    linear-gradient(to right, var(--color-divider) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-divider) 1px, transparent 1px);
+  background-size: 8.3333% 10%;
+}
+
+.blueprint__guides,
+.blueprint__mark {
+  position: absolute;
+  inset: 6%;
+  width: 88%;
+  height: 88%;
+}
+
+/* 보조선 — 원 둘 · 대각선 둘 · 중심축 */
+.blueprint__guides {
+  overflow: visible;
+  fill: none;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.bp-axis {
+  stroke: var(--color-border-strong);
+  stroke-dasharray: 6 7;
+}
+
+.bp-diag {
+  stroke: var(--color-primary-soft);
+  stroke-dasharray: 8 8;
+}
+
+.bp-lobe {
+  stroke: var(--color-primary-soft);
+}
+
+/* 두 획이 맞물리는 지점 */
+.bp-knot {
+  stroke: var(--color-primary-strong);
+  stroke-width: 2.5;
+}
+
+.blueprint__mark {
+  object-fit: contain;
+}
+
+.blueprint__notes {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.blueprint__note {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 13px 0;
+  border-top: 1px solid var(--color-divider);
+}
+
+.blueprint__note:first-child {
+  border-top: 0;
+}
+
+.blueprint__note-no {
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-primary);
+}
+
+.blueprint__note b {
+  display: block;
+  font-size: var(--font-label);
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.blueprint__note b + span {
+  display: block;
+  margin-top: 3px;
+  font-size: var(--font-caption);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.blueprint__side .identity__logo-parts {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 860px) {
+  .blueprint {
+    grid-template-columns: 1fr;
+  }
+
+  .blueprint__stage {
+    max-width: 420px;
+    margin-inline: auto;
+  }
 }

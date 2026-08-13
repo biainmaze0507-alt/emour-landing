@@ -108,7 +108,7 @@ export function initProof() {
   }
 
   /* ── 2단-b. 일치율 도넛 ────────────────────────────────────
-     반지름 54 원의 둘레를 dasharray 로 잘라 채운다.
+     반지름 54 원의 둘레를 dasharray로 잘라 채운다.
      ---------------------------------------------------------- */
   const donutHost = $(".proof__donut");
   if (donutHost) {
@@ -206,7 +206,7 @@ export function initProof() {
   const f1Closing = $(".proof__f1-closing");
   if (f1Closing) f1Closing.textContent = F1_CLOSING;
 
-  // JS 로 넣은 [data-reveal] 요소들도 관찰 대상에 등록한다
+  // JS로 넣은 [data-reveal] 요소들도 관찰 대상에 등록한다
   $$(".proof__scale, .proof__speech, .proof__f1-steps").forEach((node) => {
     window.__emourObserveReveal?.(node);
   });

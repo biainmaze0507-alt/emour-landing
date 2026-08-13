@@ -44,10 +44,10 @@
 
   <script type="module" src="js/main.js"></script>
 
-  <!-- 안전장치 — [data-reveal] 은 처음에 opacity:0 이라 JS 가 못 돌면 빈 화면이 남는다.
-       JS 가 꺼져 있으면 html 에 .js 가 안 붙고, 모듈이 실패하면 1.8초 뒤
-       .reveal-fallback 이 붙어서 숨겨 둔 내용이 그대로 보인다.
-       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
+  <!-- 안전장치 — [data-reveal]은 처음에 opacity:0이라 JS가 못 돌면 빈 화면이 남는다.
+       JS가 꺼져 있으면 html에 .js가 안 붙고, 모듈이 실패하면 1.8초 뒤
+       .reveal-fallback이 붙어서 숨겨 둔 내용이 그대로 보인다.
+       ※ file:// 에서는 ES 모듈이 CORS로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
   <script>
     document.documentElement.classList.add("js");
     setTimeout(function () {
@@ -62,7 +62,7 @@
 
   <div class="page-atmosphere" aria-hidden="true"></div>
 
-  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다. -->
+  <!-- 상단바와 푸터는 js/modules/chrome.js가 js/data/site.js의 NAV로 만든다. -->
   <header class="site-nav"></header>
   <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -74,8 +74,8 @@
     <section class="page-hero" id="top">
       <div class="shell shell--wide" data-reveal-group="80">
         <p class="page-hero__index" data-reveal="fade">No. 01 &nbsp;Product</p>
-        <h1 class="page-hero__title" data-reveal>대화가 오가는 동안,<br>Emour 는 세 가지 일을 합니다</h1>
-        <p class="page-hero__lead" data-reveal>아래 화면은 이미지가 아니라 실제로 동작하는 마크업입니다. 폰 목업을 두르지 않았기 때문에 글자를 그대로 읽을 수 있고, 색 토큰을 바꾸면 이 화면도 함께 바뀝니다.</p>
+        <h1 class="page-hero__title" data-reveal>Emour가 하는<br>세 가지 일</h1>
+        <p class="page-hero__lead" data-reveal>아래 화면은 이미지가 아니라 실제 앱과 같은 마크업입니다. 색 토큰을 바꾸면 이 화면도 함께 바뀝니다.</p>
         <div class="page-hero__jump" data-reveal="fade">
             <a class="chip chip--brand" href="#features">핵심 기능 3종</a>
             <a class="chip chip--brand" href="#emotions">감정 15종 체계</a>
@@ -92,11 +92,11 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Core Features</p>
-          <h2 class="section-title" data-reveal>탭을 눌러<br>각 기능이 앱에서 어떻게 보이는지 확인해 보세요</h2>
+          <h2 class="section-title" data-reveal>기능별 화면</h2>
         </div>
 
         <div class="features__layout" data-reveal>
-          <!-- 탭 목록 · 화면 · 근거 패널 모두 js/modules/featureTabs.js 가 렌더 -->
+          <!-- 탭 목록 · 화면 · 근거 패널 모두 js/modules/featureTabs.js가 렌더 -->
           <div class="features__tabs" role="tablist" aria-label="핵심 기능"></div>
           <div class="features__screen-wrap"></div>
           <div class="features__details"></div>
@@ -113,16 +113,16 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Emotion System</p>
-          <h2 class="section-title" data-reveal>감정 15종,<br>서버와 화면이 같은 이름을 씁니다</h2>
+          <h2 class="section-title" data-reveal>감정 15종</h2>
           <p class="section-lead" data-reveal>
-            백엔드 <span class="mono">EmotionType</span> 열거형 15종과 화면의 색 · 아이콘이 1:1 로 묶여 있습니다.
+            백엔드 <span class="mono">EmotionType</span> 열거형 15종과 화면의 색 · 아이콘이 1:1로 묶여 있습니다.
             그래서 어느 화면에서 보든 “슬픔”은 언제나 같은 파랑입니다.
           </p>
         </div>
 
         <div class="emotions__toolbar" data-reveal="fade">
           <div class="emotions__filters"></div>
-          <p class="emotions__hint">코드 · 색 · 아이콘이 서버 열거형과 1:1 로 묶여 있습니다</p>
+          <p class="emotions__hint">코드 · 색 · 아이콘이 서버 열거형과 1:1로 묶여 있습니다</p>
         </div>
 
         <ul class="emotions__grid" data-reveal></ul>
@@ -145,7 +145,7 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Mood Scale</p>
-          <h2 class="section-title" data-reveal>감정은 붙는 것,<br>기분은 남기는 것</h2>
+          <h2 class="section-title" data-reveal>오늘의 기분 5단계</h2>
           <p class="section-lead" data-reveal>
             감정 15색과는 별개인 척도입니다. 대화에서 자동으로 붙는 감정과 달리,
             하루의 기분은 사용자가 직접 캘린더에 기록합니다.

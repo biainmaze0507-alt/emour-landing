@@ -15,7 +15,7 @@
 
 import { $$, prefersReducedMotion, hasFinePointer, clamp } from "./utils.js";
 
-/** 자식들에게 --delay 를 순서대로 넣는다. */
+/** 자식들에게 --delay를 순서대로 넣는다. */
 function stagger(group, stepMs = 90, maxSteps = 8) {
   const items = $$("[data-reveal]", group);
   items.forEach((item, index) => {
@@ -55,7 +55,7 @@ export function initReveal() {
 
   targets.forEach((node) => observer.observe(node));
 
-  /* 나중에 JS 로 추가된 요소도 관찰 대상에 넣을 수 있게 열어 둔다 */
+  /* 나중에 JS로 추가된 요소도 관찰 대상에 넣을 수 있게 열어 둔다 */
   window.__emourObserveReveal = (node) => {
     $$("[data-reveal]", node).forEach((child) => observer.observe(child));
     if (node.matches?.("[data-reveal]")) observer.observe(node);
@@ -115,7 +115,7 @@ export function initCursorGlow() {
 
 /**
  * 자석 버튼 — 마우스가 가까이 오면 버튼이 살짝 끌려온다.
- * .is-magnetic 이 붙은 요소에만 적용된다.
+ * .is-magnetic이 붙은 요소에만 적용된다.
  */
 export function initMagnetic() {
   if (!hasFinePointer() || prefersReducedMotion()) return;
