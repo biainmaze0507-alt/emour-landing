@@ -167,14 +167,3 @@
   flex-shrink: 0;
 }
 
-/* 영상 아래 캡션 */
-.film__caption {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 22px;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-caption);
-  color: var(--color-text-tertiary);
-}

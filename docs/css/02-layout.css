@@ -607,19 +607,8 @@ body.is-locked {
   margin-inline: auto;
 }
 
-/* 섹션 번호 배지 — 발표자료 목차의 "No. 1" 표기를 이어받는다 */
-.section-index {
-  position: absolute;
-  top: calc(var(--section-gap) - 34px);
-  left: var(--shell-pad);
-  font-family: var(--font-mono);
-  font-size: var(--font-micro);
-  letter-spacing: 0.1em;
-  color: var(--color-text-tertiary);
-}
 
 @media (max-width: 900px) {
-  .section-index { display: none; }
 }
 
 /* --------------------------------------------------------------------------

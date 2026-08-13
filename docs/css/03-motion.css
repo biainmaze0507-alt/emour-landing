@@ -51,23 +51,9 @@ html.reveal-fallback .line-mask > span {
   transform: none !important;
 }
 
-/* 한 줄씩 올라오는 텍스트 — js/modules/reveal.js가 글자 줄을 감싼다 */
-.line-mask {
-  display: block;
-  overflow: hidden;
-}
 
-.line-mask > span {
-  display: block;
-  transform: translate3d(0, 105%, 0);
-  transition: transform 880ms var(--ease-out);
-  transition-delay: var(--delay, 0ms);
-}
 
 .is-in .line-mask > span,
-.line-mask.is-in > span {
-  transform: none;
-}
 
 /* --------------------------------------------------------------------------
    반복 모션
@@ -141,10 +127,6 @@ html.reveal-fallback .line-mask > span {
     transition: none !important;
   }
 
-  .line-mask > span {
-    transform: none !important;
-    transition: none !important;
-  }
 
   *,
   *::before,

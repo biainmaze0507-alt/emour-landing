@@ -449,7 +449,10 @@
    6. 타이포 스케일 — 실제 크기로 렌더한다
    -------------------------------------------------------------------------- */
 /* 이 섹션은 설계도와 타이포 스케일 두 블록이 세로로 쌓인다 */
-.identity__logo + .typescale,
+.blueprint + .typescale {
+  margin-top: clamp(20px, 2.4vw, 32px);
+}
+
 
 .typescale {
   padding-block: clamp(6px, 1vw, 14px);
@@ -681,7 +684,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(28px, 4vw, 56px);
-  align-items: center;
+  align-items: start;
 }
 
 /* 격자는 배경으로 깐다 — 요소를 늘리지 않아 어느 크기에서나 눈금이 같다 */
@@ -786,21 +789,23 @@
   }
 
   .blueprint__stage {
-    max-width: 420px;
+    max-width: 380px;
     margin-inline: auto;
   }
 }
 
-/* 심볼 아래 기본형 — 워드마크가 붙은 조합 */
+/* 심볼 바로 아래 기본형 — 워드마크가 붙은 조합 */
 .blueprint__lockup {
-  margin: 0 0 22px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--color-border);
+  margin: 22px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
 }
 
 .blueprint__lockup img {
-  width: min(210px, 100%);
+  width: min(200px, 70%);
   height: auto;
+  margin-inline: auto;
 }
 
 .blueprint__lockup figcaption {

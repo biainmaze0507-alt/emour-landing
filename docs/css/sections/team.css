@@ -115,36 +115,10 @@
 /* 링크가 아직 없을 때 */
 
 
-/* 팀 요약 배너 */
-.team__banner {
-  margin-top: clamp(40px, 5vw, 64px);
-  padding: clamp(28px, 3.4vw, 44px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 24px;
-  align-items: center;
-}
 
-.team__banner-title {
-  font-size: clamp(20px, 2.4vw, 28px);
-  font-weight: 800;
-  letter-spacing: var(--tracking-tight);
-  word-break: keep-all;
-}
 
-.team__banner-desc {
-  margin-top: 10px;
-  max-width: 62ch;
-  font-size: var(--font-body);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-}
 
 @media (max-width: 700px) {
-  .team__banner {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* --------------------------------------------------------------------------

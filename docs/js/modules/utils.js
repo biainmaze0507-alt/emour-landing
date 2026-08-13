@@ -79,15 +79,6 @@ export function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-/** 이름의 앞 두 글자(한글은 성 제외한 이름) — 아바타 모노그램용 */
-export function initials(name) {
-  const trimmed = String(name ?? "").trim();
-  if (!trimmed) return "?";
-  // 한글 이름은 성을 뺀 나머지가 더 알아보기 쉽다 (황민희 → 민희)
-  if (/^[가-힣]{2,4}$/.test(trimmed)) return trimmed.slice(1);
-  return trimmed.slice(0, 2).toUpperCase();
-}
-
 /** 값을 [min, max] 안으로 자른다. */
 export const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -125,50 +116,6 @@ export function onceInView(target, callback, { threshold = 0.35, rootMargin = "0
   );
 
   observer.observe(target);
-}
-
-/* --------------------------------------------------------------------------
-   색 계산 — WCAG 명도 대비
-   "로고 색은 왜 버튼에 못 쓰는가"를 화면에서 직접 계산해 보여주기 위해 둔다.
-   -------------------------------------------------------------------------- */
-
-/** "#RRGGBB" → [r, g, b] (0~255) */
-export function hexToRgb(hex) {
-  const clean = String(hex).replace("#", "").trim();
-  const full =
-    clean.length === 3
-      ? clean.split("").map((c) => c + c).join("")
-      : clean;
-  const int = parseInt(full, 16);
-  return [(int >> 16) & 255, (int >> 8) & 255, int & 255];
-}
-
-/** 상대 휘도 (WCAG 2.x) */
-export function relativeLuminance(hex) {
-  const [r, g, b] = hexToRgb(hex).map((channel) => {
-    const c = channel / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-/**
- * 두 색의 명도 대비. 1(같은 색) ~ 21(검정 대 흰색).
- * 본문 크기 글자의 AA 기준은 4.5:1이다.
- */
-export function contrastRatio(hexA, hexB) {
-  const a = relativeLuminance(hexA);
-  const b = relativeLuminance(hexB);
-  const [light, dark] = a > b ? [a, b] : [b, a];
-  return (light + 0.05) / (dark + 0.05);
-}
-
-/** 대비값 → 등급 문자열 */
-export function contrastGrade(ratio) {
-  if (ratio >= 7) return { label: "AAA", pass: true };
-  if (ratio >= 4.5) return { label: "AA", pass: true };
-  if (ratio >= 3) return { label: "AA Large", pass: false };
-  return { label: "미달", pass: false };
 }
 
 /* --------------------------------------------------------------------------

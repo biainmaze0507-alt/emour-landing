@@ -153,10 +153,6 @@
   background: var(--panel-tint);
 }
 
-.surface-sunken {
-  border-radius: var(--radius-lg);
-  background: var(--color-surface-sunken);
-}
 
 /* --------------------------------------------------------------------------
    감정 태그 — 앱의 말풍선 위 표기와 동일 (10px · 700 · 아이콘 12px)
@@ -312,16 +308,6 @@
   color: var(--color-text-tertiary);
 }
 
-/* 타이핑 중인 마지막 글자 뒤의 커서 */
-.chat-window__caret {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  margin-left: 1px;
-  vertical-align: -0.12em;
-  background: currentColor;
-  animation: caret-blink 1s steps(1) infinite;
-}
 
 /* 입력창 — 앱의 ChatInputBar (사진 · 입력 · 교정 · 전송) */
 .chat-window__composer {

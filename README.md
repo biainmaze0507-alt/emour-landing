@@ -48,19 +48,10 @@ emour-landing/
 > 모든 경로가 상대 경로라 하위 경로(`/<저장소>/`)에 배포해도 그대로 동작합니다.
 > `docs/.nojekyll` 은 Jekyll 전처리를 건너뛰게 하는 빈 표식 파일입니다. 지우지 마세요.
 
-### 배포 전에 하나 고치면 좋은 것
+### 공유 카드
 
-카카오톡 · 슬랙에 링크를 공유할 때 뜨는 미리보기 카드가 지금은 나오지 않습니다.
-`og:image` 가 상대경로 SVG 인데, Open Graph 는 전체 주소만 인식하고
-카카오톡 · 트위터 · 슬랙은 SVG 를 읽지 않기 때문입니다.
-
-저장소 주소가 정해지면 1200×630 PNG 를 `docs/assets/og-image.png` 로 넣고
-**6개 HTML 의** 해당 두 줄을 이렇게 바꿔 주세요.
-
-```html
-<meta property="og:image" content="https://<계정>.github.io/<저장소>/assets/og-image.png">
-<meta property="og:url" content="https://<계정>.github.io/<저장소>/">
-```
+카카오톡 · 슬랙에 링크를 붙이면 `docs/assets/og-image.png` (1200×630) 가 미리보기로 뜹니다.
+주소가 바뀌면 **6개 HTML** 의 `og:image` · `og:url` 을 함께 고쳐 주세요.
 
 ---
 
