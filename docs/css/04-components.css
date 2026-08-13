@@ -923,9 +923,11 @@
   box-shadow: var(--shadow-primary);
 }
 
+/* 말한 사람은 말풍선 끝에 붙인다 — 인용문 다음에 오는 서명 자리다 */
 .quote__by {
   display: block;
   margin-top: 14px;
+  text-align: right;
   font-size: var(--font-caption);
   font-weight: 700;
   opacity: 0.72;

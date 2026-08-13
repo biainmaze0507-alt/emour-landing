@@ -145,6 +145,21 @@ button {
   text-wrap: pretty;
 }
 
+/* 좌우 맞춤 — 한 줄에 40자쯤 들어가는 본문에만 준다.
+   한글은 낱말 단위로만 줄이 바뀌므로(word-break: keep-all) 오른쪽 끝을 맞추는 몫이
+   낱말 사이로 몰린다. 줄이 짧으면 그 틈이 눈에 보이게 벌어지므로,
+   좁은 화면과 폭이 좁은 칸(팀 카드 · 기능 근거 · 히어로 본문)은 왼쪽 맞춤으로 둔다. */
+@media (min-width: 760px) {
+  .page-hero__lead,
+  .section-lead,
+  .naming__closing,
+  .temp__lead,
+  .palette__row-desc,
+  .quote {
+    text-align: justify;
+  }
+}
+
 .accent {
   color: var(--color-text-accent);
 }

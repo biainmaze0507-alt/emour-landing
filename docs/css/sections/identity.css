@@ -456,10 +456,6 @@
    반응형
    -------------------------------------------------------------------------- */
 @media (max-width: 1000px) {
-  .naming__closing {
-    text-align: left;
-  }
-
   .motif {
     grid-template-columns: 1fr;
   }
