@@ -122,8 +122,10 @@
         앱 스케일(26/20/17/16/15/13/12/11)은 그대로 두고,
         랜딩 전용 대형 타이틀(--font-hero / --font-section)만 덧붙였다.
      ------------------------------------------------------------------ */
+  /* 굵기별 파일로 된 Pretendard. 어느 기기에서나 500 · 600 · 700 · 800이 서로 다르다.
+     가변 글꼴을 쓸 수 있으면 아래 @supports가 한 파일짜리로 바꿔 준다. */
   --font-family:
-    Pretendard, "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    Pretendard, -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
 
@@ -197,6 +199,17 @@
   /* 앱 목업 기준 규격 — Emour는 412 × 892 모바일 세로 */
   --app-frame-width: 412px;
   --app-frame-height: 892px;
+}
+
+/* 가변 글꼴을 다룰 수 있는 기기에서만 한 파일짜리 Pretendard를 쓴다.
+   이 조건 없이 가변만 걸어 두면, 굵기를 못 만드는 기기에서 한 굵기로만 그려져
+   500 · 600 · 700 · 800이 전부 같아 보인다. */
+@supports (font-variation-settings: normal) {
+  :root {
+    --font-family:
+      "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+      "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
+  }
 }
 
 /* 애니메이션 최소화를 요청한 사용자에게는 전환 효과를 걷어낸다. */
