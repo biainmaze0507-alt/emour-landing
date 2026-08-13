@@ -15,7 +15,7 @@
  */
 
 import { initChrome } from "./modules/chrome.js";
-import { initReveal, initCursorGlow, initMagnetic } from "./modules/reveal.js";
+import { initReveal, initCursorGlow } from "./modules/reveal.js";
 import { initHeroChat } from "./modules/heroChat.js";
 import { initWhy } from "./modules/why.js";
 import { initFeatureTabs } from "./modules/featureTabs.js";
@@ -73,7 +73,6 @@ function boot() {
 
   // 4) 장식 (포인터 기기에서만 동작)
   run("cursorGlow", initCursorGlow);
-  run("magnetic", initMagnetic);
 
   document.documentElement.classList.add("is-ready");
 }

@@ -1,35 +1,12 @@
 /* ==========================================================================
    sections/identity.css — 브랜드 페이지
-   이름 조립 / 진주 모티프 / 컬러 아이덴티티 / 웜톤·쿨톤 / 로고 / 타이포 / 규칙
+   이름 / 디자인 모티프 / 컬러 아이덴티티 / 웜톤·쿨톤 / 심볼 / 타이포
    동작: js/modules/identity.js
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. 이름 — Emotion과 Amour에서 글자를 덜어내 our를 남긴다
+   1. 이름 — 문장에서 잘라 온 두 조각
    -------------------------------------------------------------------------- */
-
-
-
-
-/* 남긴 글자는 브랜드색으로 또렷하게, 덜어낸 글자는 옅게 지워진 듯이 */
-
-
-
-
-
-
-/* 두 조각과 결과 사이의 등호 */
-
-/* 이 조각들은 색 있는 면(.surface-feature) 위에 놓인다.
-   그 위에 또 그림자를 얹으면 카드 안의 카드가 되어 위계가 흐려진다. */
-
-
-/* 이름 안에 남은 our만 강조 — 글자 뒤에 옅은 로즈 밴드를 깐다.
-   inset box-shadow는 배경 위 · 글자 아래에 그려지므로 형광펜처럼 보인다.
-   (가상 요소 + z-index로 하면 카드 배경에 가려진다) */
-
-
-
 .naming__closing {
   margin-top: clamp(28px, 3.4vw, 44px);
   max-width: 68ch;
@@ -51,7 +28,7 @@
 
 /* --------------------------------------------------------------------------
    2. 디자인 모티프 — 핑크 진주
-   층이 안쪽부터 겹겹이 쌓여 하나의 빛이 되는 모양을 원으로 그린다.
+   하나의 중심에서 층이 겹겹이 넓어지는 모양을 동심원으로 그린다.
    -------------------------------------------------------------------------- */
 .motif {
   display: grid;
@@ -89,8 +66,6 @@
   background: var(--tone);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
-
-
 
 .motif__body {
   font-size: var(--font-lead);
@@ -166,7 +141,7 @@
 /* --------------------------------------------------------------------------
    3. 컬러 아이덴티티 — 색마다 담긴 뜻
 
-   여덟 색 전부가 읽을 내용이므로 헤어라인으로만 끊어 아래로 흐르게 둔다.
+   전부 읽을 내용이므로 헤어라인으로만 끊어 아래로 흐르게 둔다.
    -------------------------------------------------------------------------- */
 .palette {
   list-style: none;
@@ -229,8 +204,6 @@
   word-break: keep-all;
 }
 
-
-
 @media (max-width: 760px) {
   .palette__row {
     grid-template-columns: auto minmax(0, 1fr);
@@ -243,7 +216,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. 웜톤과 쿨톤 — 하나의 핑크를 시간으로 나눈 이야기
+   4. 웜톤과 쿨톤 — 같은 계열 안에서 역할을 나눈 두 온도
    -------------------------------------------------------------------------- */
 .temp__lead {
   max-width: 68ch;
@@ -348,38 +321,15 @@
   background: var(--tone);
 }
 
-.temp__closing {
-  margin-top: clamp(28px, 3.4vw, 44px);
-  padding: clamp(22px, 2.6vw, 32px);
-  border-radius: var(--radius-xl);
-  background: var(--panel-tint);
-  border: 1px solid var(--color-primary-soft);
-  font-size: var(--font-lead);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-}
-
-.temp__closing strong {
-  color: var(--color-text-accent);
-}
-
 /* --------------------------------------------------------------------------
    5. 로고
    -------------------------------------------------------------------------- */
-
 
 /* 기본형 — 하트 + 글자가 함께 든 완성형 로고 */
 
 /* 심볼 단독 — 앱 아이콘 형태로 보여 준다 */
 
-
-
-
 /* 심볼이 무엇을 그린 것인지 */
-
-
-
 
 .identity__logo-parts {
   display: grid;
@@ -442,7 +392,6 @@
   margin-top: clamp(20px, 2.4vw, 32px);
 }
 
-
 .typescale {
   padding-block: clamp(6px, 1vw, 14px);
 }
@@ -495,23 +444,9 @@
    실제 대비값을 계산해서 보여준다(js/modules/identity.js).
    -------------------------------------------------------------------------- */
 
-
-
-
-
-
-
-
-
 /* --------------------------------------------------------------------------
    8. 규칙 목록 — 지켜야 할 것 / 하지 말아야 할 것
    -------------------------------------------------------------------------- */
-
-
-
-
-
-
 
 /* --------------------------------------------------------------------------
    반응형
@@ -561,7 +496,6 @@
     margin-top: 4px;
   }
 
-
   .typescale__row {
     grid-template-columns: 1fr auto;
     gap: 8px 12px;
@@ -607,7 +541,6 @@
 }
 
 /* 팔레트 아래 한 줄 — 위/아래 두 색이 무엇인지 알려 준다 */
-
 
 /* --------------------------------------------------------------------------
    이름 조립 한 줄
@@ -678,52 +611,15 @@
 
 /* 격자는 배경으로 깐다 — 요소를 늘리지 않아 어느 크기에서나 눈금이 같다 */
 .blueprint__stage {
-  position: relative;
-  aspect-ratio: 596 / 499;
-  padding: 6%;
+  display: grid;
+  gap: clamp(20px, 2.6vw, 34px);
+  padding: clamp(26px, 3.4vw, 44px) clamp(18px, 2.4vw, 32px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background-image:
     linear-gradient(to right, var(--color-divider) 1px, transparent 1px),
     linear-gradient(to bottom, var(--color-divider) 1px, transparent 1px);
-  background-size: 8.3333% 10%;
-}
-
-.blueprint__guides,
-.blueprint__mark {
-  position: absolute;
-  inset: 6%;
-  width: 88%;
-  height: 88%;
-}
-
-/* 보조선 — 원 둘 · 대각선 둘 · 중심축 */
-.blueprint__guides {
-  overflow: visible;
-  fill: none;
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-
-.bp-axis {
-  stroke: var(--color-border-strong);
-  stroke-dasharray: 6 7;
-}
-
-.bp-diag {
-  stroke: var(--color-primary-soft);
-  stroke-dasharray: 8 8;
-}
-
-
-/* 두 획이 맞물리는 지점 */
-.bp-knot {
-  fill: var(--color-primary-strong);
-  stroke: none;
-}
-
-.blueprint__mark {
-  object-fit: contain;
+  background-size: 26px 26px;
 }
 
 .blueprint__notes {
@@ -778,27 +674,39 @@
   }
 
   .blueprint__stage {
-    max-width: 380px;
+    max-width: 460px;
     margin-inline: auto;
   }
 }
 
-/* 심볼 바로 아래 기본형 — 워드마크가 붙은 조합 */
+/* 조합 하나 — 격자 위에 로고를 얹고 아래에 이름만 적는다 */
 .blueprint__lockup {
-  margin: 22px 0 0;
-  padding-top: 20px;
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.blueprint__lockup + .blueprint__lockup {
+  padding-top: clamp(20px, 2.6vw, 34px);
   border-top: 1px solid var(--color-border);
-  text-align: center;
 }
 
 .blueprint__lockup img {
-  width: min(200px, 70%);
+  display: block;
   height: auto;
-  margin-inline: auto;
+}
+
+/* 심볼 단독은 작게, 워드마크가 붙은 기본형은 넓게 */
+.blueprint__lockup:first-child img {
+  width: min(112px, 42%);
+}
+
+.blueprint__lockup:last-child img {
+  width: min(230px, 82%);
 }
 
 .blueprint__lockup figcaption {
-  margin-top: 10px;
-  font-size: var(--font-caption);
+  font-size: var(--font-micro);
   color: var(--color-text-tertiary);
 }

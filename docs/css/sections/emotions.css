@@ -60,7 +60,15 @@
 }
 
 
+/* 아이콘과 이름을 한 줄에 놓는다 */
+.emotion-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .emotion-card__icon {
+  flex-shrink: 0;
   width: 32px;
   height: 32px;
   border-radius: var(--radius-xs);
@@ -68,7 +76,6 @@
   place-items: center;
   background: color-mix(in srgb, var(--tone) 12%, white);
   color: var(--tone);
-  margin-bottom: 10px;
 }
 
 .emotion-card__icon svg {

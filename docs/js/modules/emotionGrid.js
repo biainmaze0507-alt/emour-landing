@@ -25,9 +25,13 @@ function emotionCard(emotion) {
     attrs: { "data-polarity": emotion.polarity },
     style: { "--tone": `var(${emotion.token})` },
     html: `
-      <span class="emotion-card__icon">${icon(emotion.icon, 22)}</span>
-      <span class="emotion-card__label">${escapeHtml(emotion.label)}</span>
-      <span class="emotion-card__code">${escapeHtml(emotion.code)}</span>
+      <span class="emotion-card__head">
+        <span class="emotion-card__icon">${icon(emotion.icon, 22)}</span>
+        <span>
+          <span class="emotion-card__label">${escapeHtml(emotion.label)}</span>
+          <span class="emotion-card__code">${escapeHtml(emotion.code)}</span>
+        </span>
+      </span>
       <span class="emotion-card__foot">
         <span class="emotion-card__polarity">${escapeHtml(polarityLabel)}</span>
       </span>

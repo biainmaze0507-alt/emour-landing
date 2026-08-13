@@ -113,25 +113,3 @@ export function initCursorGlow() {
   document.addEventListener("pointerleave", () => glow.classList.remove("is-visible"));
 }
 
-/**
- * 자석 버튼 — 마우스가 가까이 오면 버튼이 살짝 끌려온다.
- * .is-magnetic이 붙은 요소에만 적용된다.
- */
-export function initMagnetic() {
-  if (!hasFinePointer() || prefersReducedMotion()) return;
-
-  $$(".is-magnetic").forEach((button) => {
-    const strength = 0.22;
-
-    button.addEventListener("pointermove", (event) => {
-      const rect = button.getBoundingClientRect();
-      const dx = event.clientX - (rect.left + rect.width / 2);
-      const dy = event.clientY - (rect.top + rect.height / 2);
-      button.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
-    });
-
-    button.addEventListener("pointerleave", () => {
-      button.style.transform = "";
-    });
-  });
-}

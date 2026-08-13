@@ -160,7 +160,6 @@ function renderPalette() {
    -------------------------------------------------------------------------- */
 function renderTemperature() {
   const host = $(".temp__sides");
-  const closing = $(".temp__closing");
   if (!host) return;
 
   TEMPERATURE.sides.forEach((side) => {
@@ -184,40 +183,16 @@ function renderTemperature() {
     );
   });
 
-  if (closing) closing.innerHTML = TEMPERATURE.closing;
   window.__emourObserveReveal?.(host);
 }
 
 /* --------------------------------------------------------------------------
-   5. 심볼 설계도 — 격자 위의 보조선 + 실제 심볼
-
-   브랜드 가이드의 construction grid와 같은 방식이다. 격자와 원·대각선을 깔고
-   그 위에 실제 심볼을 얹어, 어떤 기준으로 그려졌는지 눈으로 확인하게 한다.
+   5. 심볼 — 격자 위의 두 조합
+   심볼 단독과 워드마크가 붙은 기본형은 brand.html에 그대로 있고,
+   여기서는 오른쪽 설명만 만든다.
    -------------------------------------------------------------------------- */
 function renderLogoBuild() {
-  const stage = $(".blueprint__stage");
   const notesHost = $(".blueprint__notes");
-  const lead = $(".blueprint__lead");
-
-  if (lead) lead.textContent = LOGO_BUILD.lead;
-
-  if (stage) {
-    const g = LOGO_BUILD.guides;
-
-    const diagonals = g.diagonals
-      .map((l) => `<line class="bp-diag" x1="${l.x1}" y1="${l.y1}" x2="${l.x2}" y2="${l.y2}"/>`)
-      .join("");
-
-    stage.innerHTML = `
-      <svg class="blueprint__guides" viewBox="0 0 596 499" aria-hidden="true">
-        <line class="bp-axis" x1="${g.axis}" y1="0" x2="${g.axis}" y2="499"/>
-        <line class="bp-axis" x1="0" y1="${g.waist}" x2="596" y2="${g.waist}"/>
-        ${diagonals}
-        <circle class="bp-knot" cx="${g.knot.cx}" cy="${g.knot.cy}" r="7"/>
-      </svg>
-      <img class="blueprint__mark" src="assets/logo-mark.svg" alt="Emour 심볼">
-    `;
-  }
 
   if (notesHost) {
     LOGO_BUILD.notes.forEach((note, index) => {
