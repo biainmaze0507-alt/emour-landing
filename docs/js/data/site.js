@@ -1,11 +1,11 @@
 /**
  * js/data/site.js
  * ---------------------------------------------------------------------------
- * 사이트 전역 설정 — 내비게이션 목차, 외부 링크, 히어로 대화 시나리오.
+ * 사이트 전역 설정 — 페이지 목차, 외부 링크, 히어로 대화 시나리오.
  *
  * ✅ 여기부터 고치세요
  *    LINKS 의 값을 채우면 상단바 · 푸터 · 마무리 CTA 가 한꺼번에 살아납니다.
- *    빈 문자열("")로 두면 해당 버튼은 자동으로 "준비 중"(비활성)으로 렌더됩니다.
+ *    빈 문자열("")로 두면 해당 버튼은 자동으로 감춰집니다.
  */
 
 export const LINKS = {
@@ -19,17 +19,83 @@ export const LINKS = {
   model: "https://huggingface.co/chlgks/emour-emotion-kcelectra-context-v2",
 };
 
-/** 상단바 · 모바일 시트 목차. id 는 <section> 의 id 와 같아야 한다. */
-export const NAV_ITEMS = [
-  { id: "why", label: "기획 배경" },
-  { id: "features", label: "핵심 기능" },
-  { id: "emotions", label: "감정 시스템" },
-  { id: "film", label: "소개 영상" },
-  { id: "proof", label: "유저 테스트" },
-  { id: "tech", label: "아키텍처" },
-  { id: "identity", label: "디자인" },
-  { id: "team", label: "팀" },
+/**
+ * 사이트 구조 — 페이지 5장과 각 페이지의 상세 목차.
+ *
+ * 상단바는 이 배열 하나로 만들어집니다.
+ *   · 데스크톱 : 항목에 올리면 children 이 드롭다운 패널로 펼쳐진다
+ *   · 모바일   : 항목을 누르면 children 이 아코디언으로 펼쳐진다
+ *
+ * 필드
+ *   id       페이지 식별자. <body data-page="..."> 값과 같아야 한다
+ *   label    상단바에 보이는 이름
+ *   file     실제 파일명 (같은 폴더에 나란히 있으므로 상대경로 그대로)
+ *   summary  드롭다운 패널 왼쪽에 붙는 한 줄 소개
+ *   children 그 페이지 안의 섹션들. hash 는 해당 <section> 의 id
+ */
+export const NAV = [
+  {
+    id: "product",
+    label: "제품",
+    file: "product.html",
+    summary: "대화가 오가는 동안 Emour 가 하는 세 가지 일과, 그 바탕이 되는 감정 15종 체계.",
+    children: [
+      { hash: "features", label: "핵심 기능 3종", desc: "감정 분석 · 답장 추천 · 대시보드" },
+      { hash: "emotions", label: "감정 15종 체계", desc: "서버 열거형과 1:1 로 묶인 색과 아이콘" },
+      { hash: "mood", label: "오늘의 기분 5단계", desc: "직접 기록하는 하루의 온도" },
+    ],
+  },
+  {
+    id: "proof",
+    label: "검증",
+    file: "proof.html",
+    summary: "두 차례 베타 테스트에서 얻은 수치와, 그 피드백을 화면으로 되돌린 기록.",
+    children: [
+      { hash: "metrics", label: "핵심 수치", desc: "참가자 291명 · 설문 45명" },
+      { hash: "speech", label: "화행 일치율", desc: "추천 문장이 의도한 말투로 나왔는가" },
+      { hash: "f1", label: "Macro F1 여정", desc: "채점 기준을 계속 어렵게 바꿔 온 이야기" },
+      { hash: "feedback", label: "피드백 반영", desc: "1차에서 들은 말 → 2차 화면" },
+      { hash: "voices", label: "사용 후기", desc: "2차 테스트 참가자의 말" },
+    ],
+  },
+  {
+    id: "tech",
+    label: "기술",
+    file: "tech.html",
+    summary: "커밋 한 번이 서비스까지 닿는 길. 컨테이너 세 개와 감정 분석 모델의 구조.",
+    children: [
+      { hash: "architecture", label: "시스템 아키텍처", desc: "Nginx 가 경로로 나누는 세 컨테이너" },
+      { hash: "model", label: "감정 분석 모델", desc: "KcELECTRA 파인튜닝 · 문맥 포함 학습" },
+      { hash: "stacks", label: "기술 스택", desc: "프론트 · 백엔드 · AI · 인프라" },
+    ],
+  },
+  {
+    id: "brand",
+    label: "브랜드",
+    file: "brand.html",
+    summary: "이름 하나에 담은 뜻과, 핑크 진주에서 가져온 색의 이야기.",
+    children: [
+      { hash: "naming", label: "이름의 뜻", desc: "Emotion 과 Amour 사이에 남은 our" },
+      { hash: "motif", label: "디자인 모티프", desc: "층층이 쌓여 완성되는 핑크 진주" },
+      { hash: "palette", label: "컬러 아이덴티티", desc: "색마다 담긴 뜻" },
+      { hash: "temperature", label: "웜톤과 쿨톤", desc: "정서의 색과 결심의 색" },
+      { hash: "logo", label: "로고와 타이포", desc: "두 색이 화면의 두 축이 되는 방식" },
+    ],
+  },
+  {
+    id: "team",
+    label: "팀",
+    file: "team.html",
+    summary: "B208 여섯 사람. 카드를 누르면 각자의 포트폴리오로 이어집니다.",
+    children: [
+      { hash: "members", label: "팀원 소개", desc: "여섯 명이 나누어 맡은 자리" },
+      { hash: "howwework", label: "함께 일한 방식", desc: "감정 라벨 하나까지 같이 정한 이야기" },
+    ],
+  },
 ];
+
+/** 홈(index.html)은 상단바 항목이 아니라 로고 클릭으로 갑니다. */
+export const HOME_FILE = "index.html";
 
 /** 히어로 아래 요약 수치 */
 export const HERO_FACTS = [
@@ -44,17 +110,18 @@ export const HERO_FACTS = [
  * heroChat.js 가 이 배열을 위에서부터 재생한다.
  *
  * type
- *   "mine"   내가 보낸 말풍선 (타이핑 연출 포함)
- *   "yours"  상대가 보낸 말풍선
- *   "wait"   잠깐 멈춤
- *   "suggest" 답장 추천 3안 노출
+ *   "mine"    내가 보낸 말풍선 (타이핑 연출 포함)
+ *   "yours"   상대가 보낸 말풍선
+ *   "wait"    잠깐 멈춤
+ *   "suggest" 문장 다듬기 추천 칩 노출
  *
  * emotion 에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
+ * time 은 앱의 formatTime() 표기(오후 h:mm)를 그대로 쓴다.
  */
 export const HERO_SCRIPT = [
-  { type: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS" },
-  { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS" },
-  { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY" },
+  { type: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS", time: "오후 10:10" },
+  { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
+  { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
   { type: "wait", ms: 500 },
   {
     type: "suggest",
@@ -67,23 +134,26 @@ export const HERO_SCRIPT = [
   { type: "wait", ms: 3400 },
 ];
 
-/** 푸터 링크 묶음 */
+/**
+ * 푸터 링크 묶음.
+ * page 를 적으면 그 페이지 파일로, hash 까지 적으면 해당 섹션으로 이어진다.
+ */
 export const FOOTER_GROUPS = [
   {
     title: "Product",
     items: [
-      { label: "핵심 기능", href: "#features" },
-      { label: "감정 시스템", href: "#emotions" },
-      { label: "소개 영상", href: "#film" },
-      { label: "유저 테스트", href: "#proof" },
+      { label: "핵심 기능", page: "product", hash: "features" },
+      { label: "감정 15종 체계", page: "product", hash: "emotions" },
+      { label: "유저 테스트", page: "proof", hash: "metrics" },
+      { label: "사용 후기", page: "proof", hash: "voices" },
     ],
   },
   {
     title: "Project",
     items: [
-      { label: "시스템 아키텍처", href: "#tech" },
-      { label: "디자인 시스템", href: "#identity" },
-      { label: "팀 소개", href: "#team" },
+      { label: "시스템 아키텍처", page: "tech", hash: "architecture" },
+      { label: "브랜드 아이덴티티", page: "brand", hash: "naming" },
+      { label: "팀 소개", page: "team", hash: "members" },
       { label: "AI 모델 카드", href: LINKS.model, external: true },
     ],
   },
@@ -93,10 +163,6 @@ export const SITE = {
   name: "Emour",
   meaning: "Emotion + Amour",
   tagline: "커플 대화 기반 감정 분석 및 회고 서비스",
-  closing: {
-    lead: "받는 말에 <em>감정</em>을 담고, 보내는 말에 <em>정성</em>을 담아",
-    sub: "서로의 마음이 올곧게 전해지도록",
-  },
   team: "SSAFY 15기 공통 프로젝트 · B208",
   year: 2026,
 };

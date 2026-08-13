@@ -122,8 +122,14 @@
   padding: 26px 22px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  justify-content: center;
   transition: border-color var(--duration-slow) var(--ease-out);
+}
+
+/* 말풍선의 기본 좌우 여백은 대화 창(.chat-window) 기준이다.
+   여기서는 패널 자체의 padding 이 그 자리를 맡으므로 좌우만 걷어낸다. */
+.why__chat .chat-row {
+  margin-inline: 0;
 }
 
 .why__stage.is-on .why__chat {
@@ -147,21 +153,28 @@
 }
 
 /* 스위치가 꺼져 있을 때는 말풍선에서 색을 뺀다 */
-.why__chat .bubble {
+.why__chat .chat-bubble {
   transition:
     background var(--duration-slow) var(--ease-out),
     color var(--duration-slow) var(--ease-out),
-    border-color var(--duration-slow) var(--ease-out);
+    box-shadow var(--duration-slow) var(--ease-out);
 }
 
-.why__stage:not(.is-on) .bubble-row--mine .bubble {
+.why__stage:not(.is-on) .chat-row--mine .chat-bubble {
   background: #9d9491;
   color: #fff;
+  box-shadow: none;
 }
 
-.why__stage:not(.is-on) .bubble-row--yours .bubble {
+.why__stage:not(.is-on) .chat-row--yours .chat-bubble {
   background: var(--color-surface-sunken);
   color: var(--color-text-secondary);
+  box-shadow: none;
+}
+
+/* 읽음 표시도 감정 단서의 하나이므로 꺼진 상태에서는 색을 뺀다 */
+.why__stage:not(.is-on) .chat-row__read {
+  color: var(--color-text-placeholder);
 }
 
 /* 해석 패널 */

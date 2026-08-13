@@ -1,6 +1,8 @@
 /* ==========================================================================
    sections/hero.css — 첫 화면
-   왼쪽에 브랜드 선언, 오른쪽에 "실제로 감정이 붙는" 대화 카드.
+   왼쪽에 브랜드 선언, 오른쪽에 "실제로 감정이 붙는" 대화 창.
+   대화 창의 모양은 04-components.css 의 .chat-window 가 정한다 —
+   기능 페이지의 화면과 완전히 같은 것을 쓴다.
    ========================================================================== */
 
 .hero {
@@ -111,7 +113,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   오른쪽 — 살아 있는 대화 카드
+   오른쪽 — 살아 있는 대화 창
    메시지가 타이핑되고, AI 가 분석하고, 감정 태그가 붙는 과정을 반복한다.
    동작: js/modules/heroChat.js
    -------------------------------------------------------------------------- */
@@ -121,184 +123,19 @@
   justify-content: center;
 }
 
-.hero-chat {
-  position: relative;
-  z-index: 2;
-  width: min(400px, 100%);
-  padding: 20px;
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+.hero__stage .chat-window {
+  width: min(410px, 100%);
   box-shadow: var(--shadow-float);
 }
 
-.hero-chat__head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--color-divider);
-}
-
-.hero-chat__avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--color-primary-faint);
-  color: var(--color-text-accent);
-  font-size: var(--font-caption);
-  font-weight: 800;
-}
-
-.hero-chat__name {
-  font-size: var(--font-label);
-  font-weight: 700;
-}
-
-.hero-chat__status {
-  font-size: var(--font-micro);
-  color: var(--color-success);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.hero-chat__status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-/* 대화 로그 — 높이를 고정해서 메시지가 쌓여도 레이아웃이 흔들리지 않게 */
+/* 히어로에서는 대화 로그를 조금 더 높게 잡아 네 줄이 편하게 들어가게 한다 */
 .hero-chat__log {
-  min-height: 268px;
-  padding: 16px 0 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 12px;
+  --chat-body-min: 300px;
 }
 
-/* 타이핑 중인 마지막 글자 뒤의 커서 */
-.hero-chat__caret {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  margin-left: 1px;
-  vertical-align: -0.12em;
-  background: currentColor;
-  animation: caret-blink 1s steps(1) infinite;
-}
-
-/* 입력창 */
-.hero-chat__composer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 8px 8px 14px;
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-sunken);
-  border: 1px solid var(--color-border);
-  font-size: var(--font-caption);
-  color: var(--color-text-placeholder);
-}
-
-.hero-chat__composer-fill {
-  flex: 1;
-}
-
-.hero-chat__send {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--color-action);
-  color: var(--color-text-on-primary);
-  flex-shrink: 0;
-}
-
-.hero-chat__send svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* 답장 추천 3안이 입력창 위로 올라온다 */
-.hero-chat__suggests {
-  display: grid;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
-.hero-chat__suggest {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  border-radius: var(--radius-md);
-  border: 1px dashed var(--color-primary-soft);
-  background: var(--color-primary-faint);
-  font-size: var(--font-caption);
-  line-height: 1.4;
-  color: var(--color-text-primary);
-  text-align: left;
-  animation: pop-in 360ms var(--ease-out) both;
-  word-break: keep-all;
-}
-
-.hero-chat__suggest b {
-  flex-shrink: 0;
-  color: var(--color-text-accent);
-  font-size: var(--font-micro);
-}
-
-/* 카드 뒤에 떠 있는 감정 입자 — 클릭 방해 없이 배경으로만 */
-.hero__particles {
-  position: absolute;
-  inset: -12% -8%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero__particle {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 11px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid color-mix(in srgb, var(--tone) 30%, white);
-  color: var(--tone);
-  font-size: var(--font-micro);
-  font-weight: 700;
-  box-shadow: var(--shadow-xs);
-  animation: drift var(--dur, 9s) var(--ease-out) infinite;
-  animation-delay: var(--delay, 0s);
-}
-
-.hero__particle svg {
-  width: 12px;
-  height: 12px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* 스크롤 유도 */
+/* --------------------------------------------------------------------------
+   스크롤 유도
+   -------------------------------------------------------------------------- */
 .hero__scroll-cue {
   position: absolute;
   left: 50%;
@@ -334,10 +171,6 @@
     gap: 48px;
   }
 
-  .hero__particles {
-    display: none;
-  }
-
   .hero__scroll-cue {
     display: none;
   }
@@ -348,11 +181,7 @@
     gap: 14px 24px;
   }
 
-  .hero-chat {
-    padding: 16px;
-  }
-
   .hero-chat__log {
-    min-height: 232px;
+    --chat-body-min: 264px;
   }
 }

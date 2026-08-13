@@ -1,13 +1,15 @@
 /**
  * js/data/features.js
  * ---------------------------------------------------------------------------
- * 핵심 기능 3종. 탭 하나가 { 탭 버튼, 목업 화면, 오른쪽 근거 } 를 모두 정의한다.
+ * 핵심 기능 3종. 탭 하나가 { 탭 버튼, 실제 화면, 오른쪽 근거 } 를 모두 정의한다.
  *
- * screen 은 목업 안에 그려질 내용의 "설계도"다.
- * 실제 DOM 은 js/modules/featureTabs.js 의 renderScreen() 이 만든다.
+ * screen 은 화면에 그려질 내용의 "설계도"다.
+ * 실제 DOM 은 js/modules/featureTabs.js 가 만든다.
  *   kind: "chat"      말풍선 목록 (rows)
- *   kind: "suggest"   말풍선 + 답장 추천 카드
- *   kind: "dashboard" 도넛 + 통계 타일
+ *   kind: "suggest"   말풍선 + 문장 다듬기 추천 칩
+ *   kind: "dashboard" 도넛 + 통계 타일 + 흐름 그래프
+ *
+ * topbar / status 는 화면 상단바에 들어가는 제목과 그 아래 한 줄이다.
  */
 
 export const FEATURES = [
@@ -39,6 +41,7 @@ export const FEATURES = [
     screen: {
       kind: "chat",
       topbar: "연인",
+      status: "실시간 연결됨",
       rows: [
         { side: "yours", text: "우리 여행 숙소 있잖아", emotion: "CURIOSITY", time: "오후 9:54" },
         { side: "mine", text: "응 내가 예약해뒀어", emotion: "COMFORT", time: "오후 10:02", read: true },
@@ -76,6 +79,7 @@ export const FEATURES = [
     screen: {
       kind: "suggest",
       topbar: "연인",
+      status: "실시간 연결됨",
       rows: [
         { side: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS", time: "오후 10:10" },
         { side: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10", read: true },
@@ -117,6 +121,7 @@ export const FEATURES = [
     screen: {
       kind: "dashboard",
       topbar: "대시보드",
+      status: "무드트래커 리포트",
       period: "8월 9일 ~ 15일",
       // 발표 자료의 주간 리포트 실제 화면 값 그대로
       stats: [

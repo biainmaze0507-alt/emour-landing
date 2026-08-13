@@ -1,8 +1,17 @@
 /**
  * js/modules/render.js
  * ---------------------------------------------------------------------------
- * 여러 곳에서 똑같이 그려지는 조각들 — 감정 태그와 말풍선.
- * 히어로 대화(heroChat)와 기능 목업(featureTabs)이 같은 함수를 쓰기 때문에
+ * 여러 곳에서 똑같이 그려지는 조각들 — 감정 태그 · 말풍선 · 추천 칩 · 차트.
+ *
+ * 말풍선 구조는 앱의 components/chat/MessageBubble 을 그대로 옮겼다.
+ *
+ *   .chat-row                       가로 한 줄. 내 메시지는 row-reverse
+ *   ├ .chat-row__column             감정 태그와 말풍선을 세로로 쌓는 칸
+ *   │ ├ .emotion-tag / .analyzing   말풍선 위에 붙는 꼬리표
+ *   │ └ .chat-bubble                말풍선
+ *   └ .chat-row__meta               읽음 · 시간 (말풍선 옆에 세로로)
+ *
+ * 히어로 대화(heroChat)와 기능 화면(featureTabs)이 같은 함수를 쓰기 때문에
  * 한쪽만 모양이 달라지는 일이 생기지 않는다.
  */
 
@@ -11,7 +20,7 @@ import { icon } from "../data/icons.js";
 import { el, escapeHtml } from "./utils.js";
 
 /**
- * 감정 태그 — 말풍선 위에 붙는 작은 칩.
+ * 감정 태그 — 말풍선 위에 붙는 작은 표기.
  * @param {string} code   감정 코드 (예: "HURT")
  * @param {object} [opts] pop: 등장 애니메이션 여부
  */
@@ -21,6 +30,14 @@ export function emotionTag(code, { pop = false } = {}) {
     className: `emotion-tag${pop ? " emotion-tag--pop" : ""}`,
     html: `${icon(emotion.icon, 12)}<span>${escapeHtml(emotion.label)}</span>`,
     style: { "--tone": `var(${emotion.token})` },
+  });
+}
+
+/** "AI 감정 분석 중" 꼬리표 — 감정 태그가 붙기 전 자리를 대신 지킨다. */
+export function analyzingTag() {
+  return el("span", {
+    className: "analyzing",
+    html: `<i class="analyzing__spinner"></i><span>AI 감정 분석 중</span>`,
   });
 }
 
@@ -36,37 +53,77 @@ export function emotionTag(code, { pop = false } = {}) {
  *   empty     본문을 비워 두고 나중에 타이핑으로 채울 때 true
  */
 export function bubbleRow(row) {
-  const wrap = el("div", { className: `bubble-row bubble-row--${row.side}` });
+  const wrap = el("div", { className: `chat-row chat-row--${row.side}` });
+  const column = el("div", { className: "chat-row__column" });
 
-  // 1) 감정 태그 줄 — 분석 중이면 스피너, 감정이 있으면 태그
+  // 1) 꼬리표 — 분석 중이면 스피너, 감정이 있으면 태그
   if (row.analyzing) {
-    wrap.append(
-      el("span", {
-        className: "analyzing",
-        html: `<i class="analyzing__spinner"></i><span>AI 감정 분석 중</span>`,
-      })
-    );
+    column.append(analyzingTag());
   } else if (row.emotion) {
-    wrap.append(emotionTag(row.emotion, { pop: Boolean(row.pop) }));
+    column.append(emotionTag(row.emotion, { pop: Boolean(row.pop) }));
   }
 
   // 2) 말풍선
   const bubble = el("p", {
-    className: "bubble",
+    className: "chat-bubble",
     text: row.empty ? "" : row.text,
   });
-  wrap.append(bubble);
+  column.append(bubble);
+  wrap.append(column);
 
-  // 3) 시간 · 읽음
-  if (row.time || row.read) {
-    const meta = el("span", { className: "bubble-meta" });
-    if (row.read) meta.append(el("b", { className: "bubble-meta__read", text: "읽음" }));
-    if (row.time) meta.append(el("span", { text: row.time }));
-    wrap.append(meta);
-  }
+  // 3) 읽음 · 시간 — 말풍선 옆에 세로로 쌓인다
+  wrap.append(metaColumn(row));
 
   // 타이핑 등에서 다시 찾기 쉽도록 참조를 달아 둔다
   wrap._bubble = bubble;
+  wrap._column = column;
+  return wrap;
+}
+
+/** 읽음 · 시간 칸. 값이 없으면 빈 칸으로 두어 줄 높이가 흔들리지 않게 한다. */
+export function metaColumn({ read = false, time = "" } = {}) {
+  const meta = el("div", { className: "chat-row__meta" });
+  if (read) meta.append(el("b", { className: "chat-row__read", text: "읽음" }));
+  if (time) meta.append(el("span", { className: "chat-row__time", text: time }));
+  return meta;
+}
+
+/**
+ * 문장 다듬기 추천 묶음 — 앱의 SuggestionChips 와 같은 구조.
+ * 제목 한 줄 + 가로로 넘기는 알약 칩 + 안내 문구.
+ *
+ * @param {Array<{kind:string, text:string}>} items
+ * @param {object} [opts] stagger: 칩마다 등장 지연을 줄지 여부
+ */
+export function suggestionChips(items, { stagger = false } = {}) {
+  const wrap = el("div", { className: "suggests" });
+
+  wrap.append(
+    el("p", {
+      className: "suggests__title",
+      html: `${icon("sparkles", 13)}<span>문장 다듬기 추천</span>`,
+    })
+  );
+
+  const row = el("div", { className: "suggests__row" });
+  items.forEach((item, index) => {
+    row.append(
+      el("button", {
+        className: "suggests__chip",
+        attrs: { type: "button" },
+        html:
+          `<b class="suggests__chip-kind">${escapeHtml(item.kind)}</b>` +
+          `<span>${escapeHtml(item.text)}</span>`,
+        style: stagger ? { "animation-delay": `${index * 70}ms` } : undefined,
+      })
+    );
+  });
+  wrap.append(row);
+
+  wrap.append(
+    el("p", { className: "suggests__hint", text: "추천 문장을 탭하면 입력창에 반영돼요." })
+  );
+
   return wrap;
 }
 

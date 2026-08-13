@@ -1,12 +1,15 @@
 /* ==========================================================================
    04-components.css — 여러 섹션에서 재사용하는 조각
-   버튼 / 칩 / 표면(surface) / 감정 태그 / 앱 목업 프레임 / 말풍선 / 지표 타일
+   버튼 / 칩 / 표면(surface) / 감정 태그 / 대화 창 / 말풍선 / 리포트 / 지표 타일
    --------------------------------------------------------------------------
    표면 선택 규칙 (frontend/src/styles/surfaces.css 와 동일한 사고):
      .surface-plain   상자 없음   — 읽기용 내용의 기본값
      .surface-panel   헤어라인    — 묶인 조작 영역
      .surface-feature 색 있는 면  — 섹션당 하나만
    모든 블록을 흰 카드로 띄우면 위계가 사라진다.
+
+   화면을 보여 줄 때는 폰 목업(껍데기 · 노치 · 하단 내비)을 두르지 않는다.
+   윤곽선 하나(.chat-window)로만 감싸고, 안에는 앱과 똑같은 구조를 넣는다.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -42,8 +45,8 @@
   flex-shrink: 0;
 }
 
-/* 채워진 버튼 — 흰 글씨이므로 반드시 --color-action (4.73:1).
-   --color-primary(3.18:1)를 쓰면 대비가 모자란다. */
+/* 채워진 버튼 — 흰 글씨이므로 반드시 쿨톤 로즈(--color-action).
+   웜톤 로즈(--color-primary)를 쓰면 대비가 모자란다. */
 .btn--solid {
   background: var(--color-action);
   color: var(--color-text-on-primary);
@@ -170,21 +173,19 @@
 }
 
 /* --------------------------------------------------------------------------
-   감정 태그 — 앱의 말풍선 위 표기와 동일한 모양
+   감정 태그 — 앱의 말풍선 위 표기와 동일 (10px · 700 · 아이콘 12px)
    색은 --tone 변수로 주입한다. 예: style="--tone: var(--emotion-joy)"
    -------------------------------------------------------------------------- */
 .emotion-tag {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 9px 3px 6px;
-  border-radius: var(--radius-pill);
-  font-size: var(--font-micro);
+  gap: 3px;
+  margin-bottom: 3px;
+  padding-left: 2px;
+  font-size: 10px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.4;
   color: var(--tone, var(--color-text-secondary));
-  background: color-mix(in srgb, var(--tone, var(--color-text-tertiary)) 13%, white);
-  border: 1px solid color-mix(in srgb, var(--tone, var(--color-text-tertiary)) 28%, white);
 }
 
 .emotion-tag svg {
@@ -199,185 +200,595 @@
 
 .emotion-tag--pop {
   animation: pop-in 420ms var(--ease-spring) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* AI 분석 중 표시 — 감정 태그가 붙기 전 자리를 지킨다 */
+.analyzing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 3px;
+  padding-left: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-placeholder);
+}
+
+.analyzing__spinner {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary-soft);
+  border-top-color: var(--color-primary);
+  animation: spin 800ms linear infinite;
 }
 
 /* --------------------------------------------------------------------------
-   앱 목업 프레임 — Emour 기준 규격 412 × 892 를 그대로 유지한 채 배율만 조절
-   (frontend 의 AppViewport 와 같은 사고방식)
+   대화 창 — 앱의 ChatRoomPage 구조를 윤곽선 하나로만 감싼 것
+     .chat-window__head      상단바 (뒤로 · 제목 + 상태 · 검색)
+     .chat-window__body      대화 로그 또는 리포트
+     .chat-window__suggests  문장 다듬기 추천
+     .chat-window__composer  입력창
    -------------------------------------------------------------------------- */
-.device {
-  position: relative;
-  width: min(var(--app-frame-width), 100%);
-  aspect-ratio: 412 / 892;
-  border-radius: 44px;
-  padding: 11px;
-  background: linear-gradient(160deg, #efeae8, #d9d2cf 46%, #f4f0ef);
-  box-shadow: var(--shadow-frame);
-  flex-shrink: 0;
-}
-
-.device__screen {
-  position: relative;
+.chat-window {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 100%;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  /* 안쪽 모서리가 테두리를 넘어가지 않도록 */
   overflow: hidden;
-  border-radius: 34px;
-  background: var(--color-background);
-  display: flex;
-  flex-direction: column;
-  /* 목업 내부는 앱 실제 크기(412px)를 기준으로 쓴다 */
-  font-size: var(--font-caption);
 }
 
-/* 상단 노치 */
-.device__notch {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 33%;
-  height: 22px;
-  border-radius: var(--radius-pill);
-  background: rgba(53, 45, 43, 0.86);
-  z-index: 4;
-}
-
-/* 앱 상단바 */
-.device__topbar {
+/* 상단바 — 앱의 ChatHeader (56px · 가운데 제목 · 유리 면) */
+.chat-window__head {
   flex-shrink: 0;
-  height: 52px;
-  padding: 0 14px;
+  height: 56px;
+  padding-inline: 8px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
+  background: color-mix(in srgb, var(--color-background) 86%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-divider);
-  background: var(--color-surface);
-  font-size: var(--font-topbar-title);
-  font-weight: 700;
 }
 
-.device__topbar-icon {
-  width: 18px;
-  height: 18px;
-  stroke: var(--color-text-tertiary);
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.device__body {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* 앱 하단 내비 */
-.device__nav {
+.chat-window__head-icon {
   flex-shrink: 0;
-  height: 58px;
+  width: 36px;
+  height: 36px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  align-items: center;
-  border-top: 1px solid var(--color-divider);
-  background: var(--color-surface);
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-text-primary);
 }
 
-.device__nav-item {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--color-text-tertiary);
-}
-
-.device__nav-item svg {
-  width: 17px;
-  height: 17px;
+.chat-window__head-icon svg {
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
   fill: none;
-  stroke-width: 1.9;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.device__nav-item.is-active {
-  color: var(--color-primary);
+.chat-window__head-info {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
 }
 
-/* --------------------------------------------------------------------------
-   말풍선 — 목업 안팎 어디서든 같은 모양
-   -------------------------------------------------------------------------- */
-.bubble-row {
+.chat-window__name {
+  display: block;
+  font-size: var(--font-topbar-title);
+  font-weight: 800;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-window__status {
+  display: block;
+  font-size: var(--font-micro);
+  color: var(--color-text-secondary);
+}
+
+/* 대화 로그 — 높이를 정해 두어 메시지가 쌓여도 레이아웃이 흔들리지 않는다 */
+.chat-window__body {
+  flex: 1;
+  min-height: var(--chat-body-min, 292px);
+  padding: 14px 6px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  animation: bubble-in var(--duration-slow) var(--ease-out) both;
+  justify-content: flex-end;
+  gap: 2px;
+  background: var(--color-background);
 }
 
-.bubble-row--mine {
-  align-items: flex-end;
+/* 리포트처럼 카드가 쌓이는 본문은 위에서부터 채운다 */
+.chat-window__body--pad {
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 14px 14px 16px;
+  overflow: hidden;
 }
 
-.bubble-row--yours {
-  align-items: flex-start;
+/* 날짜 구분선 — 앱의 DateDivider */
+.chat-window__divider {
+  align-self: center;
+  margin-bottom: 6px;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-tint);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
 }
 
-.bubble {
-  max-width: 78%;
-  padding: 9px 13px;
+/* 타이핑 중인 마지막 글자 뒤의 커서 */
+.chat-window__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* 입력창 — 앱의 ChatInputBar (사진 · 입력 · 교정 · 전송) */
+.chat-window__composer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.chat-window__composer-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+}
+
+.chat-window__composer-icon svg,
+.chat-window__send svg,
+.chat-window__correct svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chat-window__composer-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.chat-window__composer-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 76px 0 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.chat-window__composer-placeholder {
   font-size: var(--font-label);
-  line-height: 1.45;
-  word-break: keep-all;
+  color: var(--color-text-placeholder);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.bubble-row--mine .bubble {
-  border-radius: var(--radius-lg) var(--radius-lg) 6px var(--radius-lg);
+/* 입력창 안쪽 오른쪽에 붙는 교정 버튼 */
+.chat-window__correct {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+  height: 32px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-faint);
+  color: var(--color-primary-strong);
+  font-size: var(--font-caption);
+  font-weight: 700;
+}
+
+.chat-window__correct svg {
+  width: 13px;
+  height: 13px;
+}
+
+.chat-window__send {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
   background: var(--color-action);
   color: var(--color-text-on-primary);
 }
 
-.bubble-row--yours .bubble {
-  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 6px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
+.chat-window__send svg {
+  width: 17px;
+  height: 17px;
 }
 
-.bubble-meta {
+/* --------------------------------------------------------------------------
+   말풍선 — 앱의 MessageBubble 과 같은 구조
+     .chat-row          가로 한 줄 (내 메시지는 row-reverse)
+     .chat-row__column  감정 태그 + 말풍선을 세로로
+     .chat-row__meta    읽음 · 시간
+   -------------------------------------------------------------------------- */
+.chat-row {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 6px;
-  font-size: var(--font-micro);
-  color: var(--color-text-tertiary);
+  margin: 6px 16px 10px;
+  max-width: 100%;
+  animation: bubble-in var(--duration-slow) var(--ease-out) both;
 }
 
-.bubble-meta__read {
+.chat-row--yours {
+  justify-content: flex-start;
+}
+
+.chat-row--mine {
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+
+/*
+ * 말풍선과 그 위의 꼬리표를 세로로 쌓는 칸.
+ * align-items 를 지정하지 않으면 기본값 stretch 라 말풍선이 칸 폭까지 늘어난다.
+ * 'AI 감정 분석 중' 꼬리표가 말풍선보다 넓으면 한 글자짜리 메시지도 그만큼 늘어난다.
+ * 각자 자기 내용만큼만 차지하게 한다.
+ */
+.chat-row__column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 72%;
+}
+
+.chat-row--mine .chat-row__column {
+  align-items: flex-end;
+}
+
+.chat-bubble {
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  border-radius: var(--radius-md);
+  word-break: break-word;
+  text-align: left;
+}
+
+.chat-row--yours .chat-bubble {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow-card);
+}
+
+/* 내 말풍선은 쿨톤 로즈를 쓴다. 로고 하트색(#CA8495)에 흰 글씨를 얹으면
+   대비가 2.9:1 밖에 되지 않아 본문이 읽히지 않는다. */
+.chat-row--mine .chat-bubble {
+  background: var(--color-action);
+  color: var(--color-text-on-primary);
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(193, 74, 103, 0.2);
+}
+
+.chat-row__meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding-bottom: 2px;
+}
+
+.chat-row--yours .chat-row__meta {
+  align-items: flex-start;
+}
+
+.chat-row__read {
+  font-size: 10px;
   font-weight: 700;
   color: var(--color-text-accent);
 }
 
-/* AI 분석 중 표시 */
-.analyzing {
+.chat-row__time {
+  font-size: 10px;
+  color: var(--color-text-placeholder);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   문장 다듬기 추천 — 앱의 SuggestionChips
+   가로로 넘기는 알약 칩. 세로로 쌓지 않는다(앱과 같은 모양이어야 한다).
+   -------------------------------------------------------------------------- */
+.chat-window__suggests {
+  flex-shrink: 0;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.suggests {
+  padding: 10px 16px 4px;
+}
+
+.suggests__title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: var(--font-micro);
+  font-weight: 700;
+  color: var(--color-primary-strong);
+}
+
+.suggests__title svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 칩은 가로로 넘긴다(앱과 동일). 오른쪽 끝을 흐리게 해서
+   "잘린 것"이 아니라 "더 있다"로 읽히게 한다. */
+.suggests__row {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 6px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, #000 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+}
+
+.suggests__row::-webkit-scrollbar {
+  display: none;
+}
+
+.suggests__chip {
+  flex-shrink: 0;
+  min-height: 34px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--font-micro);
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-surface-tint);
+  background: var(--color-surface);
+  color: var(--color-primary-strong);
+  font-size: var(--font-caption);
   font-weight: 600;
+  white-space: nowrap;
+  scroll-snap-align: start;
+  animation: pop-in 320ms var(--ease-out) both;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.suggests__chip:hover {
+  background: var(--color-primary-faint);
+}
+
+.suggests__chip:active {
+  transform: scale(0.96);
+}
+
+.suggests__chip-kind {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-action);
+}
+
+.suggests__hint {
+  padding-bottom: 8px;
+  font-size: 10px;
+  color: var(--color-text-placeholder);
+}
+
+/* --------------------------------------------------------------------------
+   대시보드 리포트 — 대화 창 안에 들어가는 카드들
+   -------------------------------------------------------------------------- */
+.report__period {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-tint);
+  font-size: var(--font-micro);
+  color: var(--color-text-secondary);
+}
+
+.report__period b {
+  font-weight: 700;
+  color: var(--color-text-accent);
+}
+
+.report__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.report__stats div {
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-tint);
+  text-align: center;
+}
+
+.report__stats b {
+  display: block;
+  font-size: var(--font-heading);
+  font-weight: 800;
+  color: var(--color-text-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.report__stats span {
+  font-size: 10px;
   color: var(--color-text-tertiary);
 }
 
-.analyzing__spinner {
-  width: 11px;
-  height: 11px;
+.report__card {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* span 이라 기본이 inline — 블록으로 바꿔야 제목과 설명이 두 줄로 나뉜다 */
+.report__card-title {
+  display: block;
+  font-size: var(--font-micro);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.report__card-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--color-text-tertiary);
+}
+
+.report__donut {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.report__donut svg {
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+}
+
+.report__legend {
+  display: grid;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+.report__legend li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.report__legend i {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  border: 1.8px solid var(--color-primary-soft);
-  border-top-color: var(--color-primary);
-  animation: spin 720ms linear infinite;
+  background: var(--tone);
+  flex-shrink: 0;
+}
+
+.report__flow {
+  margin-top: 10px;
+  height: 62px;
+}
+
+.report__flow svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.report__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 9px;
+  color: var(--color-text-tertiary);
+}
+
+.report__flow-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+.report__flow-legend i {
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+  margin-right: 5px;
+  vertical-align: 2px;
+  background: var(--tone);
+}
+
+.report__footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.report__footer div {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.report__footer span {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+.report__footer b {
+  display: block;
+  margin-top: 3px;
+  font-size: var(--font-caption);
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 /* --------------------------------------------------------------------------
@@ -488,4 +899,25 @@
   font-size: var(--font-caption);
   font-weight: 700;
   opacity: 0.72;
+}
+
+/* --------------------------------------------------------------------------
+   반응형 — 좁은 화면에서 대화 창 안쪽 여백을 줄인다
+   -------------------------------------------------------------------------- */
+@media (max-width: 560px) {
+  .chat-row {
+    margin-inline: 10px;
+  }
+
+  .chat-window__body {
+    --chat-body-min: 250px;
+  }
+
+  .chat-window__composer {
+    padding-inline: 10px;
+  }
+
+  .suggests {
+    padding-inline: 12px;
+  }
 }

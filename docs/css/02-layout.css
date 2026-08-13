@@ -122,7 +122,13 @@
   .nav-brand__meaning { display: none; }
 }
 
-/* 가운데 링크 묶음 */
+/* --------------------------------------------------------------------------
+   가운데 링크 묶음 — 항목마다 상세 목차 패널이 딸려 있다
+
+   항목은 링크이면서 동시에 트리거다. 눌러도 그 페이지로 가고,
+   올리거나 탭 포커스가 닿으면 아래로 패널이 펼쳐진다.
+   (5개 항목 · 2단 구조 — 전면 메가메뉴보다 이 규모에 맞는 방식이다)
+   -------------------------------------------------------------------------- */
 .nav-links {
   margin: 0 auto;
   display: flex;
@@ -130,8 +136,14 @@
   gap: 2px;
 }
 
-.nav-links__item {
+.nav-item {
   position: relative;
+}
+
+.nav-item__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 8px 13px;
   border-radius: var(--radius-pill);
   font-size: var(--font-label);
@@ -142,14 +154,190 @@
     background var(--duration-fast) var(--ease-out);
 }
 
-.nav-links__item:hover {
+.nav-item__link svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.nav-item__link:hover {
   color: var(--color-text-primary);
   background: var(--color-surface-tint);
 }
 
-.nav-links__item.is-active {
+/* 지금 보고 있는 페이지 */
+.nav-item__link.is-active {
   color: var(--color-text-accent);
   background: var(--color-primary-faint);
+}
+
+.nav-item.is-open .nav-item__link {
+  color: var(--color-text-primary);
+  background: var(--color-surface-tint);
+}
+
+.nav-item.is-open .nav-item__link svg {
+  transform: rotate(180deg);
+}
+
+/* 드롭다운 패널 */
+.nav-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: max-content;
+  max-width: min(600px, calc(100vw - 40px));
+  padding: 8px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-float);
+  animation: panel-in var(--duration-base) var(--ease-out);
+}
+
+.nav-panel[hidden] {
+  display: none;
+}
+
+/*
+ * 오른쪽에 있는 항목의 패널은 항목의 오른쪽 끝에 맞춘다.
+ * 전부 가운데 정렬로 두면 좁은 데스크톱 폭(상단바가 살아 있는 900~1150px)에서
+ * 마지막 항목들의 패널이 화면 밖으로 밀려 잘린다.
+ */
+.nav-item:nth-last-child(-n + 3) .nav-panel {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+/* 상단바가 아직 가로로 놓이는 좁은 폭에서는 패널도 함께 좁힌다 */
+@media (max-width: 1150px) {
+  .nav-panel {
+    max-width: min(440px, calc(100vw - 28px));
+  }
+
+  .nav-panel__inner {
+    grid-template-columns: minmax(0, 158px) minmax(0, 1fr);
+  }
+}
+
+/* 항목과 패널 사이의 빈 틈 — 마우스가 지나갈 때 패널이 닫히지 않게 덮어 둔다 */
+.nav-panel::before {
+  content: "";
+  position: absolute;
+  inset: -12px 0 100% 0;
+}
+
+.nav-panel__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.nav-panel__lead {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--panel-tint);
+}
+
+.nav-panel__lead-title {
+  font-size: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.nav-panel__lead-desc {
+  margin-top: 8px;
+  font-size: var(--font-caption);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.nav-panel__lead-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  font-size: var(--font-caption);
+  font-weight: 800;
+  color: var(--color-text-accent);
+  transition: gap var(--duration-fast) var(--ease-out);
+}
+
+.nav-panel__lead-link:hover {
+  gap: 9px;
+}
+
+.nav-panel__lead-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-panel__list {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+}
+
+.nav-panel__item {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px 10px 20px;
+  border-radius: var(--radius-md);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.nav-panel__item:hover {
+  background: var(--color-surface-tint);
+}
+
+/* 이 페이지에서 지금 보고 있는 섹션에 점이 붙는다 */
+.nav-panel__item::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  transform: translateY(-50%) scale(0);
+  transition: transform var(--duration-base) var(--ease-spring);
+}
+
+.nav-panel__item.is-current::before {
+  transform: translateY(-50%) scale(1);
+}
+
+.nav-panel__item-label {
+  font-size: var(--font-label);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.nav-panel__item-desc {
+  font-size: var(--font-micro);
+  line-height: 1.45;
+  color: var(--color-text-tertiary);
+  word-break: keep-all;
 }
 
 .nav-actions {
@@ -200,20 +388,24 @@
   transform: translateY(-4.7px) rotate(-45deg);
 }
 
-/* 모바일 시트 */
+/* --------------------------------------------------------------------------
+   모바일 시트 — 페이지마다 아코디언 한 칸
+   좁은 화면에서는 올려서 펼치는 방식이 통하지 않으므로,
+   같은 상세 목차를 눌러서 펼치는 형태로 바꾼다.
+   -------------------------------------------------------------------------- */
 .nav-sheet {
   position: fixed;
-  inset: var(--nav-height) 0 auto;
+  inset: var(--nav-height) 0 0;
   z-index: 99;
   display: none;
   flex-direction: column;
-  gap: 2px;
-  padding: 14px var(--shell-pad) 26px;
-  background: rgba(251, 250, 249, 0.97);
+  padding: 8px var(--shell-pad) 32px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(251, 250, 249, 0.98);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-raised);
+  border-top: 1px solid var(--color-border);
   transform-origin: top center;
   animation: sheet-in var(--duration-base) var(--ease-out);
 }
@@ -227,15 +419,81 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.nav-sheet__item {
-  padding: 14px 4px;
-  font-size: var(--font-heading);
-  font-weight: 600;
+.nav-sheet__group {
   border-bottom: 1px solid var(--color-divider);
 }
 
-.nav-sheet__item:last-of-type {
+.nav-sheet__group:last-child {
   border-bottom: 0;
+}
+
+.nav-sheet__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nav-sheet__link {
+  flex: 1;
+  padding: 16px 2px;
+  font-size: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* 지금 보고 있는 페이지 */
+.nav-sheet__group.is-current .nav-sheet__link {
+  color: var(--color-text-accent);
+}
+
+.nav-sheet__toggle {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-text-tertiary);
+}
+
+.nav-sheet__toggle svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.nav-sheet__toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.nav-sheet__subs {
+  display: grid;
+  gap: 2px;
+  padding: 0 0 12px 12px;
+}
+
+.nav-sheet__subs[hidden] {
+  display: none;
+}
+
+.nav-sheet__sub {
+  position: relative;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-label);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.nav-sheet__sub.is-current {
+  background: var(--color-primary-faint);
+  color: var(--color-text-accent);
 }
 
 /* 스크롤 진행바 — 상단바 바로 아래에 붙는 1.5px 라인 */
@@ -257,6 +515,97 @@
   .nav-toggle { display: grid; }
   .nav-actions .btn--ghost { display: none; }
   .nav-shell { justify-content: space-between; }
+}
+
+/* 시트가 열려 있는 동안 본문 스크롤을 막는다 */
+body.is-locked {
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   하위 페이지 머리글
+   홈은 히어로가 첫 화면을 맡고, 나머지 다섯 페이지는 이 블록으로 시작한다.
+   페이지마다 제목 스타일이 갈리지 않게 한 곳에서 정한다.
+   -------------------------------------------------------------------------- */
+.page-hero {
+  position: relative;
+  padding-top: calc(var(--nav-height) + clamp(52px, 7vw, 104px));
+  padding-bottom: clamp(36px, 4vw, 60px);
+}
+
+.page-hero__index {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  letter-spacing: 0.1em;
+  color: var(--color-text-accent);
+}
+
+.page-hero__index::after {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--color-primary-soft);
+}
+
+.page-hero__title {
+  margin-top: 18px;
+  font-size: var(--font-section);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  word-break: keep-all;
+  text-wrap: balance;
+}
+
+.page-hero__lead {
+  margin-top: 20px;
+  max-width: 60ch;
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+/* 페이지 안 목차 — 이 페이지의 섹션으로 바로 가는 알약들 */
+.page-hero__jump {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 페이지 사이 이동 — 각 페이지 맨 아래 */
+.page-next {
+  padding-block: clamp(56px, 7vw, 96px);
+  border-top: 1px solid var(--color-border);
+}
+
+.page-next__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.page-next__label {
+  font-size: var(--font-micro);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.page-next__title {
+  margin-top: 8px;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
 }
 
 /* --------------------------------------------------------------------------

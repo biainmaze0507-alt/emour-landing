@@ -11,7 +11,7 @@
  * "여기 눌러 볼 게 있다"는 걸 알려 준다(모션 최소화 시에는 켠 채로 시작).
  */
 
-import { $, el, onceInView, prefersReducedMotion } from "./utils.js";
+import { $, onceInView, prefersReducedMotion } from "./utils.js";
 import { bubbleRow } from "./render.js";
 
 /** 스위치가 꺼졌을 때는 감정을 감춰야 하므로 감정 코드를 따로 들고 있는다. */

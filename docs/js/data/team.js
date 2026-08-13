@@ -17,9 +17,10 @@
  *    name       이름
  *    roles      역할 배지 (배열, 1~2개 권장)
  *    tone       카드에 번지는 색 — css/00-tokens.css 의 감정 토큰 중 하나
+ *    face       아바타 일러스트 — js/data/avatars.js 의 HAIR 키 + 안경 여부
  *    blurb      한 줄 소개
  *    tags       담당한 작업
- *    avatar     사진 경로. 비워 두면 이름 이니셜 모노그램이 자동 생성됨
+ *    avatar     사진 경로. 채우면 일러스트 대신 사진이 들어간다
  *               예: "assets/team/minhee.jpg"
  *    portfolio  포트폴리오 주소
  */
@@ -29,6 +30,7 @@ export const TEAM = [
     name: "신승민",
     roles: ["PM", "Backend"],
     tone: "--emotion-joy",
+    face: { hair: "short", glasses: true },
     blurb: "요구사항 정의부터 일정 관리까지, 팀이 같은 목적지를 보게 만들었습니다.",
     tags: ["기획 · 요구사항 명세", "커플 · 회원 도메인", "API 설계"],
     avatar: "",
@@ -38,6 +40,7 @@ export const TEAM = [
     name: "기하영",
     roles: ["Backend"],
     tone: "--emotion-comfort",
+    face: { hair: "sidePart", glasses: true },
     blurb: "실시간 채팅과 대시보드 집계를 맡아 데이터가 흐르는 길을 놓았습니다.",
     tags: ["WebSocket · STOMP", "Redis Pub/Sub", "대시보드 집계"],
     avatar: "",
@@ -47,6 +50,7 @@ export const TEAM = [
     name: "최영우",
     roles: ["Backend", "AI"],
     tone: "--emotion-curiosity",
+    face: { hair: "bangs", glasses: true },
     blurb: "감정 분석 서버와 백엔드를 잇고, 문맥을 포함한 분석 계약을 설계했습니다.",
     tags: ["AI 연동 계약", "감정 분석 파이프라인", "답장 추천"],
     avatar: "",
@@ -56,6 +60,7 @@ export const TEAM = [
     name: "하수연",
     roles: ["Frontend"],
     tone: "--emotion-excitement",
+    face: { hair: "bob", glasses: true },
     blurb: "채팅 화면과 감정 표시를 구현해 분석 결과가 대화 속에 자연스럽게 놓이게 했습니다.",
     tags: ["채팅 UI", "감정 태그 · 리액션", "무한 스크롤 · 검색"],
     avatar: "",
@@ -65,6 +70,7 @@ export const TEAM = [
     name: "황민희",
     roles: ["Frontend"],
     tone: "--emotion-apology",
+    face: { hair: "medium", glasses: false },
     blurb: "디자인 시스템과 대시보드를 맡아 화면 전체가 하나의 톤을 갖게 정리했습니다.",
     tags: ["디자인 토큰 · BI/CI", "대시보드 · 차트", "캘린더 · 앨범"],
     avatar: "",
@@ -74,6 +80,7 @@ export const TEAM = [
     name: "윤선민",
     roles: ["AI", "Infra"],
     tone: "--emotion-surprise",
+    face: { hair: "long", glasses: false },
     blurb: "모델을 학습시키고 배포 파이프라인을 세워 매 커밋이 서비스에 닿게 했습니다.",
     tags: ["KcELECTRA 파인튜닝", "데이터 재라벨링", "CI/CD · EC2 배포"],
     avatar: "",

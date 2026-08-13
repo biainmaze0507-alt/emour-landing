@@ -1,12 +1,539 @@
 /* ==========================================================================
-   sections/identity.css — BI / CI
-   로고 두 색 → 화면 두 축 / 코어 팔레트 / 접근성 근거 / 타이포 스케일
-   팔레트 트랙은 참고 랜딩(Ploty)의 "넓어지는 스와치" 인터랙션을 가져왔다.
-   동작: js/modules/palette.js
+   sections/identity.css — 브랜드 페이지
+   이름 조립 / 진주 모티프 / 컬러 아이덴티티 / 웜톤·쿨톤 / 로고 / 타이포 / 규칙
+   동작: js/modules/identity.js
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   로고
+   1. 이름 — Emotion 과 Amour 에서 글자를 덜어내 our 를 남긴다
+   -------------------------------------------------------------------------- */
+.naming {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 0.9fr);
+  gap: clamp(24px, 3.4vw, 56px);
+  align-items: center;
+  padding: clamp(28px, 3.6vw, 52px);
+}
+
+.naming__steps {
+  display: grid;
+  gap: 14px;
+}
+
+.naming__step {
+  padding: 20px 22px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.naming__word {
+  font-size: clamp(28px, 3.6vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* 남긴 글자는 브랜드색으로 또렷하게, 덜어낸 글자는 옅게 지워진 듯이 */
+.naming__letter {
+  display: inline-block;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.naming__letter.is-kept {
+  color: var(--color-text-accent);
+}
+
+.naming__letter.is-dropped {
+  color: var(--color-text-tertiary);
+  opacity: 0.34;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.naming__note {
+  margin-top: 8px;
+  font-size: var(--font-label);
+  color: var(--color-text-secondary);
+}
+
+.naming__taken {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-divider);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+}
+
+.naming__taken b {
+  font-family: var(--font-mono);
+  font-size: var(--font-heading);
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+/* 두 조각과 결과 사이의 등호 */
+.naming__equals {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary-soft);
+  background: var(--color-surface);
+  font-size: var(--font-title);
+  font-weight: 300;
+  color: var(--color-primary);
+}
+
+.naming__result {
+  padding: clamp(24px, 3vw, 38px);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary-soft);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.naming__result-word {
+  font-size: clamp(40px, 6vw, 76px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--color-text-primary);
+}
+
+/* 이름 안에 남은 our 만 강조 — 글자 뒤에 옅은 로즈 밴드를 깐다.
+   inset box-shadow 는 배경 위 · 글자 아래에 그려지므로 형광펜처럼 보인다.
+   (가상 요소 + z-index 로 하면 카드 배경에 가려진다) */
+.naming__result-word .naming__letter.is-keeper {
+  color: var(--color-text-accent);
+  box-shadow: inset 0 -0.26em 0 0 var(--color-primary-soft);
+}
+
+.naming__result-note {
+  margin-top: 18px;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.naming__result-note b {
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+.naming__closing {
+  margin-top: clamp(28px, 3.4vw, 44px);
+  max-width: 68ch;
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.naming__closing em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+.naming__closing strong {
+  color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   2. 디자인 모티프 — 핑크 진주
+   층이 안쪽부터 겹겹이 쌓여 하나의 빛이 되는 모양을 원으로 그린다.
+   -------------------------------------------------------------------------- */
+.motif {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+.motif__stage {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: 420px;
+  width: 100%;
+  margin-inline: auto;
+  display: grid;
+  place-items: center;
+}
+
+.motif__pearl {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 층 하나 — 가운데를 기준으로 --size 만큼 커진다 */
+.motif__layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--tone);
+  transform: translate(-50%, -50%) scale(0.72);
+  opacity: 0;
+  /* 바깥층이 아래로 깔려야 안쪽층이 보인다 */
+  z-index: calc(20 - var(--index));
+  box-shadow: inset 0 -14px 34px rgba(255, 255, 255, 0.5),
+    0 8px 26px rgba(46, 38, 36, 0.07);
+}
+
+.motif__pearl.is-in .motif__layer {
+  animation: pearl-in 900ms var(--ease-out) forwards;
+  /* 안쪽부터 순서대로 부풀어 오른다 */
+  animation-delay: calc(var(--index) * 130ms);
+}
+
+/* 진주 광택 — 왼쪽 위에서 들어오는 빛 */
+.motif__stage::after {
+  content: "";
+  position: absolute;
+  top: 16%;
+  left: 22%;
+  width: 26%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.92), transparent 70%);
+  z-index: 30;
+  pointer-events: none;
+}
+
+.motif__body {
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.motif__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-tint);
+  border: 1px solid var(--color-primary-soft);
+  font-size: var(--font-caption);
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+.motif__headline {
+  margin-bottom: 18px;
+  font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  word-break: keep-all;
+}
+
+/* 층 설명 목록 — 진주의 각 층이 서비스의 무엇에 해당하는가 */
+.motif__layers {
+  margin-top: 26px;
+  display: grid;
+  gap: 8px;
+}
+
+.motif__layer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.motif__layer-row i {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tone);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.motif__layer-row b {
+  display: block;
+  font-size: var(--font-label);
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.motif__layer-row span span {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   3. 컬러 아이덴티티 — 색마다 담긴 뜻
+   올린 스와치가 넓어지고 아래 설명이 바뀐다.
+   -------------------------------------------------------------------------- */
+.palette {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.palette__track {
+  display: flex;
+  height: clamp(150px, 18vw, 210px);
+}
+
+.palette__swatch {
+  flex: 1;
+  position: relative;
+  background: var(--tone);
+  transition: flex var(--duration-slow) var(--ease-out);
+}
+
+.palette__swatch[aria-selected="true"] {
+  flex: 2.8;
+}
+
+/* 스와치 안 라벨 — 선택됐을 때만 보인다.
+   --ink 는 스와치 색 위에서 읽히는 글자색(밝은 면에는 어두운 글자)이다. */
+.palette__swatch-role,
+.palette__swatch-meaning {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-inline: 8px;
+  text-align: center;
+  color: var(--ink, #fff);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+  word-break: keep-all;
+}
+
+.palette__swatch-role {
+  bottom: 34px;
+  font-size: var(--font-caption);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.palette__swatch-meaning {
+  bottom: 16px;
+  font-size: var(--font-micro);
+  opacity: 0;
+}
+
+.palette__swatch[aria-selected="true"] .palette__swatch-role {
+  opacity: 1;
+}
+
+.palette__swatch[aria-selected="true"] .palette__swatch-meaning {
+  opacity: 0.78;
+}
+
+.palette__detail {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  padding: 24px 26px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  min-height: 124px;
+}
+
+.palette__detail-chip {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--tone, var(--color-primary));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+.palette__detail-role {
+  font-size: var(--font-micro);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.palette__detail-name {
+  margin-top: 4px;
+  display: inline-block;
+  font-size: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+}
+
+/* 뜻 — 이 페이지에서 가장 하고 싶은 말이라 크게 둔다 */
+.palette__detail-meaning {
+  margin-left: 10px;
+  display: inline-block;
+  font-size: var(--font-heading);
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+.palette__detail-meaning::before {
+  content: "“";
+}
+
+.palette__detail-meaning::after {
+  content: "”";
+}
+
+.palette__detail-desc {
+  margin-top: 9px;
+  max-width: 74ch;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   4. 웜톤과 쿨톤 — 하나의 핑크를 시간으로 나눈 이야기
+   -------------------------------------------------------------------------- */
+.temp__lead {
+  max-width: 68ch;
+  margin-bottom: clamp(28px, 3.4vw, 44px);
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.temp__sides {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+}
+
+.temp__side {
+  position: relative;
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: var(--radius-xl);
+  border: 1px solid color-mix(in srgb, var(--tone) 34%, white);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+/* 카드 위쪽에 그 색이 옅게 번진다 */
+.temp__side::before {
+  content: "";
+  position: absolute;
+  inset: -50% 30% auto -20%;
+  height: 220px;
+  border-radius: 50%;
+  background: var(--tone);
+  opacity: 0.16;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* 웜톤 배지는 원색이 옅어서 글자색을 그 색으로 두면 읽히지 않는다.
+   잉크를 더 섞어 두 배지 모두 같은 정도로 읽히게 맞춘다. */
+.temp__badge {
+  position: relative;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--tone) 20%, white);
+  color: color-mix(in srgb, var(--tone) 35%, var(--ci-ink));
+  font-size: var(--font-micro);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.temp__chip {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 56px;
+  margin: 18px 0;
+  border-radius: var(--radius-md);
+  background: var(--tone);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.temp__title {
+  position: relative;
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.temp__body {
+  position: relative;
+  margin-top: 12px;
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.temp__roles {
+  position: relative;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-divider);
+  display: grid;
+  gap: 8px;
+}
+
+.temp__roles li {
+  position: relative;
+  padding-left: 16px;
+  font-size: var(--font-label);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.temp__roles li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone);
+}
+
+.temp__closing {
+  margin-top: clamp(28px, 3.4vw, 44px);
+  padding: clamp(22px, 2.6vw, 32px);
+  border-radius: var(--radius-xl);
+  background: var(--panel-tint);
+  border: 1px solid var(--color-primary-soft);
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.temp__closing strong {
+  color: var(--color-text-accent);
+}
+
+/* --------------------------------------------------------------------------
+   5. 로고
    -------------------------------------------------------------------------- */
 .identity__logo {
   display: grid;
@@ -14,7 +541,6 @@
   gap: clamp(28px, 4vw, 64px);
   align-items: center;
   padding: clamp(30px, 3.6vw, 52px);
-  margin-bottom: clamp(40px, 5vw, 64px);
 }
 
 .identity__logo-stage {
@@ -66,6 +592,38 @@
   color: var(--color-text-tertiary);
 }
 
+/* 심볼이 무엇을 그린 것인지 */
+.identity__logo-note {
+  display: block;
+  margin-bottom: 16px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  background: var(--panel-tint);
+  border: 1px solid var(--color-primary-soft);
+}
+
+.identity__logo-note b {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--font-label);
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
+.identity__logo-note > span {
+  display: block;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.identity__logo-note em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--color-text-accent);
+}
+
 .identity__logo-parts {
   display: grid;
   gap: 10px;
@@ -103,6 +661,13 @@
   color: var(--color-text-tertiary);
 }
 
+/* 그 색이 무엇을 뜻하는가 — 역할 설명보다 위에 둔다 */
+.identity__logo-meaning {
+  font-size: var(--font-caption) !important;
+  font-weight: 700;
+  color: var(--color-text-accent) !important;
+}
+
 .identity__logo-part code {
   margin-left: auto;
   font-family: var(--font-mono);
@@ -112,168 +677,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   팔레트 트랙 — 마우스를 올린 스와치가 넓어지고 아래 설명이 바뀐다
-   -------------------------------------------------------------------------- */
-.palette {
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  margin-bottom: clamp(40px, 5vw, 64px);
-}
-
-.palette__track {
-  display: flex;
-  height: clamp(130px, 16vw, 178px);
-}
-
-.palette__swatch {
-  flex: 1;
-  position: relative;
-  background: var(--tone);
-  transition: flex var(--duration-slow) var(--ease-out);
-}
-
-.palette__swatch[aria-selected="true"] {
-  flex: 2.6;
-}
-
-/* 스와치 안 라벨 — 선택됐을 때만 보인다.
-   --ink 는 스와치 색 위에서 읽히는 글자색(밝은 면에는 어두운 글자)이다. */
-.palette__swatch-name {
-  position: absolute;
-  inset: auto 0 16px;
-  padding-inline: 6px;
-  text-align: center;
-  font-size: var(--font-caption);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--ink, #fff);
-  opacity: 0;
-  transition: opacity var(--duration-base) var(--ease-out);
-}
-
-.palette__swatch[aria-selected="true"] .palette__swatch-name {
-  opacity: 1;
-}
-
-.palette__detail {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 22px;
-  align-items: center;
-  padding: 22px 26px;
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
-  min-height: 108px;
-}
-
-.palette__detail-chip {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  background: var(--tone, var(--color-primary));
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-  transition: background var(--duration-base) var(--ease-out);
-}
-
-.palette__detail-name {
-  font-size: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: var(--tracking-tight);
-}
-
-.palette__detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 14px;
-  margin-top: 5px;
-  font-family: var(--font-mono);
-  font-size: var(--font-micro);
-  color: var(--color-text-tertiary);
-  /* 토큰 이름(--ci-accent)은 대문자로 바꾸면 안 되므로 uppercase 를 걸지 않는다.
-     HEX 는 데이터에 이미 대문자로 들어 있다. */
-}
-
-.palette__detail-desc {
-  margin-top: 9px;
-  font-size: var(--font-label);
-  line-height: var(--leading-normal);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-  transition: opacity var(--duration-fast) var(--ease-out);
-}
-
-/* --------------------------------------------------------------------------
-   접근성 근거 — 로고 색과 UI 색이 왜 다른지
-   실제 대비값을 계산해서 보여준다(js/modules/palette.js).
-   -------------------------------------------------------------------------- */
-.contrast {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: clamp(24px, 3vw, 44px);
-  align-items: center;
-  padding: clamp(26px, 3vw, 40px);
-  margin-bottom: clamp(40px, 5vw, 64px);
-}
-
-.contrast__demo {
-  display: grid;
-  gap: 12px;
-}
-
-.contrast__sample {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 18px 22px;
-  border-radius: var(--radius-md);
-  background: var(--tone);
-  color: #fff;
-}
-
-.contrast__sample-text {
-  font-size: var(--font-body);
-  font-weight: 700;
-}
-
-.contrast__sample-ratio {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: var(--font-caption);
-  font-weight: 700;
-}
-
-.contrast__verdict {
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-family);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.contrast__verdict.is-pass { color: var(--color-success); }
-.contrast__verdict.is-fail { color: var(--color-danger); }
-
-.contrast__note {
-  font-size: var(--font-body);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-secondary);
-  word-break: keep-all;
-}
-
-.contrast__note strong {
-  color: var(--color-text-primary);
-}
-
-/* --------------------------------------------------------------------------
-   타이포 스케일 — 실제 크기로 렌더한다
+   6. 타이포 스케일 — 실제 크기로 렌더한다
    -------------------------------------------------------------------------- */
 .typescale {
   padding: clamp(26px, 3vw, 40px);
@@ -323,10 +727,84 @@
 }
 
 /* --------------------------------------------------------------------------
-   규칙 목록 — 지켜야 할 것 / 하지 말아야 할 것
+   7. 대비 근거 — 로고 색과 버튼 색이 왜 다른지
+   실제 대비값을 계산해서 보여준다(js/modules/identity.js).
+   -------------------------------------------------------------------------- */
+.contrast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 3vw, 44px);
+  align-items: center;
+  padding: clamp(26px, 3vw, 40px);
+}
+
+.contrast__demo {
+  display: grid;
+  gap: 12px;
+}
+
+.contrast__sample {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
+  background: var(--tone);
+  color: #fff;
+}
+
+.contrast__sample-text {
+  display: block;
+  font-size: var(--font-body);
+  font-weight: 700;
+}
+
+.contrast__sample-cap {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--font-micro);
+  opacity: 0.78;
+}
+
+.contrast__sample-ratio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  font-weight: 700;
+}
+
+.contrast__verdict {
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.contrast__verdict.is-pass { color: var(--color-success); }
+.contrast__verdict.is-fail { color: var(--color-danger); }
+
+.contrast__note {
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.contrast__note strong {
+  color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   8. 규칙 목록 — 지켜야 할 것 / 하지 말아야 할 것
    -------------------------------------------------------------------------- */
 .rules {
-  margin-top: clamp(40px, 5vw, 64px);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 12px;
@@ -386,6 +864,41 @@
   opacity: 0.4;
 }
 
+/* --------------------------------------------------------------------------
+   반응형
+   -------------------------------------------------------------------------- */
+@media (max-width: 1000px) {
+  .naming {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .naming__steps {
+    width: 100%;
+  }
+
+  .naming__step {
+    text-align: left;
+  }
+
+  .naming__equals {
+    transform: rotate(90deg);
+  }
+
+  .naming__result {
+    width: 100%;
+  }
+
+  .naming__closing {
+    text-align: left;
+  }
+
+  .motif {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 900px) {
   .identity__logo,
   .contrast {
@@ -400,12 +913,31 @@
 
 @media (max-width: 560px) {
   .palette__track {
-    height: 108px;
+    height: 124px;
+  }
+
+  .palette__swatch-meaning {
+    display: none;
+  }
+
+  .palette__swatch-role {
+    bottom: 14px;
   }
 
   .palette__detail {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+
+  .palette__detail-meaning {
+    margin-left: 0;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .contrast__sample {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .typescale__row {

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBFAF9">
+
+  <title>제품 — Emour</title>
+  <meta name="description" content="채팅 감정 분석 · 답장 추천 · 대시보드. 그리고 그 바탕이 되는 감정 15종 체계.">
+  <meta name="author" content="SSAFY 15기 공통 프로젝트 B208">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="제품 — Emour">
+  <meta property="og:description" content="채팅 감정 분석 · 답장 추천 · 대시보드. 그리고 그 바탕이 되는 감정 15종 체계.">
+  <meta property="og:image" content="assets/logo-mark.svg">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-mark.svg">
+
+  <!-- 서체 — Pretendard (앱과 동일). 실패해도 시스템 서체로 자연스럽게 떨어진다. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <!-- ── 스타일 (읽는 순서 = 겹치는 순서) ─────────────────────────
+       페이지 5장이 같은 목록을 쓴다. 스타일을 추가하면 모든 페이지에 넣어야 한다.
+       ------------------------------------------------------------ -->
+  <link rel="stylesheet" href="css/00-tokens.css">
+  <link rel="stylesheet" href="css/01-base.css">
+  <link rel="stylesheet" href="css/02-layout.css">
+  <link rel="stylesheet" href="css/03-motion.css">
+  <link rel="stylesheet" href="css/04-components.css">
+  <link rel="stylesheet" href="css/sections/hero.css">
+  <link rel="stylesheet" href="css/sections/why.css">
+  <link rel="stylesheet" href="css/sections/features.css">
+  <link rel="stylesheet" href="css/sections/emotions.css">
+  <link rel="stylesheet" href="css/sections/film.css">
+  <link rel="stylesheet" href="css/sections/proof.css">
+  <link rel="stylesheet" href="css/sections/feedback.css">
+  <link rel="stylesheet" href="css/sections/tech.css">
+  <link rel="stylesheet" href="css/sections/identity.css">
+  <link rel="stylesheet" href="css/sections/team.css">
+
+  <script type="module" src="js/main.js"></script>
+
+  <!-- 안전장치 — [data-reveal] 은 처음에 opacity:0 이라 JS 가 못 돌면 빈 화면이 남는다.
+       JS 가 꺼져 있으면 html 에 .js 가 안 붙고, 모듈이 실패하면 1.8초 뒤
+       .reveal-fallback 이 붙어서 숨겨 둔 내용이 그대로 보인다.
+       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
+  <script>
+    document.documentElement.classList.add("js");
+    setTimeout(function () {
+      var root = document.documentElement;
+      if (!root.classList.contains("is-ready")) root.classList.add("reveal-fallback");
+    }, 1800);
+  </script>
+</head>
+
+<body data-page="product">
+  <a class="sr-only" href="#main">본문으로 건너뛰기</a>
+
+  <div class="page-atmosphere" aria-hidden="true"></div>
+
+  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다. -->
+  <header class="site-nav"></header>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <main class="page-main" id="main">
+
+    <!-- ══════════════════════════════════════════════════════════
+         페이지 머리글
+         ══════════════════════════════════════════════════════════ -->
+    <section class="page-hero" id="top">
+      <div class="shell shell--wide" data-reveal-group="80">
+        <p class="page-hero__index" data-reveal="fade">No. 01 &nbsp;Product</p>
+        <h1 class="page-hero__title" data-reveal>대화가 오가는 동안,<br>Emour 는 세 가지 일을 합니다</h1>
+        <p class="page-hero__lead" data-reveal>아래 화면은 이미지가 아니라 실제로 동작하는 마크업입니다. 폰 목업을 두르지 않았기 때문에 글자를 그대로 읽을 수 있고, 색 토큰을 바꾸면 이 화면도 함께 바뀝니다.</p>
+        <div class="page-hero__jump" data-reveal="fade">
+            <a class="chip chip--brand" href="#features">핵심 기능 3종</a>
+            <a class="chip chip--brand" href="#emotions">감정 15종 체계</a>
+            <a class="chip chip--brand" href="#mood">오늘의 기분 5단계</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         핵심 기능 — 탭 · 실제 화면 · 근거 (js/modules/featureTabs.js)
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="features">
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Core Features</p>
+          <h2 class="section-title" data-reveal>탭을 눌러<br>각 기능이 앱에서 어떻게 보이는지 확인해 보세요</h2>
+        </div>
+
+        <div class="features__layout" data-reveal>
+          <!-- 탭 목록 · 화면 · 근거 패널 모두 js/modules/featureTabs.js 가 렌더 -->
+          <div class="features__tabs" role="tablist" aria-label="핵심 기능"></div>
+          <div class="features__screen-wrap"></div>
+          <div class="features__details"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         감정 15종 체계
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="emotions">
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Emotion System</p>
+          <h2 class="section-title" data-reveal>감정 15종,<br>서버와 화면이 같은 이름을 씁니다</h2>
+          <p class="section-lead" data-reveal>
+            백엔드 <span class="mono">EmotionType</span> 열거형 15종과 화면의 색 · 아이콘이 1:1 로 묶여 있습니다.
+            그래서 어느 화면에서 보든 “슬픔”은 언제나 같은 파랑입니다.
+          </p>
+        </div>
+
+        <div class="emotions__toolbar" data-reveal="fade">
+          <div class="emotions__filters"></div>
+          <p class="emotions__hint">카드를 누르면 HEX 가 복사됩니다</p>
+        </div>
+
+        <div class="emotions__grid" data-reveal></div>
+
+        <!-- 흐르는 감정 라벨 띠 -->
+        <div class="emotions__marquee marquee" aria-hidden="true">
+          <div class="marquee__track"></div>
+        </div>
+
+        <div class="emotions__polarity" data-reveal></div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         오늘의 기분 5단계
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="mood">
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Mood Scale</p>
+          <h2 class="section-title" data-reveal>감정은 붙는 것,<br>기분은 남기는 것</h2>
+          <p class="section-lead" data-reveal>
+            감정 15색과는 별개인 척도입니다. 대화에서 자동으로 붙는 감정과 달리,
+            하루의 기분은 사용자가 직접 캘린더에 기록합니다.
+          </p>
+        </div>
+
+        <div class="mood-scale surface-panel" data-reveal>
+          <p class="mood-scale__title">오늘의 기분 · 5단계</p>
+          <p class="mood-scale__desc">
+            왼쪽(차갑고 가라앉음) → 오른쪽(따뜻하고 밝음) 순서입니다.
+            자동 분석이 놓친 하루의 온도를 사람이 직접 채워 넣는 자리입니다.
+          </p>
+          <div class="mood-scale__track"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         다음 페이지로
+         ══════════════════════════════════════════════════════════ -->
+    <section class="page-next">
+      <div class="shell shell--wide">
+        <div class="page-next__inner" data-reveal="fade">
+          <div>
+            <p class="page-next__label">다음</p>
+            <p class="page-next__title">만들고 끝내지 않고, 실제 커플에게 물어봤습니다</p>
+          </div>
+          <a class="btn btn--solid btn--lg is-magnetic" href="proof.html#metrics">검증 결과 보기</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer"></footer>
+</body>
+</html>

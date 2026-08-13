@@ -1,12 +1,13 @@
 /**
  * js/modules/featureTabs.js
  * ---------------------------------------------------------------------------
- * 핵심 기능 3종 — 탭 목록 · 앱 목업 · 근거 패널을 한 번에 만든다.
+ * 핵심 기능 3종 — 탭 목록 · 실제 화면 · 근거 패널을 한 번에 만든다.
  *
- * 목업은 이미지가 아니라 실제 DOM 이다. 그래서
- *   · 디자인 토큰을 바꾸면 목업도 같이 바뀌고
- *   · 텍스트를 화면에서 그대로 읽을 수 있으며(접근성·SEO)
- *   · 어떤 화면 크기에서도 흐릿해지지 않는다.
+ * 화면은 폰 목업 안에 넣지 않는다. 히어로의 대화 창과 똑같이
+ * 윤곽선(.chat-window) 하나로만 감싼다. 그래서
+ *   · 디자인 토큰을 바꾸면 이 화면도 같이 바뀌고
+ *   · 텍스트를 화면에서 그대로 읽을 수 있으며(접근성 · SEO)
+ *   · 좁은 화면에서 폰 껍데기 때문에 내용이 눌리지 않는다.
  *
  * 접근성: role="tablist" / "tab" / "tabpanel" 규약을 지키고
  *        ← → Home End 키로 이동할 수 있다.
@@ -15,49 +16,41 @@
 import { FEATURES } from "../data/features.js";
 import { icon } from "../data/icons.js";
 import { $, $$, el, escapeHtml, onceInView } from "./utils.js";
-import { bubbleRow, donutSvg, flowSvg } from "./render.js";
+import { bubbleRow, donutSvg, flowSvg, suggestionChips } from "./render.js";
 import { getEmotion } from "../data/emotions.js";
 
 /* --------------------------------------------------------------------------
-   목업 껍데기 — 상단바 · 본문 · 하단 내비
+   화면 껍데기 — 상단바 + 본문(+ 입력창)
    -------------------------------------------------------------------------- */
-function deviceChrome(title, bodyNode, { activeNav = "채팅" } = {}) {
-  const navItems = [
-    { label: "홈", name: "home" },
-    { label: "채팅", name: "messageCircle" },
-    { label: "캘린더", name: "calendar" },
-    { label: "앨범", name: "image" },
-    { label: "마이", name: "user" },
-  ];
 
-  const topbar = el("div", {
-    className: "device__topbar",
+/** 앱 상단바 — 뒤로 · 제목 · 검색 (앱의 ChatHeader 와 같은 구성) */
+function windowHead(title, status) {
+  return el("div", {
+    className: "chat-window__head",
     html: `
-      <span class="device__topbar-icon">${icon("chevronLeft", 18)}</span>
-      <span>${escapeHtml(title)}</span>
-      <span class="device__topbar-icon">${icon("search", 18)}</span>
+      <span class="chat-window__head-icon">${icon("chevronLeft", 20)}</span>
+      <span class="chat-window__head-info">
+        <span class="chat-window__name">${escapeHtml(title)}</span>
+        ${status ? `<span class="chat-window__status">${escapeHtml(status)}</span>` : ""}
+      </span>
+      <span class="chat-window__head-icon">${icon("search", 20)}</span>
     `,
   });
+}
 
-  const nav = el("div", { className: "device__nav" });
-  navItems.forEach((item) => {
-    nav.append(
-      el("span", {
-        className: `device__nav-item${item.label === activeNav ? " is-active" : ""}`,
-        html: `${icon(item.name, 17)}<span>${escapeHtml(item.label)}</span>`,
-      })
-    );
-  });
-
+/** 앱 입력창 — 사진 추가 · 입력 · 교정 · 전송 (앱의 ChatInputBar 와 같은 구성) */
+function windowComposer() {
   return el("div", {
-    className: "device",
-    children: [
-      el("div", { className: "device__notch" }),
-      el("div", {
-        className: "device__screen",
-        children: [topbar, bodyNode, nav],
-      }),
-    ],
+    className: "chat-window__composer",
+    attrs: { "aria-hidden": "true" },
+    html: `
+      <span class="chat-window__composer-icon">${icon("imagePlus", 20)}</span>
+      <span class="chat-window__composer-field">
+        <span class="chat-window__composer-placeholder">메시지를 입력하세요</span>
+        <span class="chat-window__correct">${icon("wand", 13)}<span>교정</span></span>
+      </span>
+      <span class="chat-window__send">${icon("send", 17)}</span>
+    `,
   });
 }
 
@@ -67,62 +60,46 @@ function deviceChrome(title, bodyNode, { activeNav = "채팅" } = {}) {
 
 /** kind: "chat" — 말풍선만 */
 function screenChat(screen) {
-  const body = el("div", { className: "device__body" });
-  body.append(el("div", { className: "features__panel-title", text: "오늘" }));
+  const body = el("div", { className: "chat-window__body" });
+  body.append(el("p", { className: "chat-window__divider", text: "오늘" }));
   screen.rows.forEach((row) => body.append(bubbleRow(row)));
-  return body;
+  return [body, windowComposer()];
 }
 
-/** kind: "suggest" — 말풍선 + 답장 추천 카드 */
+/** kind: "suggest" — 말풍선 + 문장 다듬기 추천 칩 */
 function screenSuggest(screen) {
-  const body = el("div", { className: "device__body" });
+  const body = el("div", { className: "chat-window__body" });
   screen.rows.forEach((row) => body.append(bubbleRow(row)));
 
-  // 답장 추천 묶음은 화면 아래쪽에 붙인다
-  const suggestWrap = el("div", {
-    style: { "margin-top": "auto", display: "grid", gap: "6px" },
-  });
-  suggestWrap.append(
-    el("div", { className: "features__panel-title", text: "답장 추천" })
-  );
+  const suggests = el("div", { className: "chat-window__suggests" });
+  suggests.append(suggestionChips(screen.suggests));
 
-  screen.suggests.forEach((item) => {
-    suggestWrap.append(
-      el("div", {
-        className: "suggest-card",
-        html: `
-          <span class="suggest-card__kind">${escapeHtml(item.kind)}</span>
-          <p class="suggest-card__text">${escapeHtml(item.text)}</p>
-        `,
-      })
-    );
-  });
-
-  body.append(suggestWrap);
-  return body;
+  return [body, suggests, windowComposer()];
 }
 
-/** kind: "dashboard" — 통계 타일 + 도넛 + 요약 */
+/** kind: "dashboard" — 통계 타일 + 도넛 + 흐름 그래프 */
 function screenDashboard(screen) {
-  const body = el("div", { className: "device__body" });
+  const body = el("div", { className: "chat-window__body chat-window__body--pad" });
 
   body.append(
     el("div", {
-      className: "features__panel-title",
-      text: `주간 · ${screen.period}`,
+      className: "report__period",
+      html: `<span>주간</span><b>${escapeHtml(screen.period)}</b>`,
     })
   );
 
   // 상단 3칸
-  const stats = el("div", { className: "mini-stats" });
+  const stats = el("div", { className: "report__stats" });
   screen.stats.forEach((stat) => {
     stats.append(
-      el("div", { html: `<b>${escapeHtml(stat.value)}</b><span>${escapeHtml(stat.label)}</span>` })
+      el("div", {
+        html: `<b>${escapeHtml(stat.value)}</b><span>${escapeHtml(stat.label)}</span>`,
+      })
     );
   });
   body.append(stats);
 
-  // 도넛 + 범례 (범례는 상위 5개만 — 목업 안에서 다 넣으면 읽히지 않는다)
+  // 도넛 + 범례 (범례는 상위 5개만 — 좁은 폭에 다 넣으면 읽히지 않는다)
   const legendItems = screen.donut
     .slice(0, 5)
     .map((slice) => {
@@ -136,13 +113,13 @@ function screenDashboard(screen) {
 
   body.append(
     el("div", {
-      className: "mini-card",
+      className: "report__card",
       html: `
-        <span class="mini-card__title">주간 채팅 감정 분포 비율</span>
-        <span class="mini-card__sub">어떤 감정이 얼마나 오갔는지 모아봤어요</span>
-        <div class="mini-donut">
+        <span class="report__card-title">주간 채팅 감정 분포 비율</span>
+        <span class="report__card-sub">어떤 감정이 얼마나 오갔는지 모아봤어요</span>
+        <div class="report__donut">
           ${donutSvg(screen.donut, { size: 100, thickness: 17 })}
-          <ul class="mini-legend">${legendItems}</ul>
+          <ul class="report__legend">${legendItems}</ul>
         </div>
       `,
     })
@@ -156,13 +133,13 @@ function screenDashboard(screen) {
 
     body.append(
       el("div", {
-        className: "mini-card",
+        className: "report__card",
         html: `
-          <span class="mini-card__title">감정 흐름</span>
-          <span class="mini-card__sub">하루 중 어느 시간에 마음이 오르내렸는지 이어봤어요</span>
-          <div class="mini-flow">${flowSvg(screen.flow)}</div>
-          <div class="mini-flow__axis">${axis}</div>
-          <div class="mini-flow__legend">
+          <span class="report__card-title">기록된 기분 흐름</span>
+          <span class="report__card-sub">하루 중 어느 시간에 마음이 오르내렸는지 이어봤어요</span>
+          <div class="report__flow">${flowSvg(screen.flow)}</div>
+          <div class="report__axis">${axis}</div>
+          <div class="report__flow-legend">
             <span><i style="--tone: var(--emotion-positive)"></i>긍정</span>
             <span><i style="--tone: var(--emotion-negative)"></i>부정</span>
           </div>
@@ -172,20 +149,17 @@ function screenDashboard(screen) {
   }
 
   // 하단 요약 2칸
-  const footer = el("div", {
-    className: "mini-stats",
-    style: { "grid-template-columns": "1fr 1fr", "margin-top": "auto" },
-  });
+  const footer = el("div", { className: "report__footer" });
   screen.footer.forEach((item) => {
     footer.append(
       el("div", {
-        html: `<span>${escapeHtml(item.label)}</span><b style="font-size:12px">${escapeHtml(item.value)}</b>`,
+        html: `<span>${escapeHtml(item.label)}</span><b>${escapeHtml(item.value)}</b>`,
       })
     );
   });
   body.append(footer);
 
-  return body;
+  return [body];
 }
 
 const SCREEN_RENDERERS = {
@@ -194,8 +168,21 @@ const SCREEN_RENDERERS = {
   dashboard: screenDashboard,
 };
 
+/** 기능 하나의 화면 전체를 만든다. */
+function featureScreen(feature) {
+  const { screen } = feature;
+  const render = SCREEN_RENDERERS[screen.kind];
+  if (!render) return null;
+
+  return el("div", {
+    className: "chat-window",
+    attrs: { "data-panel": feature.id },
+    children: [windowHead(screen.topbar, screen.status), ...render(screen)],
+  });
+}
+
 /* --------------------------------------------------------------------------
-   근거 패널 (오른쪽)
+   근거 패널
    -------------------------------------------------------------------------- */
 function detailPanel(feature, index) {
   const { detail } = feature;
@@ -240,10 +227,10 @@ function detailPanel(feature, index) {
    -------------------------------------------------------------------------- */
 export function initFeatureTabs() {
   const tabList = $(".features__tabs");
-  const deviceWrap = $(".features__device-wrap");
+  const screenWrap = $(".features__screen-wrap");
   const detailWrap = $(".features__details");
 
-  if (!tabList || !deviceWrap || !detailWrap) return;
+  if (!tabList || !screenWrap || !detailWrap) return;
 
   /* 1. 탭 버튼 */
   FEATURES.forEach((feature, index) => {
@@ -270,37 +257,20 @@ export function initFeatureTabs() {
     );
   });
 
-  /* 2. 목업 — 한 대에 화면 세 개를 겹쳐 두고 하나만 보여 준다 */
-  const screensHost = el("div", { className: "device__body", style: { padding: "0" } });
-
+  /* 2. 화면 — 세 개를 겹쳐 두고 하나만 보여 준다 */
   FEATURES.forEach((feature, index) => {
-    const render = SCREEN_RENDERERS[feature.screen.kind];
-    const body = render(feature.screen); // 각 화면은 자기 .device__body 를 만들어 온다
-    const panel = el("div", {
-      className: `features__panel${index === 0 ? " is-active" : ""}`,
-      attrs: { "data-panel": feature.id },
-      children: [body],
-      style: { flex: "1", "min-height": "0" },
-    });
-    screensHost.append(panel);
+    const screen = featureScreen(feature);
+    if (!screen) return;
+    if (index === 0) screen.classList.add("is-active");
+    screenWrap.append(screen);
   });
-
-  // 상단바 제목은 탭에 따라 바뀌므로 따로 참조를 잡아 둔다
-  const device = deviceChrome(FEATURES[0].screen.topbar, screensHost, {
-    activeNav: "채팅",
-  });
-  deviceWrap.append(device);
-
-  const topbarTitle = device.querySelector(".device__topbar span:nth-child(2)");
-  const navItems = $$(".device__nav-item", device);
 
   /* 3. 근거 패널 */
   FEATURES.forEach((feature, index) => detailWrap.append(detailPanel(feature, index)));
 
   /* 4. 전환 */
   const select = (id) => {
-    const feature = FEATURES.find((f) => f.id === id);
-    if (!feature) return;
+    if (!FEATURES.some((f) => f.id === id)) return;
 
     $$(".features__tab", tabList).forEach((tab) => {
       const on = tab.dataset.feature === id;
@@ -308,20 +278,12 @@ export function initFeatureTabs() {
       tab.setAttribute("tabindex", on ? "0" : "-1");
     });
 
-    $$(".features__panel[data-panel]", screensHost).forEach((panel) => {
+    $$("[data-panel]", screenWrap).forEach((panel) => {
       panel.classList.toggle("is-active", panel.dataset.panel === id);
     });
 
     $$(".features__detail", detailWrap).forEach((panel) => {
       panel.classList.toggle("is-active", panel.id === `feature-detail-${id}`);
-    });
-
-    if (topbarTitle) topbarTitle.textContent = feature.screen.topbar;
-
-    // 대시보드 탭일 때는 하단 내비의 활성 항목도 바꾼다
-    const activeNavLabel = feature.id === "dashboard" ? "홈" : "채팅";
-    navItems.forEach((item) => {
-      item.classList.toggle("is-active", item.textContent.trim().endsWith(activeNavLabel));
     });
 
     fillMeters(detailWrap.querySelector(`#feature-detail-${id}`));

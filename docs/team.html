@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBFAF9">
+
+  <title>팀 — Emour</title>
+  <meta name="description" content="SSAFY 15기 B208 여섯 사람. 기획 · 백엔드 · 프론트엔드 · AI · 인프라를 나누어 맡았습니다.">
+  <meta name="author" content="SSAFY 15기 공통 프로젝트 B208">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="팀 — Emour">
+  <meta property="og:description" content="SSAFY 15기 B208 여섯 사람. 기획 · 백엔드 · 프론트엔드 · AI · 인프라를 나누어 맡았습니다.">
+  <meta property="og:image" content="assets/logo-mark.svg">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-mark.svg">
+
+  <!-- 서체 — Pretendard (앱과 동일). 실패해도 시스템 서체로 자연스럽게 떨어진다. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <!-- ── 스타일 (읽는 순서 = 겹치는 순서) ─────────────────────────
+       페이지 5장이 같은 목록을 쓴다. 스타일을 추가하면 모든 페이지에 넣어야 한다.
+       ------------------------------------------------------------ -->
+  <link rel="stylesheet" href="css/00-tokens.css">
+  <link rel="stylesheet" href="css/01-base.css">
+  <link rel="stylesheet" href="css/02-layout.css">
+  <link rel="stylesheet" href="css/03-motion.css">
+  <link rel="stylesheet" href="css/04-components.css">
+  <link rel="stylesheet" href="css/sections/hero.css">
+  <link rel="stylesheet" href="css/sections/why.css">
+  <link rel="stylesheet" href="css/sections/features.css">
+  <link rel="stylesheet" href="css/sections/emotions.css">
+  <link rel="stylesheet" href="css/sections/film.css">
+  <link rel="stylesheet" href="css/sections/proof.css">
+  <link rel="stylesheet" href="css/sections/feedback.css">
+  <link rel="stylesheet" href="css/sections/tech.css">
+  <link rel="stylesheet" href="css/sections/identity.css">
+  <link rel="stylesheet" href="css/sections/team.css">
+
+  <script type="module" src="js/main.js"></script>
+
+  <!-- 안전장치 — [data-reveal] 은 처음에 opacity:0 이라 JS 가 못 돌면 빈 화면이 남는다.
+       JS 가 꺼져 있으면 html 에 .js 가 안 붙고, 모듈이 실패하면 1.8초 뒤
+       .reveal-fallback 이 붙어서 숨겨 둔 내용이 그대로 보인다.
+       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 간이 서버로 여세요. -->
+  <script>
+    document.documentElement.classList.add("js");
+    setTimeout(function () {
+      var root = document.documentElement;
+      if (!root.classList.contains("is-ready")) root.classList.add("reveal-fallback");
+    }, 1800);
+  </script>
+</head>
+
+<body data-page="team">
+  <a class="sr-only" href="#main">본문으로 건너뛰기</a>
+
+  <div class="page-atmosphere" aria-hidden="true"></div>
+
+  <!-- 상단바와 푸터는 js/modules/chrome.js 가 js/data/site.js 의 NAV 로 만든다. -->
+  <header class="site-nav"></header>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <main class="page-main" id="main">
+
+    <!-- ══════════════════════════════════════════════════════════
+         페이지 머리글
+         ══════════════════════════════════════════════════════════ -->
+    <section class="page-hero" id="top">
+      <div class="shell shell--wide" data-reveal-group="80">
+        <p class="page-hero__index" data-reveal="fade">No. 05 &nbsp;Our Team</p>
+        <h1 class="page-hero__title" data-reveal>B208,<br>여섯 사람</h1>
+        <p class="page-hero__lead" data-reveal>역할은 나누었지만 “이 문장에 어떤 감정이 맞는가”는 끝까지 함께 이야기했습니다. 카드를 누르면 각자의 포트폴리오로 이어집니다.</p>
+        <div class="page-hero__jump" data-reveal="fade">
+            <a class="chip chip--brand" href="#members">팀원 소개</a>
+            <a class="chip chip--brand" href="#howwework">함께 일한 방식</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         팀원 소개
+         포트폴리오 주소는 js/data/team.js 의 portfolio 값만 채우면 연결됩니다.
+         값이 비어 있으면 "준비 중" 으로 표시되고 카드 크기는 그대로입니다.
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="members">
+      <div class="shell shell--wide">
+
+        <div class="section-head section-head--center" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Members</p>
+          <h2 class="section-title" data-reveal>각자의 자리에서, 같은 대화를 붙잡고</h2>
+        </div>
+
+        <div class="team__grid"></div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         함께 일한 방식
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="howwework">
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">How We Work</p>
+          <h2 class="section-title" data-reveal>나눈 것은 역할,<br>나누지 않은 것은 기준</h2>
+        </div>
+
+        <div class="team__banner surface-feature" data-reveal>
+          <div>
+            <h3 class="team__banner-title"></h3>
+            <p class="team__banner-desc"></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         마무리
+         ══════════════════════════════════════════════════════════ -->
+    <section class="closing">
+      <div class="shell">
+        <img class="closing__mark" src="assets/logo-mark.svg" alt="" aria-hidden="true" data-reveal="scale">
+        <p class="closing__line" data-reveal>
+          받는 말에 <span class="mark">감정</span>을 담고, 보내는 말에 <span class="mark">정성</span>을 담아,<br>
+          서로의 마음이 <span class="accent">올곧게</span> 전해지도록
+        </p>
+        <div class="closing__actions" data-reveal="fade">
+          <a class="btn btn--solid btn--lg is-magnetic" data-link="service" href="#" hidden>Emour 사용해 보기</a>
+          <a class="btn btn--outline btn--lg" data-link="repository" href="#" hidden>소스 코드 보기</a>
+          <a class="btn btn--outline btn--lg" data-link="deck" href="#" hidden>발표 자료 보기</a>
+          <a class="btn btn--outline btn--lg" href="index.html">처음으로 돌아가기</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer"></footer>
+</body>
+</html>

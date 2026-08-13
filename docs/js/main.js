@@ -1,17 +1,20 @@
 /**
  * js/main.js
  * ---------------------------------------------------------------------------
- * 진입점. 각 섹션 모듈을 순서대로 켠다.
+ * 진입점. 모든 페이지가 이 파일 하나를 불러온다.
+ *
+ * <body data-page="..."> 값을 보고 그 페이지에 필요한 모듈만 켠다.
+ * 그래서 페이지를 늘리거나 섹션을 옮길 때 HTML 의 <script> 를 건드릴 필요가 없다.
  *
  * 순서가 중요한 부분
  *   1) initReveal() 이 먼저 돌아야 window.__emourObserveReveal 이 준비된다.
  *      (뒤에서 JS 로 만든 [data-reveal] 요소를 등록할 때 쓴다)
- *   2) 나머지는 서로 독립적이라 순서가 바뀌어도 된다.
+ *   2) initChrome() 이 상단바 · 푸터를 만든다. 나머지는 서로 독립적이다.
  *
  * 모듈 하나가 실패해도 나머지 섹션은 살아 있도록 각각 try 로 감싼다.
  */
 
-import { initNav } from "./modules/nav.js";
+import { initChrome } from "./modules/chrome.js";
 import { initReveal, initCursorGlow, initMagnetic } from "./modules/reveal.js";
 import { initHeroChat } from "./modules/heroChat.js";
 import { initWhy } from "./modules/why.js";
@@ -23,7 +26,30 @@ import { initFeedback } from "./modules/feedbackCards.js";
 import { initArchitecture } from "./modules/architecture.js";
 import { initIdentity } from "./modules/identity.js";
 import { initTeam } from "./modules/team.js";
-import { renderFooter, renderYear } from "./modules/footer.js";
+
+/**
+ * 페이지마다 켤 모듈.
+ * 키는 <body data-page="..."> 값과 같다.
+ */
+const PAGE_MODULES = {
+  home: [
+    ["heroChat", initHeroChat],
+    ["heroFacts", initHeroFacts],
+    ["why", initWhy],
+    ["film", initFilm],
+  ],
+  product: [
+    ["features", initFeatureTabs],
+    ["emotions", initEmotionGrid],
+  ],
+  proof: [
+    ["proof", initProof],
+    ["feedback", initFeedback],
+  ],
+  tech: [["architecture", initArchitecture]],
+  brand: [["identity", initIdentity]],
+  team: [["team", initTeam]],
+};
 
 /** 이름을 붙여 실행 — 어느 모듈에서 났는지 콘솔에 남긴다. */
 function run(name, fn) {
@@ -38,23 +64,12 @@ function boot() {
   // 1) 등장 연출 기반 먼저
   run("reveal", initReveal);
 
-  // 2) 뼈대
-  run("nav", initNav);
-  run("footer", renderFooter);
-  run("year", renderYear);
+  // 2) 모든 페이지가 공유하는 껍데기
+  run("chrome", initChrome);
 
-  // 3) 섹션
-  run("heroChat", initHeroChat);
-  run("heroFacts", initHeroFacts);
-  run("why", initWhy);
-  run("features", initFeatureTabs);
-  run("emotions", initEmotionGrid);
-  run("film", initFilm);
-  run("proof", initProof);
-  run("feedback", initFeedback);
-  run("architecture", initArchitecture);
-  run("identity", initIdentity);
-  run("team", initTeam);
+  // 3) 이 페이지의 섹션들
+  const page = document.body.dataset.page || "home";
+  (PAGE_MODULES[page] ?? []).forEach(([name, fn]) => run(name, fn));
 
   // 4) 장식 (포인터 기기에서만 동작)
   run("cursorGlow", initCursorGlow);

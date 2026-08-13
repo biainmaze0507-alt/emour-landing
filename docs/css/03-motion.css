@@ -97,11 +97,16 @@ html.reveal-fallback .line-mask > span {
   to   { opacity: 1; transform: none; }
 }
 
-/* 배경에 떠다니는 감정 입자 */
-@keyframes drift {
-  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
-  50%  { transform: translate3d(0, -22px, 0) rotate(3deg); }
-  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+/* 진주 층이 안쪽부터 부풀어 오를 때 */
+@keyframes pearl-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.72); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 드롭다운 패널이 내려올 때 */
+@keyframes panel-in {
+  from { opacity: 0; transform: translate3d(0, -6px, 0); }
+  to   { opacity: 1; transform: none; }
 }
 
 /* 타이핑 커서 */

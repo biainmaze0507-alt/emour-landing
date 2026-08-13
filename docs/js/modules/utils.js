@@ -28,7 +28,22 @@ export function el(tag, props = {}) {
 
   if (attrs) {
     for (const [key, value] of Object.entries(attrs)) {
-      if (value == null || value === false) continue;
+      if (value == null) continue;
+
+      /*
+       * ARIA 상태는 반드시 문자열 "true" / "false" 로 넣는다.
+       * true 를 빈 문자열로 바꿔 버리면 aria-selected="" 가 되고,
+       * 그러면 CSS 의 [aria-selected="true"] 에 걸리지 않아
+       * 선택된 탭·스와치·칩이 선택되지 않은 것처럼 보인다.
+       * false 도 의미가 있는 값이므로 지우지 않는다.
+       */
+      if (typeof value === "boolean" && key.startsWith("aria-")) {
+        node.setAttribute(key, String(value));
+        continue;
+      }
+
+      // hidden · disabled 처럼 존재만으로 켜지는 속성
+      if (value === false) continue;
       node.setAttribute(key, value === true ? "" : String(value));
     }
   }

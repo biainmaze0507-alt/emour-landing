@@ -271,12 +271,40 @@
   color: var(--color-text-tertiary);
 }
 
-.tech__model-chain span {
+/* 모델 카드 안내 한 줄 */
+.tech__model-note {
+  margin-top: 20px;
+  font-size: var(--font-label);
+  color: var(--color-text-tertiary);
+}
+
+.tech__model-note b {
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.tech__model-step {
   padding: 5px 10px;
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   white-space: nowrap;
+}
+
+/* 단계 사이 화살표 — 알약이 아니라 선만 남긴다 */
+.tech__model-arrow {
+  display: inline-flex;
+  color: var(--color-primary);
+}
+
+.tech__model-arrow svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @media (max-width: 700px) {

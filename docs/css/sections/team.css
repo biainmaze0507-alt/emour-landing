@@ -54,28 +54,35 @@
   opacity: 0.2;
 }
 
-/* 아바타 — 사진 없이 이니셜 모노그램.
-   나중에 사진을 넣으려면 .member__avatar 안에 <img> 를 두면 된다. */
+/* 아바타 — 발표자료 팀원 소개의 일러스트 (js/data/avatars.js).
+   사진을 쓰려면 js/data/team.js 의 avatar 에 경로를 넣으면 <img> 로 바뀐다.
+
+   일러스트가 쓰는 색 세 개를 여기서 정한다. 카드마다 --tone 이 다르므로
+   같은 그림이 멤버별로 다른 색을 입는다. */
 .member__avatar {
+  --av-bg: color-mix(in srgb, var(--tone) 16%, white);
+  --av-face: #ffffff;
+  --av-dark: color-mix(in srgb, var(--tone) 58%, var(--ci-ink));
+
   position: relative;
-  width: 74px;
-  height: 74px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: color-mix(in srgb, var(--tone) 14%, white);
-  color: var(--tone);
-  font-size: var(--font-title);
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  overflow: hidden;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 26%, white);
   margin-bottom: 18px;
+  flex-shrink: 0;
+}
+
+/* viewBox 만 있는 인라인 SVG 는 크기를 직접 정해 줘야 한다 */
+.member__avatar svg,
+.member__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .member__avatar img {
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
   object-fit: cover;
 }
 

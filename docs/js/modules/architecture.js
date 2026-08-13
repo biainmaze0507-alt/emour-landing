@@ -74,11 +74,16 @@ export function initArchitecture() {
 
   if (laneHost) {
     ARCH_LANES.forEach((lane) => laneHost.append(archLane(lane)));
+  }
 
-    // AI 학습 파이프라인은 별도 레인으로 아래에 붙인다
-    laneHost.append(
+  /* ── 2-1. AI 학습 파이프라인 ───────────────────────────────────
+     자기 자리(.arch__ai)가 있으면 거기에, 없으면 아키텍처 레인 아래에 붙인다.
+     ------------------------------------------------------------ */
+  const aiHost = $(".arch__ai") ?? laneHost;
+
+  if (aiHost) {
+    aiHost.append(
       archLane({
-        flow: "감정 분석 · 답변 추천에 사용",
         title: "AI 학습 파이프라인",
         nodes: [
           {
@@ -94,10 +99,12 @@ export function initArchitecture() {
     // 학습 체인 뱃지
     const chain = el("div", { className: "tech__model-chain" });
     AI_PIPELINE.chain.forEach((step, index) => {
-      if (index > 0) chain.append(el("span", { html: icon("arrowRight", 12), style: { border: "0", background: "none", padding: "0" } }));
-      chain.append(el("span", { text: step }));
+      if (index > 0) {
+        chain.append(el("span", { className: "tech__model-arrow", html: icon("arrowRight", 12) }));
+      }
+      chain.append(el("span", { className: "tech__model-step", text: step }));
     });
-    laneHost.append(chain);
+    aiHost.append(chain);
   }
 
   /* ── 3. 기술 스택 ──────────────────────────────────────────── */
