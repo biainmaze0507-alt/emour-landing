@@ -34,7 +34,7 @@ export const TEAM = [
     roles: ["Backend", "AI"],
     tone: "--emotion-curiosity",
     avatar: "assets/team/choi-yeongu.svg",
-    blurb: "감정 분석을 위한 AI모델을 직접 학습시키는 한편, ERD 설계를 주도하였습니다.",
+    blurb: "회원·인증과 커플 앨범을 구현하고, 감정 분석 AI 모델을 직접 학습·고도화하며 ERD 설계를 주도했습니다.",
     tags: ["KcELECTRA 파인 튜닝", "데이터 크롤링", "ERD 설계"],
   },
   {
