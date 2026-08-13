@@ -88,11 +88,17 @@
   --emotion-distress: #9a5a83;
   --emotion-hurt: #c04361;
 
-  /* 극성 요약(감정 흐름 그래프용) */
+  /* 저장용 극성 요약 — 앱 tokens.css와 같은 별칭이다 */
   --emotion-positive: var(--emotion-joy);
   --emotion-neutral: var(--emotion-plain);
   --emotion-negative: var(--emotion-hurt);
   --emotion-empty: #ebe6e4;
+
+  /* 화면에서 감정을 묶는 4분류 — 묶음마다 그 안의 감정 색 하나를 대표로 쓴다 */
+  --group-positive: var(--emotion-joy);
+  --group-neutral: var(--emotion-plain);
+  --group-negative: var(--emotion-sadness);
+  --group-relation: var(--emotion-apology);
 
   /* 오늘의 기분 5단계 */
   --mood-very-sad: #9587c7;

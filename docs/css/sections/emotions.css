@@ -1,6 +1,6 @@
 /* ==========================================================================
    sections/emotions.css — 감정 15색 시스템
-   백엔드 EmotionType 열거형 15종과 1:1. 극성으로 걸러 보고, 눌러서 HEX를 복사한다.
+   백엔드 EmotionType 열거형 15종과 1:1. 분류로 걸러 보고, 눌러서 HEX를 복사한다.
    데이터: js/data/emotions.js  ·  동작: js/modules/emotionGrid.js
    ========================================================================== */
 
@@ -116,7 +116,7 @@
   gap: 8px;
 }
 
-.emotion-card__polarity {
+.emotion-card__group {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -124,7 +124,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   하단 — 감정 라벨 흐름 띠 + 극성 3색 설명
+   하단 — 감정 라벨 흐름 띠 + 4분류 설명
    -------------------------------------------------------------------------- */
 .emotions__marquee {
   margin-top: 34px;
@@ -140,14 +140,14 @@
   white-space: nowrap;
 }
 
-.emotions__polarity {
+.emotions__groups {
   margin-top: 34px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
 }
 
-.emotions__polarity-item {
+.emotions__group-item {
   padding: 18px 20px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -155,13 +155,13 @@
   border-left: 4px solid var(--tone);
 }
 
-.emotions__polarity-item b {
+.emotions__group-item b {
   font-size: var(--font-label);
   font-weight: 800;
   color: var(--tone);
 }
 
-.emotions__polarity-item p {
+.emotions__group-item p {
   margin-top: 6px;
   font-size: var(--font-caption);
   line-height: var(--leading-normal);

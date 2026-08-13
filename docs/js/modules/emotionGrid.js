@@ -2,27 +2,28 @@
  * js/modules/emotionGrid.js
  * ---------------------------------------------------------------------------
  * 감정 15색 섹션.
- *   · 필터 칩(전체 / 긍정 / 중립 / 부정) — 선택하면 나머지가 가라앉는다
- *   · 아래로 흐르는 감정 라벨 띠 + 극성 3색 설명 + 오늘의 기분 5단계
+ *   · 필터 칩(전체 / 긍정 / 중립 / 부정 / 관계 신호) — 선택하면 나머지가 가라앉는다
+ *   · 아래로 흐르는 감정 라벨 띠 + 4분류 설명 + 오늘의 기분 5단계
  */
 
-import { EMOTIONS, MOODS, POLARITY, countByPolarity } from "../data/emotions.js";
+import { EMOTIONS, MOODS, EMOTION_GROUPS, countByGroup } from "../data/emotions.js";
 import { icon } from "../data/icons.js";
 import { $, el, escapeHtml } from "./utils.js";
 
-const POLARITY_DESC = {
-  POSITIVE: "대화가 잘 흐르고 있다는 신호. 감정 흐름 그래프에서는 기쁨 색으로 묶어 표시합니다.",
-  NEUTRAL: "좋다 나쁘다로 나눌 수 없는 상태. 사과 · 궁금함처럼 관계를 잇는 신호가 여기 들어갑니다.",
-  NEGATIVE: "지금 살펴봐야 할 신호. 상처 색으로 묶여 흐름 그래프의 아래쪽을 그립니다.",
+const GROUP_DESC = {
+  POSITIVE: "대화가 잘 흐르고 있다는 신호입니다.",
+  NEUTRAL: "좋다 나쁘다로 나눌 수 없는 상태입니다. 대화의 대부분이 여기에 머뭅니다.",
+  NEGATIVE: "지금 살펴봐야 할 신호입니다.",
+  RELATION: "좋고 나쁨보다 상대를 향한 말이라 따로 둡니다. 관계가 오가는 자리입니다.",
 };
 
 /** 감정 카드 하나 */
 function emotionCard(emotion) {
-  const polarityLabel = POLARITY[emotion.polarity].label;
+  const groupLabel = EMOTION_GROUPS[emotion.group].label;
 
   return el("li", {
     className: "emotion-card",
-    attrs: { "data-polarity": emotion.polarity },
+    attrs: { "data-group": emotion.group },
     style: { "--tone": `var(${emotion.token})` },
     html: `
       <span class="emotion-card__head">
@@ -33,7 +34,7 @@ function emotionCard(emotion) {
         </span>
       </span>
       <span class="emotion-card__foot">
-        <span class="emotion-card__polarity">${escapeHtml(polarityLabel)}</span>
+        <span class="emotion-card__group">${escapeHtml(groupLabel)}</span>
       </span>
     `,
   });
@@ -52,14 +53,14 @@ export function initEmotionGrid() {
   const grid = $(".emotions__grid");
   const filters = $(".emotions__filters");
   const marquee = $(".emotions__marquee .marquee__track");
-  const polarityBox = $(".emotions__polarity");
+  const groupBox = $(".emotions__groups");
   const moodTrack = $(".mood-scale__track");
 
   /* ── 1. 필터 칩 ────────────────────────────────────────────── */
   if (filters) {
     filters.append(filterChip("ALL", "전체", EMOTIONS.length));
-    Object.values(POLARITY).forEach((p) => {
-      filters.append(filterChip(p.key, p.label, countByPolarity(p.key)));
+    Object.values(EMOTION_GROUPS).forEach((g) => {
+      filters.append(filterChip(g.key, g.label, countByGroup(g.key)));
     });
   }
 
@@ -80,7 +81,7 @@ export function initEmotionGrid() {
     });
 
     grid?.querySelectorAll(".emotion-card").forEach((card) => {
-      const match = key === "ALL" || card.dataset.polarity === key;
+      const match = key === "ALL" || card.dataset.group === key;
       card.classList.toggle("is-dimmed", !match);
     });
   });
@@ -105,16 +106,16 @@ export function initEmotionGrid() {
     });
   }
 
-  /* ── 5. 극성 3색 설명 ──────────────────────────────────────── */
-  if (polarityBox) {
-    Object.values(POLARITY).forEach((p) => {
-      polarityBox.append(
+  /* ── 5. 4분류 설명 ─────────────────────────────────────────── */
+  if (groupBox) {
+    Object.values(EMOTION_GROUPS).forEach((g) => {
+      groupBox.append(
         el("div", {
-          className: "emotions__polarity-item",
-          style: { "--tone": `var(${p.token})` },
+          className: "emotions__group-item",
+          style: { "--tone": `var(${g.token})` },
           html: `
-            <b>${escapeHtml(p.label)} · ${escapeHtml(p.key)} ${countByPolarity(p.key)}종</b>
-            <p>${escapeHtml(POLARITY_DESC[p.key])}</p>
+            <b>${escapeHtml(g.label)} ${countByGroup(g.key)}종</b>
+            <p>${escapeHtml(GROUP_DESC[g.key])}</p>
           `,
         })
       );
