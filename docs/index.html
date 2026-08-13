@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FBFAF9">
+
+  <title>Emour — 커플 대화 기반 감정 분석 및 회고 서비스</title>
+  <meta name="description" content="받는 말에 감정을 담고, 보내는 말에 정성을 담아. Emour 는 커플의 대화를 AI 로 분석해 감정을 보여주고, 지나간 대화를 둘의 기록으로 되돌려 주는 서비스입니다.">
+  <meta name="author" content="SSAFY 15기 공통 프로젝트 B208">
+
+  <!-- 공유 카드 (Open Graph / Twitter) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Emour — 커플 대화 기반 감정 분석 및 회고 서비스">
+  <meta property="og:description" content="텍스트만 남으면 표정도 목소리도 사라집니다. Emour 는 사라진 감정 단서를 AI 로 되살립니다.">
+  <meta property="og:image" content="assets/logo-mark.svg">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-mark.svg">
+
+  <!-- 서체 — Pretendard (앱과 동일). 실패해도 시스템 서체로 자연스럽게 떨어진다. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+  <!-- ── 스타일 (읽는 순서 = 겹치는 순서) ─────────────────────────
+       00-tokens      색·타이포·간격 등 모든 값의 단일 출처
+       01-base        리셋 · 기본 타이포 · 공통 텍스트 유틸
+       02-layout      상단바 · 섹션 셸 · 푸터 · 배경
+       03-motion      스크롤 등장 · 반복 애니메이션
+       04-components  버튼 · 칩 · 말풍선 · 앱 목업 등 재사용 조각
+       sections/*     섹션별 전용 스타일
+       ------------------------------------------------------------ -->
+  <link rel="stylesheet" href="css/00-tokens.css">
+  <link rel="stylesheet" href="css/01-base.css">
+  <link rel="stylesheet" href="css/02-layout.css">
+  <link rel="stylesheet" href="css/03-motion.css">
+  <link rel="stylesheet" href="css/04-components.css">
+  <link rel="stylesheet" href="css/sections/hero.css">
+  <link rel="stylesheet" href="css/sections/why.css">
+  <link rel="stylesheet" href="css/sections/features.css">
+  <link rel="stylesheet" href="css/sections/emotions.css">
+  <link rel="stylesheet" href="css/sections/film.css">
+  <link rel="stylesheet" href="css/sections/proof.css">
+  <link rel="stylesheet" href="css/sections/feedback.css">
+  <link rel="stylesheet" href="css/sections/tech.css">
+  <link rel="stylesheet" href="css/sections/identity.css">
+  <link rel="stylesheet" href="css/sections/team.css">
+
+  <script type="module" src="js/main.js"></script>
+
+  <!-- 안전장치 ------------------------------------------------------------
+       등장 연출([data-reveal])은 처음에 opacity:0 이라, JS 가 못 돌면
+       화면이 빈 채로 남는다. 아래 두 가지로 막는다.
+         1) JS 자체가 꺼져 있으면  html 에 .js 가 안 붙어 → 모두 보임
+         2) JS 는 켜졌는데 모듈이 실패하면(예: file:// 로 직접 열었을 때)
+            1.8초 뒤 .reveal-fallback 이 붙어 → 모두 보임
+       ※ file:// 에서는 ES 모듈이 CORS 로 막힙니다. 로컬 확인은 반드시
+         간이 서버로 여세요 (README 의 "로컬에서 보기" 참고).
+       --------------------------------------------------------------------- -->
+  <script>
+    document.documentElement.classList.add("js");
+    setTimeout(function () {
+      var root = document.documentElement;
+      if (!root.classList.contains("is-ready")) root.classList.add("reveal-fallback");
+    }, 1800);
+  </script>
+</head>
+
+<body>
+  <a class="sr-only" href="#main">본문으로 건너뛰기</a>
+
+  <!-- 화면에 고정된 분위기 레이어 (로즈 글로우 + 도트 그리드) -->
+  <div class="page-atmosphere" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       상단바 — 목차는 js/data/site.js 의 NAV_ITEMS 로 렌더된다
+       ══════════════════════════════════════════════════════════════ -->
+  <header class="site-nav">
+    <div class="nav-shell">
+      <a class="nav-brand" href="#top" aria-label="Emour 홈으로">
+        <img class="nav-brand__word" src="assets/logo-wordmark.svg" alt="Emour">
+        <span class="nav-brand__meaning">Emotion + Amour</span>
+      </a>
+
+      <nav class="nav-links" aria-label="섹션 목차"></nav>
+
+      <div class="nav-actions">
+        <a class="btn btn--ghost" data-link="repository" href="#" hidden>GitHub</a>
+        <a class="btn btn--solid" data-link="service" href="#" hidden>서비스 체험하기</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-sheet" aria-label="메뉴 열기">
+          <span class="nav-toggle__bars"><span></span><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-sheet" id="nav-sheet" aria-label="모바일 목차"></nav>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <main class="page-main" id="main">
+
+    <!-- ══════════════════════════════════════════════════════════
+         01. HERO
+         ══════════════════════════════════════════════════════════ -->
+    <section class="hero" id="top">
+      <div class="shell shell--wide">
+        <div class="hero__grid">
+
+          <!-- 왼쪽 · 브랜드 선언 -->
+          <div class="hero__copy" data-reveal-group="110">
+            <span class="hero__badge" data-reveal="fade">
+              <span class="hero__badge-pill">SSAFY 15기</span>
+              커플 대화 기반 감정 분석 및 회고 서비스
+            </span>
+
+            <h1 data-reveal>
+              <img class="hero__wordmark" src="assets/logo-wordmark.svg" alt="Emour">
+              <span class="hero__title">대화 속에서 사라진 <span class="mark">감정</span>을<br>다시 보이게 합니다</span>
+            </h1>
+
+            <p class="hero__lead" data-reveal>
+              같은 문장도 언제 말했는지에 따라 뜻이 달라집니다.
+              Emour 는 직전 대화까지 함께 읽어 메시지마다 감정을 붙이고,
+              지금 건넬 만한 말을 세 가지로 제안합니다.
+            </p>
+
+            <div class="hero__actions" data-reveal>
+              <a class="btn btn--solid btn--lg is-magnetic" href="#film">
+                소개 영상 보기
+              </a>
+              <a class="btn btn--outline btn--lg" href="#features">
+                핵심 기능 살펴보기
+              </a>
+            </div>
+
+            <!-- 수치는 js/data/site.js 의 HERO_FACTS 로 렌더 · 카운트업 -->
+            <div class="hero__facts" data-reveal="fade"></div>
+          </div>
+
+          <!-- 오른쪽 · 살아 있는 대화 카드 -->
+          <div class="hero__stage" data-reveal="scale">
+            <div class="hero__particles" aria-hidden="true"></div>
+
+            <div class="hero-chat">
+              <div class="hero-chat__head">
+                <span class="hero-chat__avatar">연인</span>
+                <span>
+                  <span class="hero-chat__name">우리 둘의 방</span>
+                  <span class="hero-chat__status">실시간 연결됨</span>
+                </span>
+              </div>
+
+              <!-- 대화는 js/modules/heroChat.js 가 재생한다 -->
+              <div class="hero-chat__log" aria-live="off"></div>
+
+              <div class="hero-chat__suggests"></div>
+
+              <div class="hero-chat__composer">
+                <span class="hero-chat__composer-fill">메시지를 입력하세요</span>
+                <span class="hero-chat__send" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <span class="hero__scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </span>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         02. WHY — 기획 배경
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="why">
+      <span class="section-index">No. 01</span>
+      <div class="shell">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Why Emour</p>
+          <h2 class="section-title" data-reveal>텍스트만 남으면,<br>표정도 목소리도 함께 사라집니다</h2>
+          <p class="section-lead" data-reveal>
+            메신저는 편리하지만 얼굴빛과 말끝의 떨림을 옮기지 못합니다.
+            그래서 같은 문장이 어떤 날은 배려로, 어떤 날은 서운함으로 읽힙니다.
+          </p>
+        </div>
+
+        <!-- 이론 근거 -->
+        <div class="why__theory surface-feature" data-reveal>
+          <div>
+            <p class="why__theory-source">언론정보학 · 컴퓨터 매개 커뮤니케이션 이론</p>
+            <p class="why__theory-term">
+              단서탈락관점
+              <span>cues-filtered-out perspective</span>
+            </p>
+          </div>
+          <p class="why__theory-body">
+            문자 기반 대화에서는 표정 · 목소리 · 몸짓 같은 <strong>비언어적 단서가 걸러져 사라진다</strong>는 관점입니다.
+            남은 것은 글자뿐이라 해석은 받는 사람의 상태에 크게 기댑니다.
+            Emour 는 <strong>사라진 단서를 감정 분석과 시각화로 보완</strong>해 오해가 생길 여지를 줄입니다.
+          </p>
+        </div>
+
+        <!-- AS IS ↔ TO BE 스위치 -->
+        <div class="why__switchbar" data-reveal="fade">
+          <span class="why__switch-label is-on" data-switch-label="off">AS IS · 감정 단서 없음</span>
+          <button class="why__switch" type="button" role="switch" aria-checked="false" aria-label="감정 단서 표시 전환"></button>
+          <span class="why__switch-label" data-switch-label="on">TO BE · 감정이 보임</span>
+        </div>
+
+        <div class="why__stage" data-reveal>
+          <!-- 대화는 js/modules/why.js 가 한 번만 그린다 -->
+          <div class="why__chat surface-panel"></div>
+
+          <div class="why__read surface-panel">
+            <span class="why__read-verdict">
+              <span class="chip__dot"></span>
+              <span class="why__read-slot">
+                <span data-state="off">오해가 생기는 지점</span>
+                <span data-state="on">서로를 이해하는 지점</span>
+              </span>
+            </span>
+
+            <h3 class="why__read-title why__read-slot">
+              <span data-state="off">“그래, 네 마음대로 해.”<br>— 동의일까요, 포기일까요?</span>
+              <span data-state="on">“그래, 네 마음대로 해.”<br>— 슬픔이 섞인 물러섬이었습니다</span>
+            </h3>
+
+            <p class="why__read-desc why__read-slot">
+              <span data-state="off">
+                문장만 보면 동의입니다. 하지만 앞선 대화에는 힘듦과 상처가 쌓여 있었습니다.
+                단서가 없으면 받는 사람은 자기 상태대로 읽고, 두 사람의 해석은 서로 다른 곳에 도착합니다.
+              </span>
+              <span data-state="on">
+                직전 대화를 함께 읽은 AI 가 각 문장에 감정을 붙이자, 같은 문장이 다르게 보입니다.
+                상대의 감정뿐 아니라 <b>내가 방금 어떤 감정을 보냈는지</b>도 함께 보이기 때문에
+                말이 거칠어지기 전에 스스로 멈출 수 있습니다.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <p class="why__closing" data-reveal="fade">
+          무엇보다도, <em>각자의 감정을 보면서 대화를 하면</em><br>재미있을 것 같았습니다.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         03. FEATURES — 핵심 기능
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="features">
+      <span class="section-index">No. 02</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head section-head--center" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Core Features</p>
+          <h2 class="section-title" data-reveal>대화가 오가는 동안,<br>Emour 는 세 가지 일을 합니다</h2>
+          <p class="section-lead" data-reveal>
+            아래 화면은 이미지가 아니라 실제로 동작하는 마크업입니다.
+            탭을 눌러 각 기능이 앱에서 어떻게 보이는지 확인해 보세요.
+          </p>
+        </div>
+
+        <div class="features__layout" data-reveal>
+          <!-- 탭 목록 · 목업 · 근거 패널 모두 js/modules/featureTabs.js 가 렌더 -->
+          <div class="features__tabs" role="tablist" aria-label="핵심 기능"></div>
+          <div class="features__device-wrap"></div>
+          <div class="features__details"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         04. EMOTIONS — 감정 시스템
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="emotions">
+      <span class="section-index">No. 03</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Emotion System</p>
+          <h2 class="section-title" data-reveal>감정 15종,<br>서버와 화면이 같은 이름을 씁니다</h2>
+          <p class="section-lead" data-reveal>
+            백엔드 <span class="mono">EmotionType</span> 열거형 15종과 화면의 색 · 아이콘이 1:1 로 묶여 있습니다.
+            그래서 어느 화면에서 보든 “슬픔”은 언제나 같은 파랑입니다.
+          </p>
+        </div>
+
+        <div class="emotions__toolbar" data-reveal="fade">
+          <div class="emotions__filters"></div>
+          <p class="emotions__hint">카드를 누르면 HEX 가 복사됩니다</p>
+        </div>
+
+        <div class="emotions__grid" data-reveal></div>
+
+        <!-- 흐르는 감정 라벨 띠 -->
+        <div class="emotions__marquee marquee" aria-hidden="true">
+          <div class="marquee__track"></div>
+        </div>
+
+        <div class="emotions__polarity" data-reveal></div>
+
+        <!-- 오늘의 기분 5단계 -->
+        <div class="mood-scale surface-panel" data-reveal>
+          <p class="mood-scale__title">오늘의 기분 · 5단계</p>
+          <p class="mood-scale__desc">
+            감정 15색과는 별개인 척도입니다. 대화에서 자동으로 붙는 감정과 달리,
+            하루의 기분은 사용자가 직접 캘린더에 기록합니다.
+            왼쪽(차갑고 가라앉음) → 오른쪽(따뜻하고 밝음) 순서입니다.
+          </p>
+          <div class="mood-scale__track"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         05. FILM — 소개 영상
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section film" id="film">
+      <span class="section-index">No. 04</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head section-head--center" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Introduction Film</p>
+          <h2 class="section-title" data-reveal>1분으로 보는 Emour</h2>
+        </div>
+
+        <div class="film__frame" data-reveal="scale">
+          <!-- preload="none" — 재생 버튼을 누르기 전까지 영상을 내려받지 않는다 -->
+          <video class="film__video" playsinline preload="none" muted>
+            <source src="assets/video/emour-promo.mp4" type="video/mp4">
+            브라우저가 영상 재생을 지원하지 않습니다.
+          </video>
+
+          <div class="film__cover">
+            <img class="film__cover-mark" src="assets/logo-mark.svg" alt="" aria-hidden="true">
+            <p class="film__cover-title">받는 말에 감정을 담고, 보내는 말에 정성을 담아</p>
+            <p class="film__cover-sub">Emour 소개 영상</p>
+            <button class="film__play" type="button" aria-label="소개 영상 재생"></button>
+          </div>
+
+          <div class="film__controls">
+            <button class="film__ctrl" type="button" data-film-toggle aria-label="재생 또는 일시정지"></button>
+            <div class="film__bar"><div class="film__bar-fill"></div></div>
+            <span class="film__time">0:00 / 0:00</span>
+            <button class="film__ctrl" type="button" data-film-mute aria-label="소리 끄기"></button>
+            <button class="film__ctrl" type="button" data-film-full aria-label="전체화면"></button>
+          </div>
+        </div>
+
+        <p class="film__caption" data-reveal="fade">
+          <span>영상 속 화면은 모두 실제 서비스 화면입니다</span>
+          <span>·</span>
+          <span>기준 규격 412 × 892 모바일 세로</span>
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         06. PROOF — 유저 테스트 · 모델 지표
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="proof">
+      <span class="section-index">No. 05</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">User Test &amp; Metrics</p>
+          <h2 class="section-title" data-reveal>만들고 끝내지 않고,<br>실제 커플에게 물어봤습니다</h2>
+          <p class="section-lead" data-reveal>
+            두 차례 베타 테스트를 열어 291명이 사용했고, 45명이 설문에 답했습니다.
+            아래 수치는 그 결과와 모델 평가값 그대로입니다.
+          </p>
+        </div>
+
+        <!-- 1단 · 테스트 규모 -->
+        <div class="proof__scale"></div>
+
+        <!-- 2단 · 만족도 + 일치율 -->
+        <div class="proof__satisfaction">
+          <div class="proof__ratings surface-panel" data-reveal="left"></div>
+          <div class="proof__donut surface-feature" data-reveal="right"></div>
+        </div>
+
+        <!-- 3단 · 화행 일치율 -->
+        <div data-reveal="fade">
+          <h3 class="proof__block-title">답장 추천은 “의도한 말투”로 나왔는가</h3>
+          <p class="proof__block-sub">
+            추천 문장이 요청한 화행(speech act)과 실제로 일치했는지를 사람이 직접 채점한 값입니다.
+          </p>
+        </div>
+        <div class="proof__speech"></div>
+
+        <!-- 4단 · Macro F1 여정 -->
+        <div class="proof__f1 surface-feature" data-reveal>
+          <h3 class="proof__block-title">Macro F1 은 왜 0.73 에서 0.39 가 되었나</h3>
+          <p class="proof__block-sub">
+            모델이 나빠진 것이 아니라, 채점 기준을 실제 대화에 가깝게 계속 어렵게 바꿔 왔습니다.
+          </p>
+          <div class="proof__f1-steps"></div>
+          <p class="proof__f1-closing"></p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         07. FEEDBACK — 피드백 반영 · 사용 후기
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="feedback">
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Feedback Loop</p>
+          <h2 class="section-title" data-reveal>1차에서 들은 말을,<br>2차에서 화면으로 돌려드렸습니다</h2>
+          <p class="section-lead" data-reveal>
+            1차 테스트에서 받은 지적을 하나도 버리지 않고 다음 배포에 반영했습니다.
+            카드를 눌러 무엇이 어떻게 바뀌었는지 확인해 보세요.
+          </p>
+        </div>
+
+        <div class="feedback__toolbar" data-reveal="fade">
+          <div class="feedback__legend">
+            <span><i class="is-issue"></i>사용자 의견</span>
+            <span><i class="is-fix"></i>개선 방향</span>
+          </div>
+          <button class="btn btn--outline" type="button" data-flip-all>개선 방향 모두 보기</button>
+        </div>
+
+        <div class="feedback__grid" data-reveal></div>
+
+        <div class="feedback__voices">
+          <div class="section-head section-head--center" data-reveal-group>
+            <p class="eyebrow" data-reveal="fade">Voices</p>
+            <h3 class="section-title" data-reveal>2차 테스트 사용 후기</h3>
+          </div>
+          <div class="feedback__voice-list"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         08. TECH — 시스템 아키텍처
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="tech">
+      <span class="section-index">No. 06</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">System Architecture</p>
+          <h2 class="section-title" data-reveal>커밋 한 번이<br>서비스까지 닿는 길</h2>
+          <p class="section-lead" data-reveal>
+            웹 · API · AI 세 개의 컨테이너를 한 대의 EC2 위에서 Nginx 가 경로로 나누어 보냅니다.
+            아래 도식은 이미지가 아니라 마크업이라, 화면이 좁아지면 알아서 접힙니다.
+          </p>
+        </div>
+
+        <div class="tech__numbers" data-reveal></div>
+
+        <div class="arch surface-panel" data-reveal>
+          <div class="arch__lanes"></div>
+        </div>
+
+        <div class="tech__stacks"></div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         09. IDENTITY — BI / CI
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="identity">
+      <span class="section-index">No. 07</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Brand Identity</p>
+          <h2 class="section-title" data-reveal>로고의 두 색이<br>화면 전체의 두 축이 됩니다</h2>
+          <p class="section-lead" data-reveal>
+            워드마크의 웜 그레이는 본문 텍스트로, 하트의 말린 장미는 브랜드 프라이머리로 이어집니다.
+            화면 어디를 잘라도 로고와 같은 톤이 나오도록 설계했습니다.
+          </p>
+        </div>
+
+        <!-- 로고 -->
+        <div class="identity__logo surface-feature" data-reveal>
+          <div class="identity__logo-stage">
+            <!-- logo-wordmark.svg 는 하트 + 글자가 함께 든 완성형 로고다 -->
+            <img class="identity__logo-lockup" src="assets/logo-wordmark.svg" alt="Emour 로고 기본형">
+            <div class="identity__logo-variants">
+              <span class="identity__logo-tile">
+                <img src="assets/logo-mark.svg" alt="Emour 심볼 마크 (앱 아이콘)">
+              </span>
+              <span class="identity__logo-variant-cap">
+                심볼 단독 — 앱 아이콘 · 파비콘<br>
+                <span class="mono">logo-mark.svg</span>
+              </span>
+            </div>
+          </div>
+          <div class="identity__logo-parts"></div>
+        </div>
+
+        <!-- 코어 팔레트 -->
+        <div class="palette" data-reveal>
+          <div class="palette__track" role="group" aria-label="코어 팔레트 8색"></div>
+          <div class="palette__detail">
+            <span class="palette__detail-chip"></span>
+            <div>
+              <p class="palette__detail-name"></p>
+              <p class="palette__detail-meta"></p>
+              <p class="palette__detail-desc"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 접근성 근거 -->
+        <div class="contrast surface-panel" data-reveal>
+          <div class="contrast__demo"></div>
+          <p class="contrast__note">
+            로고는 원본 CI 값 <strong>#CA8495</strong> 를 그대로 지킵니다. 브랜드 자산이기 때문입니다.
+            하지만 그 색 위의 흰 글씨는 대비가 <strong>2.90:1</strong> 로 WCAG 최소 기준(4.5:1)에 크게 미달합니다.
+            그래서 화면의 채워진 버튼에는 채도를 올린 <strong>#C14A67</strong> 을 씁니다.
+            <br><br>
+            <strong>로고는 원본 CI 를 지키고, 화면은 가독성을 확보한 보정판을 쓴다</strong> — 옆의 대비값은
+            페이지가 열릴 때 WCAG 공식으로 직접 계산한 값입니다.
+          </p>
+        </div>
+
+        <!-- 타이포 스케일 -->
+        <div class="typescale surface-panel" data-reveal>
+          <h3 class="proof__block-title">타이포그래피 스케일</h3>
+          <p class="proof__block-sub">
+            기본 서체는 Pretendard 이며, 크기는 8단계로 고정되어 있습니다. 아래는 실제 크기입니다.
+          </p>
+          <div class="typescale__rows"></div>
+        </div>
+
+        <!-- 사용 규칙 -->
+        <div class="rules">
+          <div class="rules__col rules__col--do" data-reveal="left">
+            <p class="rules__title">지켜야 할 것</p>
+            <ul class="rules__list"></ul>
+          </div>
+          <div class="rules__col rules__col--dont" data-reveal="right">
+            <p class="rules__title">하지 말아야 할 것</p>
+            <ul class="rules__list"></ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         10. TEAM — 팀원 소개
+         포트폴리오 주소는 js/data/team.js 의 portfolio 값만 채우면 연결됩니다.
+         ══════════════════════════════════════════════════════════ -->
+    <section class="section" id="team">
+      <span class="section-index">No. 08</span>
+      <div class="shell shell--wide">
+
+        <div class="section-head section-head--center" data-reveal-group>
+          <p class="eyebrow" data-reveal="fade">Our Team</p>
+          <h2 class="section-title" data-reveal>B208, 여섯 사람</h2>
+          <p class="section-lead" data-reveal>
+            역할은 나누었지만 “이 문장에 어떤 감정이 맞는가”는 끝까지 함께 이야기했습니다.
+          </p>
+        </div>
+
+        <div class="team__grid"></div>
+
+        <div class="team__banner surface-feature" data-reveal>
+          <div>
+            <h3 class="team__banner-title"></h3>
+            <p class="team__banner-desc"></p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         마무리
+         ══════════════════════════════════════════════════════════ -->
+    <section class="closing">
+      <div class="shell">
+        <img class="closing__mark" src="assets/logo-mark.svg" alt="" aria-hidden="true" data-reveal="scale">
+        <p class="closing__line" data-reveal>
+          받는 말에 <span class="mark">감정</span>을 담고, 보내는 말에 <span class="mark">정성</span>을 담아,<br>
+          서로의 마음이 <span class="accent">올곧게</span> 전해지도록
+        </p>
+        <div class="closing__actions" data-reveal="fade">
+          <a class="btn btn--solid btn--lg is-magnetic" data-link="service" href="#" hidden>Emour 사용해 보기</a>
+          <a class="btn btn--outline btn--lg" data-link="repository" href="#" hidden>소스 코드 보기</a>
+          <a class="btn btn--outline btn--lg" data-link="deck" href="#" hidden>발표 자료 보기</a>
+          <a class="btn btn--outline btn--lg" href="#top">처음으로 돌아가기</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       푸터
+       ══════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="shell shell--wide">
+      <div class="footer-top">
+        <div>
+          <img class="footer-word" src="assets/logo-wordmark.svg" alt="Emour">
+          <p class="footer-tagline">
+            Emotion + Amour.<br>
+            커플의 대화를 AI 로 분석해 감정을 보여주고,
+            지나간 대화를 둘의 기록으로 되돌려 주는 모바일 웹 서비스입니다.
+          </p>
+        </div>
+        <div class="footer-links"></div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> <span data-team-label>Team B208</span>. All rights reserved.</span>
+        <span>아이콘 · lucide (ISC License) © Lucide Contributors</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

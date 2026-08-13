@@ -1,0 +1,312 @@
+/* ==========================================================================
+   sections/emotions.css — 감정 15색 시스템
+   백엔드 EmotionType 열거형 15종과 1:1. 극성으로 걸러 보고, 눌러서 HEX 를 복사한다.
+   데이터: js/data/emotions.js  ·  동작: js/modules/emotionGrid.js
+   ========================================================================== */
+
+.emotions__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.emotions__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.emotions__hint {
+  font-size: var(--font-caption);
+  color: var(--color-text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   그리드
+   -------------------------------------------------------------------------- */
+.emotions__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: 12px;
+}
+
+.emotion-card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px 18px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  text-align: left;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+/* 카드 위쪽에 감정색 띠 — 호버하면 두꺼워진다 */
+.emotion-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: var(--tone);
+  transition: height var(--duration-base) var(--ease-out);
+}
+
+/* 뒤에서 번지는 색 — 호버 시에만 옅게 */
+.emotion-card::after {
+  content: "";
+  position: absolute;
+  right: -30%;
+  top: -60%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--tone);
+  opacity: 0;
+  filter: blur(28px);
+  transition: opacity var(--duration-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.emotion-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--tone) 42%, white);
+  box-shadow: var(--shadow-raised);
+}
+
+.emotion-card:hover::before { height: 6px; }
+.emotion-card:hover::after  { opacity: 0.24; }
+
+/* 필터에서 제외된 카드 — 사라지지 않고 가라앉는다(레이아웃 유지) */
+.emotion-card.is-dimmed {
+  opacity: 0.24;
+  filter: saturate(0.25);
+  transform: none;
+}
+
+.emotion-card.is-dimmed:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.emotion-card__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--tone) 12%, white);
+  color: var(--tone);
+  margin-bottom: 14px;
+}
+
+.emotion-card__icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 카드 안의 span 들은 기본이 inline 이라 블록으로 바꿔야 줄이 나뉜다
+   (한글 표시명 / 영문 코드는 위계가 다르므로 반드시 두 줄로 둔다) */
+.emotion-card__label {
+  display: block;
+  font-size: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.emotion-card__code {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  letter-spacing: 0.02em;
+  color: var(--color-text-tertiary);
+}
+
+.emotion-card__foot {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.emotion-card__hex {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+.emotion-card__swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  background: var(--tone);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.emotion-card__polarity {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--tone);
+}
+
+/* 클릭해서 복사했을 때 뜨는 배지 */
+.emotion-card__copied {
+  position: absolute;
+  inset: auto 12px 12px auto;
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast);
+  pointer-events: none;
+}
+
+.emotion-card.is-copied .emotion-card__copied {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   하단 — 감정 라벨 흐름 띠 + 극성 3색 설명
+   -------------------------------------------------------------------------- */
+.emotions__marquee {
+  margin-top: 34px;
+  padding: 16px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.emotions__marquee .chip {
+  border-color: color-mix(in srgb, var(--tone) 30%, white);
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 8%, white);
+  white-space: nowrap;
+}
+
+.emotions__polarity {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.emotions__polarity-item {
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-left: 4px solid var(--tone);
+}
+
+.emotions__polarity-item b {
+  font-size: var(--font-label);
+  font-weight: 800;
+  color: var(--tone);
+}
+
+.emotions__polarity-item p {
+  margin-top: 6px;
+  font-size: var(--font-caption);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+/* --------------------------------------------------------------------------
+   오늘의 기분 5단계 — 감정 15색과 별개인 척도
+   -------------------------------------------------------------------------- */
+.mood-scale {
+  margin-top: 34px;
+  padding: 24px;
+}
+
+.mood-scale__title {
+  font-size: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+}
+
+.mood-scale__desc {
+  margin-top: 6px;
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+}
+
+.mood-scale__track {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.mood-scale__step {
+  padding: 16px 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--tone);
+  color: #fff;
+  text-align: center;
+  transition: transform var(--duration-base) var(--ease-spring);
+}
+
+.mood-scale__step:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+.mood-scale__step b {
+  display: block;
+  font-size: var(--font-label);
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(46, 38, 36, 0.28);
+}
+
+.mood-scale__step span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  opacity: 0.9;
+  text-shadow: 0 1px 3px rgba(46, 38, 36, 0.28);
+}
+
+@media (max-width: 560px) {
+  .emotions__grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .mood-scale__track {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+  }
+
+  .mood-scale__step {
+    padding: 12px 4px 10px;
+  }
+
+  .mood-scale__step b { font-size: var(--font-micro); }
+  .mood-scale__step span { display: none; }
+}

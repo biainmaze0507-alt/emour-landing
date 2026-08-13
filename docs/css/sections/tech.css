@@ -1,0 +1,286 @@
+/* ==========================================================================
+   sections/tech.css — 시스템 아키텍처 · 기술 스택 · 규모 수치
+   아키텍처는 이미지가 아니라 HTML 노드 + SVG 연결선이라, 반응형으로 접힌다.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   규모 수치 띠
+   -------------------------------------------------------------------------- */
+.tech__numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  margin-bottom: clamp(40px, 5vw, 64px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.tech__number {
+  padding: 24px 20px;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.tech__number b {
+  display: block;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 직계 자식만 — b 안의 단위 span("종", "회")까지 블록이 되면 숫자와 줄이 갈린다 */
+.tech__number > span {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--font-caption);
+  color: var(--color-text-tertiary);
+}
+
+/* 단위는 숫자 옆에 붙이고 한 톤 작게 */
+.tech__number b > span:last-child {
+  font-size: 0.5em;
+  color: var(--color-text-tertiary);
+  margin-left: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   아키텍처 다이어그램
+   3열: 파이프라인 / 실행 · 서비스 / 저장소 + 아래 AI 학습 레인
+   -------------------------------------------------------------------------- */
+.arch {
+  padding: clamp(24px, 3vw, 40px);
+}
+
+.arch__lanes {
+  display: grid;
+  gap: 16px;
+}
+
+.arch__lane {
+  display: grid;
+  gap: 12px;
+}
+
+.arch__lane-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-micro);
+  font-weight: 800;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.arch__lane-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.arch__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+  gap: 12px;
+}
+
+/* 노드 */
+.arch__node {
+  position: relative;
+  padding: 16px 16px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.arch__node:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--tone, var(--color-primary)) 46%, white);
+  box-shadow: var(--shadow-card);
+}
+
+/* 노드 왼쪽 색 띠 — 역할군을 색으로 구분 */
+.arch__node::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--tone, var(--color-primary));
+}
+
+.arch__node-name {
+  font-size: var(--font-label);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.arch__node-role {
+  margin-top: 5px;
+  font-size: var(--font-micro);
+  line-height: var(--leading-normal);
+  color: var(--color-text-tertiary);
+  word-break: keep-all;
+}
+
+/* 노드에 붙는 경로 배지 (/api, /ws, /ai …) */
+.arch__node-path {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-sunken);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-secondary);
+}
+
+/* 레인 사이 흐름 표시 */
+.arch__flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 2px 0;
+  font-size: var(--font-micro);
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+
+.arch__flow::before,
+.arch__flow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-strong), transparent);
+}
+
+.arch__flow svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* AI 모델 강조 노드 */
+.arch__node--model {
+  border-color: var(--color-primary-soft);
+  background: var(--panel-tint);
+}
+
+.arch__node--model .arch__node-path {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* --------------------------------------------------------------------------
+   기술 스택
+   -------------------------------------------------------------------------- */
+/* 6개라 3 × 2 로 떨어지도록 최소 폭을 잡았다 (4 + 2 는 아래줄이 비어 보인다) */
+.tech__stacks {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 12px;
+}
+
+.tech__stack {
+  padding: 22px 22px 20px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.tech__stack-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-label);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+}
+
+.tech__stack-title i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tone, var(--color-primary));
+}
+
+.tech__stack-items {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech__stack-items .chip {
+  font-size: var(--font-micro);
+  padding: 5px 10px;
+}
+
+/* --------------------------------------------------------------------------
+   모델 카드 — 학습 파이프라인 요약
+   -------------------------------------------------------------------------- */
+.tech__model {
+  margin-top: 12px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+}
+
+.tech__model-name {
+  font-family: var(--font-mono);
+  font-size: var(--font-label);
+  font-weight: 700;
+  color: var(--color-text-accent);
+  word-break: break-all;
+}
+
+.tech__model-desc {
+  margin-top: 8px;
+  font-size: var(--font-caption);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.tech__model-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-micro);
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+
+.tech__model-chain span {
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .tech__model {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,491 @@
+/* ==========================================================================
+   04-components.css — 여러 섹션에서 재사용하는 조각
+   버튼 / 칩 / 표면(surface) / 감정 태그 / 앱 목업 프레임 / 말풍선 / 지표 타일
+   --------------------------------------------------------------------------
+   표면 선택 규칙 (frontend/src/styles/surfaces.css 와 동일한 사고):
+     .surface-plain   상자 없음   — 읽기용 내용의 기본값
+     .surface-panel   헤어라인    — 묶인 조작 영역
+     .surface-feature 색 있는 면  — 섹션당 하나만
+   모든 블록을 흰 카드로 띄우면 위계가 사라진다.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   버튼
+   -------------------------------------------------------------------------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-label);
+  font-weight: 700;
+  letter-spacing: var(--tracking-normal);
+  white-space: nowrap;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* 채워진 버튼 — 흰 글씨이므로 반드시 --color-action (4.73:1).
+   --color-primary(3.18:1)를 쓰면 대비가 모자란다. */
+.btn--solid {
+  background: var(--color-action);
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn--solid:hover {
+  background: var(--color-action-hover);
+}
+
+.btn--outline {
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text-accent);
+}
+
+.btn--ghost {
+  color: var(--color-text-secondary);
+  padding-inline: 14px;
+}
+
+.btn--ghost:hover {
+  color: var(--color-text-accent);
+  background: var(--color-primary-faint);
+}
+
+.btn--lg {
+  padding: 15px 30px;
+  font-size: var(--font-body);
+}
+
+/* 비활성 링크(예: 준비 중인 포트폴리오) — 클릭은 막되 존재는 보이게 */
+.btn.is-disabled,
+.btn[aria-disabled="true"] {
+  pointer-events: none;
+  background: var(--color-action-disabled);
+  color: var(--color-surface);
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   칩 / 태그
+   -------------------------------------------------------------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--font-caption);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.chip--brand {
+  border-color: var(--color-primary-soft);
+  background: var(--color-primary-faint);
+  color: var(--color-text-accent);
+}
+
+/* 선택 가능한 필터 칩 */
+.chip--toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+.chip--toggle[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--color-action);
+  color: var(--color-text-on-primary);
+}
+
+.chip__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   표면
+   -------------------------------------------------------------------------- */
+.surface-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.surface-feature {
+  border: 1px solid var(--color-primary-soft);
+  border-radius: var(--radius-xl);
+  background: var(--panel-tint);
+}
+
+.surface-sunken {
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+}
+
+/* 호버에 반응하는 카드 공통 — 살짝 뜨고 테두리에만 브랜드색이 스민다 */
+.lift {
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.lift:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary-soft);
+  box-shadow: var(--shadow-raised);
+}
+
+/* --------------------------------------------------------------------------
+   감정 태그 — 앱의 말풍선 위 표기와 동일한 모양
+   색은 --tone 변수로 주입한다. 예: style="--tone: var(--emotion-joy)"
+   -------------------------------------------------------------------------- */
+.emotion-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px 3px 6px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-micro);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tone, var(--color-text-secondary));
+  background: color-mix(in srgb, var(--tone, var(--color-text-tertiary)) 13%, white);
+  border: 1px solid color-mix(in srgb, var(--tone, var(--color-text-tertiary)) 28%, white);
+}
+
+.emotion-tag svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.emotion-tag--pop {
+  animation: pop-in 420ms var(--ease-spring) both;
+}
+
+/* --------------------------------------------------------------------------
+   앱 목업 프레임 — Emour 기준 규격 412 × 892 를 그대로 유지한 채 배율만 조절
+   (frontend 의 AppViewport 와 같은 사고방식)
+   -------------------------------------------------------------------------- */
+.device {
+  position: relative;
+  width: min(var(--app-frame-width), 100%);
+  aspect-ratio: 412 / 892;
+  border-radius: 44px;
+  padding: 11px;
+  background: linear-gradient(160deg, #efeae8, #d9d2cf 46%, #f4f0ef);
+  box-shadow: var(--shadow-frame);
+  flex-shrink: 0;
+}
+
+.device__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 34px;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  /* 목업 내부는 앱 실제 크기(412px)를 기준으로 쓴다 */
+  font-size: var(--font-caption);
+}
+
+/* 상단 노치 */
+.device__notch {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 33%;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: rgba(53, 45, 43, 0.86);
+  z-index: 4;
+}
+
+/* 앱 상단바 */
+.device__topbar {
+  flex-shrink: 0;
+  height: 52px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-divider);
+  background: var(--color-surface);
+  font-size: var(--font-topbar-title);
+  font-weight: 700;
+}
+
+.device__topbar-icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--color-text-tertiary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.device__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 앱 하단 내비 */
+.device__nav {
+  flex-shrink: 0;
+  height: 58px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  border-top: 1px solid var(--color-divider);
+  background: var(--color-surface);
+}
+
+.device__nav-item {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+}
+
+.device__nav-item svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.device__nav-item.is-active {
+  color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   말풍선 — 목업 안팎 어디서든 같은 모양
+   -------------------------------------------------------------------------- */
+.bubble-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: bubble-in var(--duration-slow) var(--ease-out) both;
+}
+
+.bubble-row--mine {
+  align-items: flex-end;
+}
+
+.bubble-row--yours {
+  align-items: flex-start;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 9px 13px;
+  font-size: var(--font-label);
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+.bubble-row--mine .bubble {
+  border-radius: var(--radius-lg) var(--radius-lg) 6px var(--radius-lg);
+  background: var(--color-action);
+  color: var(--color-text-on-primary);
+}
+
+.bubble-row--yours .bubble {
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.bubble-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+}
+
+.bubble-meta__read {
+  font-weight: 700;
+  color: var(--color-text-accent);
+}
+
+/* AI 분석 중 표시 */
+.analyzing {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-micro);
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+}
+
+.analyzing__spinner {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.8px solid var(--color-primary-soft);
+  border-top-color: var(--color-primary);
+  animation: spin 720ms linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   지표 타일 — 유저 테스트 / 기술 수치에서 공용
+   -------------------------------------------------------------------------- */
+.stat {
+  padding: 26px 24px;
+}
+
+.stat__value {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__unit {
+  font-size: 0.44em;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+}
+
+.stat__label {
+  margin-top: 12px;
+  font-size: var(--font-label);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.stat__note {
+  margin-top: 5px;
+  font-size: var(--font-caption);
+  line-height: var(--leading-normal);
+  color: var(--color-text-tertiary);
+}
+
+/* 가로 막대 게이지 — 점수·비율 표현 */
+.meter {
+  margin-top: 12px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+  overflow: hidden;
+}
+
+.meter__fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-action));
+  transition: width 1100ms var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   무한 흐름 띠 — 감정 라벨을 흘려보내는 구분 요소
+   -------------------------------------------------------------------------- */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  gap: 12px;
+  animation: marquee var(--marquee-duration, 46s) linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------------------------------
+   인용 말풍선 — 사용자 후기
+   -------------------------------------------------------------------------- */
+.quote {
+  position: relative;
+  padding: 24px 26px;
+  border-radius: var(--radius-xl);
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  word-break: keep-all;
+}
+
+.quote--left {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 8px;
+  color: var(--color-text-primary);
+}
+
+.quote--right {
+  background: var(--color-action);
+  border-bottom-right-radius: 8px;
+  color: var(--color-text-on-primary);
+  box-shadow: var(--shadow-primary);
+}
+
+.quote__by {
+  display: block;
+  margin-top: 14px;
+  font-size: var(--font-caption);
+  font-weight: 700;
+  opacity: 0.72;
+}

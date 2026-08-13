@@ -1,0 +1,419 @@
+/* ==========================================================================
+   sections/identity.css — BI / CI
+   로고 두 색 → 화면 두 축 / 코어 팔레트 / 접근성 근거 / 타이포 스케일
+   팔레트 트랙은 참고 랜딩(Ploty)의 "넓어지는 스와치" 인터랙션을 가져왔다.
+   동작: js/modules/palette.js
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   로고
+   -------------------------------------------------------------------------- */
+.identity__logo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  padding: clamp(30px, 3.6vw, 52px);
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.identity__logo-stage {
+  display: grid;
+  place-items: center;
+  gap: 22px;
+  padding: clamp(26px, 3vw, 44px);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+/* 기본형 — 하트 + 글자가 함께 든 완성형 로고 */
+.identity__logo-lockup {
+  height: clamp(38px, 4.2vw, 56px);
+  width: auto;
+}
+
+/* 심볼 단독 — 앱 아이콘 형태로 보여 준다 */
+.identity__logo-variants {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-divider);
+  width: 100%;
+  justify-content: center;
+}
+
+.identity__logo-tile {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: var(--ci-bg-base);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
+}
+
+.identity__logo-tile img {
+  width: 30px;
+}
+
+.identity__logo-variant-cap {
+  font-size: var(--font-caption);
+  line-height: var(--leading-normal);
+  color: var(--color-text-tertiary);
+}
+
+.identity__logo-parts {
+  display: grid;
+  gap: 10px;
+}
+
+.identity__logo-part {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.identity__logo-part i {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-xs);
+  background: var(--tone);
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.identity__logo-part b {
+  display: block;
+  font-size: var(--font-label);
+  font-weight: 800;
+}
+
+.identity__logo-part span {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+}
+
+.identity__logo-part code {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   팔레트 트랙 — 마우스를 올린 스와치가 넓어지고 아래 설명이 바뀐다
+   -------------------------------------------------------------------------- */
+.palette {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.palette__track {
+  display: flex;
+  height: clamp(130px, 16vw, 178px);
+}
+
+.palette__swatch {
+  flex: 1;
+  position: relative;
+  background: var(--tone);
+  transition: flex var(--duration-slow) var(--ease-out);
+}
+
+.palette__swatch[aria-selected="true"] {
+  flex: 2.6;
+}
+
+/* 스와치 안 라벨 — 선택됐을 때만 보인다.
+   --ink 는 스와치 색 위에서 읽히는 글자색(밝은 면에는 어두운 글자)이다. */
+.palette__swatch-name {
+  position: absolute;
+  inset: auto 0 16px;
+  padding-inline: 6px;
+  text-align: center;
+  font-size: var(--font-caption);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ink, #fff);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.palette__swatch[aria-selected="true"] .palette__swatch-name {
+  opacity: 1;
+}
+
+.palette__detail {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+  padding: 22px 26px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  min-height: 108px;
+}
+
+.palette__detail-chip {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--tone, var(--color-primary));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+.palette__detail-name {
+  font-size: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+}
+
+.palette__detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+  /* 토큰 이름(--ci-accent)은 대문자로 바꾸면 안 되므로 uppercase 를 걸지 않는다.
+     HEX 는 데이터에 이미 대문자로 들어 있다. */
+}
+
+.palette__detail-desc {
+  margin-top: 9px;
+  font-size: var(--font-label);
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   접근성 근거 — 로고 색과 UI 색이 왜 다른지
+   실제 대비값을 계산해서 보여준다(js/modules/palette.js).
+   -------------------------------------------------------------------------- */
+.contrast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 3vw, 44px);
+  align-items: center;
+  padding: clamp(26px, 3vw, 40px);
+  margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.contrast__demo {
+  display: grid;
+  gap: 12px;
+}
+
+.contrast__sample {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
+  background: var(--tone);
+  color: #fff;
+}
+
+.contrast__sample-text {
+  font-size: var(--font-body);
+  font-weight: 700;
+}
+
+.contrast__sample-ratio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  font-weight: 700;
+}
+
+.contrast__verdict {
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.contrast__verdict.is-pass { color: var(--color-success); }
+.contrast__verdict.is-fail { color: var(--color-danger); }
+
+.contrast__note {
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.contrast__note strong {
+  color: var(--color-text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   타이포 스케일 — 실제 크기로 렌더한다
+   -------------------------------------------------------------------------- */
+.typescale {
+  padding: clamp(26px, 3vw, 40px);
+}
+
+.typescale__rows {
+  margin-top: 22px;
+  display: grid;
+  gap: 2px;
+}
+
+.typescale__row {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr) 54px;
+  align-items: baseline;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.typescale__row:last-child {
+  border-bottom: 0;
+}
+
+.typescale__token {
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-text-tertiary);
+}
+
+.typescale__sample {
+  font-size: var(--size);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.typescale__size {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   규칙 목록 — 지켜야 할 것 / 하지 말아야 할 것
+   -------------------------------------------------------------------------- */
+.rules {
+  margin-top: clamp(40px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.rules__col {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.rules__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-label);
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.rules__title svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rules__col--do .rules__title    { color: var(--color-success); }
+.rules__col--dont .rules__title  { color: var(--color-danger); }
+
+.rules__list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.rules__list li + li {
+  margin-top: 9px;
+}
+
+.rules__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+@media (max-width: 900px) {
+  .identity__logo,
+  .contrast {
+    grid-template-columns: 1fr;
+  }
+
+  .typescale__row {
+    grid-template-columns: 120px minmax(0, 1fr) 48px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 560px) {
+  .palette__track {
+    height: 108px;
+  }
+
+  .palette__detail {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .typescale__row {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+  }
+
+  .typescale__sample {
+    grid-column: 1 / -1;
+  }
+}

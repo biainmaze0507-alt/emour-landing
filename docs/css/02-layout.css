@@ -1,0 +1,417 @@
+/* ==========================================================================
+   02-layout.css — 페이지 골격
+   상단바 / 스크롤 진행바 / 섹션 셸 / 배경 분위기 / 푸터
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   페이지 배경 — 스크롤과 무관하게 화면에 고정된 분위기 레이어
+   섹션마다 배경색을 다르게 칠하는 대신, 옅은 로즈 글로우 두 개만 깔아
+   전체가 하나의 면으로 이어지게 한다.
+   -------------------------------------------------------------------------- */
+.page-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60vw 60vw at 12% -8%, rgba(240, 195, 206, 0.42), transparent 62%),
+    radial-gradient(52vw 52vw at 96% 18%, rgba(163, 150, 210, 0.16), transparent 60%),
+    radial-gradient(46vw 46vw at 50% 108%, rgba(209, 116, 141, 0.14), transparent 60%);
+}
+
+/* 아주 옅은 도트 그리드 — 화면이 비어 보이지 않게 하는 최소한의 질감 */
+.page-atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(53, 45, 43, 0.055) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(70% 60% at 50% 40%, #000 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 40%, #000 0%, transparent 100%);
+}
+
+/* 커서를 따라다니는 로즈 글로우 (데스크톱 · 포인터 기기 전용).
+   위치는 js/modules/cursorGlow.js 가 --mx / --my 로 넣어 준다. */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  margin: -260px 0 0 -260px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(209, 116, 141, 0.16), transparent 66%);
+  transform: translate3d(var(--mx, 50vw), var(--my, 50vh), 0);
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.cursor-glow.is-visible {
+  opacity: 1;
+}
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   상단바 — 참고 랜딩(Ploty)의 고정 내비 구조를 Emour 톤으로 재해석.
+   스크롤하면 유리처럼 흐려지며 헤어라인이 생긴다.
+   -------------------------------------------------------------------------- */
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  transition:
+    background var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+
+.site-nav.is-stuck {
+  background: rgba(251, 250, 249, 0.82);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+  border-bottom-color: var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.nav-shell {
+  width: 100%;
+  max-width: var(--shell-wide);
+  margin: 0 auto;
+  padding: 0 var(--shell-pad);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+/* logo-wordmark.svg 는 하트 + 글자가 함께 든 완성형 로고다.
+   (하트만 필요한 자리에는 logo-mark.svg 를 쓴다) */
+.nav-brand__word {
+  height: 22px;
+  width: auto;
+}
+
+.nav-brand__meaning {
+  padding-left: 10px;
+  margin-left: 2px;
+  border-left: 1px solid var(--color-border-strong);
+  font-size: var(--font-micro);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 1080px) {
+  .nav-brand__meaning { display: none; }
+}
+
+/* 가운데 링크 묶음 */
+.nav-links {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-links__item {
+  position: relative;
+  padding: 8px 13px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-label);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.nav-links__item:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-tint);
+}
+
+.nav-links__item.is-active {
+  color: var(--color-text-accent);
+  background: var(--color-primary-faint);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* 모바일 메뉴 토글 — 3줄이 X 로 바뀐다 */
+.nav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  place-items: center;
+}
+
+.nav-toggle__bars {
+  position: relative;
+  width: 17px;
+  height: 11px;
+}
+
+.nav-toggle__bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.6px;
+  border-radius: 2px;
+  background: var(--color-text-primary);
+  transition: transform var(--duration-base) var(--ease-out), opacity var(--duration-fast);
+}
+
+.nav-toggle__bars span:nth-child(1) { top: 0; }
+.nav-toggle__bars span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggle__bars span:nth-child(3) { bottom: 0; }
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars span:nth-child(1) {
+  transform: translateY(4.7px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__bars span:nth-child(3) {
+  transform: translateY(-4.7px) rotate(-45deg);
+}
+
+/* 모바일 시트 */
+.nav-sheet {
+  position: fixed;
+  inset: var(--nav-height) 0 auto;
+  z-index: 99;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px var(--shell-pad) 26px;
+  background: rgba(251, 250, 249, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-raised);
+  transform-origin: top center;
+  animation: sheet-in var(--duration-base) var(--ease-out);
+}
+
+.nav-sheet.is-open {
+  display: flex;
+}
+
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-sheet__item {
+  padding: 14px 4px;
+  font-size: var(--font-heading);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.nav-sheet__item:last-of-type {
+  border-bottom: 0;
+}
+
+/* 스크롤 진행바 — 상단바 바로 아래에 붙는 1.5px 라인 */
+.scroll-progress {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  z-index: 101;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-action));
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: grid; }
+  .nav-actions .btn--ghost { display: none; }
+  .nav-shell { justify-content: space-between; }
+}
+
+/* --------------------------------------------------------------------------
+   섹션 셸
+   -------------------------------------------------------------------------- */
+.page-main {
+  position: relative;
+  z-index: 2;
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-gap);
+}
+
+/* 섹션 사이 헤어라인 — 색 대신 선으로만 구분한다 */
+.section + .section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100% - var(--shell-pad) * 2, var(--shell-wide));
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-border) 18%,
+    var(--color-border) 82%,
+    transparent
+  );
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding-inline: var(--shell-pad);
+}
+
+.shell--wide {
+  max-width: var(--shell-wide);
+}
+
+/* 섹션 헤더 — 왼쪽 정렬(기본) / 가운데 정렬(--center)
+   폭 제한은 헤더가 아니라 .section-lead 에만 건다.
+   헤더에 62ch 를 걸면 그 안의 큰 제목까지 좁아져서 원치 않는 곳에서 줄이 갈린다.
+   제목의 줄바꿈은 마크업의 <br> 과 text-wrap: balance 로 잡는다. */
+.section-head {
+  margin-bottom: clamp(40px, 5vw, 68px);
+}
+
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-head--center .eyebrow {
+  justify-content: center;
+}
+
+.section-head--center .section-lead {
+  margin-inline: auto;
+}
+
+/* 섹션 번호 배지 — 발표자료 목차의 "No. 1" 표기를 이어받는다 */
+.section-index {
+  position: absolute;
+  top: calc(var(--section-gap) - 34px);
+  left: var(--shell-pad);
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  letter-spacing: 0.1em;
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 900px) {
+  .section-index { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   푸터
+   -------------------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-tint);
+  padding-block: clamp(56px, 7vw, 88px) 40px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.footer-word {
+  height: clamp(30px, 4vw, 46px);
+  width: auto;
+}
+
+.footer-tagline {
+  margin-top: 20px;
+  max-width: 42ch;
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.footer-links__title {
+  margin-bottom: 12px;
+  font-size: var(--font-micro);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.footer-links li + li {
+  margin-top: 9px;
+}
+
+.footer-links a {
+  font-size: var(--font-label);
+  color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footer-links a:hover {
+  color: var(--color-text-accent);
+}
+
+.footer-bottom {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding-top: 22px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  justify-content: space-between;
+  font-size: var(--font-caption);
+  color: var(--color-text-tertiary);
+}
+
+@media (max-width: 760px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

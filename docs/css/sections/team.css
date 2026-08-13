@@ -1,0 +1,234 @@
+/* ==========================================================================
+   sections/team.css — 팀원 소개
+   --------------------------------------------------------------------------
+   포트폴리오 링크 연결 방법
+     js/data/team.js 의 각 멤버에 portfolio: "https://..." 를 채우면
+     카드 전체가 <a> 로 바뀌고 "포트폴리오 보기 →" 가 활성화된다.
+     비워 두면 <article> 로 렌더되고 "준비 중" 배지가 붙는다.
+     ⇒ 링크가 없어도 레이아웃은 완전히 동일하다.
+   ========================================================================== */
+
+/* 6명이라 3 × 2 로 떨어지도록 최소 폭을 잡았다 */
+.team__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 14px;
+}
+
+.member {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px 22px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  overflow: hidden;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+/* 멤버마다 다른 감정색이 카드 위에서 옅게 번진다 */
+.member::before {
+  content: "";
+  position: absolute;
+  inset: -40% 40% auto -30%;
+  height: 190px;
+  border-radius: 50%;
+  background: var(--tone);
+  opacity: 0.1;
+  filter: blur(34px);
+  transition: opacity var(--duration-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.member:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--tone) 40%, white);
+  box-shadow: var(--shadow-raised);
+}
+
+.member:hover::before {
+  opacity: 0.2;
+}
+
+/* 아바타 — 사진 없이 이니셜 모노그램.
+   나중에 사진을 넣으려면 .member__avatar 안에 <img> 를 두면 된다. */
+.member__avatar {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--tone) 14%, white);
+  color: var(--tone);
+  font-size: var(--font-title);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 26%, white);
+  margin-bottom: 18px;
+}
+
+.member__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.member__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 9px;
+}
+
+.member__role {
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, var(--tone) 13%, white);
+  color: color-mix(in srgb, var(--tone) 78%, var(--ci-ink));
+}
+
+.member__name {
+  font-size: var(--font-title);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.member__blurb {
+  margin-top: 10px;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+/* 담당 항목 */
+.member__tags {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.member__tag {
+  padding: 4px 9px;
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-tint);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+/* 카드 하단 — 포트폴리오 연결부 */
+.member__foot {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.member__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-caption);
+  font-weight: 800;
+  color: var(--color-text-accent);
+  transition: gap var(--duration-fast) var(--ease-out);
+}
+
+.member:hover .member__link {
+  gap: 10px;
+}
+
+.member__link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 링크가 아직 없을 때 */
+.member__link--soon {
+  color: var(--color-text-placeholder);
+  font-weight: 700;
+}
+
+.member:hover .member__link--soon {
+  gap: 6px;
+}
+
+/* 팀 요약 배너 */
+.team__banner {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: clamp(28px, 3.4vw, 44px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.team__banner-title {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+}
+
+.team__banner-desc {
+  margin-top: 10px;
+  max-width: 62ch;
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+@media (max-width: 700px) {
+  .team__banner {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   마무리 — 브랜드 문구
+   -------------------------------------------------------------------------- */
+.closing {
+  padding-block: clamp(80px, 10vw, 150px);
+  text-align: center;
+}
+
+.closing__mark {
+  width: clamp(56px, 7vw, 88px);
+  margin: 0 auto 26px;
+}
+
+.closing__line {
+  font-size: clamp(22px, 3.4vw, 42px);
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+}
+
+.closing__actions {
+  margin-top: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}

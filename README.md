@@ -1,0 +1,86 @@
+# Emour Landing
+
+커플 대화 기반 감정 분석 및 회고 서비스 **Emour** 의 소개 페이지 저장소입니다.
+
+빌드 도구가 없습니다. 순수 HTML + CSS + ES Module 로만 되어 있어서
+`docs/` 폴더를 그대로 정적 호스팅에 올리면 바로 동작합니다.
+
+```
+emour-landing/
+├── README.md      ← 지금 이 문서 (배포 방법)
+└── docs/          ← 실제 사이트. 이 폴더가 통째로 배포됩니다
+    ├── index.html
+    ├── assets/    로고 · 파비콘 · 소개 영상
+    ├── css/       디자인 토큰 + 섹션별 스타일
+    ├── js/        data(내용) + modules(동작)
+    ├── .nojekyll
+    └── README.md  ← 폴더 구조 · 수정 가이드 (여기부터 읽으세요)
+```
+
+---
+
+## 배포 — GitHub Pages
+
+1. 이 폴더를 새 저장소로 만들어 푸시합니다.
+
+   ```bash
+   cd emour-landing
+   git init
+   git add .
+   git commit -m "Add Emour landing page"
+   git branch -M main
+   git remote add origin https://github.com/<계정>/<저장소>.git
+   git push -u origin main
+   ```
+
+2. GitHub 저장소에서 **Settings → Pages** 로 이동합니다.
+3. **Source: Deploy from a branch** / **Branch: `main`** / **Folder: `/docs`** 를 선택하고 저장합니다.
+
+1~2분 뒤 `https://<계정>.github.io/<저장소>/` 에서 열립니다.
+
+> 모든 경로가 상대 경로라 하위 경로(`/<저장소>/`)에 배포해도 그대로 동작합니다.
+> `docs/.nojekyll` 은 Jekyll 전처리를 건너뛰게 하는 빈 표식 파일입니다. 지우지 마세요.
+
+---
+
+## 로컬에서 보기
+
+`index.html` 을 더블클릭해서 열면 안 됩니다. `file://` 에서는 브라우저가 ES Module 을
+CORS 정책으로 막아 인터랙션이 동작하지 않습니다. 간이 서버로 여세요.
+
+```bash
+cd docs
+
+python -m http.server 5500     # Python
+npx serve .                    # Node
+```
+
+→ http://localhost:5500
+
+VS Code 를 쓴다면 Live Server 확장을 설치하고 `docs/index.html` 우클릭 → *Open with Live Server*.
+
+---
+
+## 무엇을 어디서 고치나
+
+| 하고 싶은 일 | 고칠 파일 |
+| --- | --- |
+| 팀원 포트폴리오 링크 연결 | `docs/js/data/team.js` 의 `portfolio` |
+| 서비스 · 저장소 · 발표자료 링크 | `docs/js/data/site.js` 의 `LINKS` |
+| 브랜드 색 변경 | `docs/css/00-tokens.css` 의 `[1] CI 원색` 블록 |
+| 수치 · 문구 등 내용 | `docs/js/data/` 의 해당 파일 |
+| 섹션 제목 · 순서 | `docs/index.html` |
+| 소개 영상 교체 | `docs/assets/video/emour-promo.mp4` 덮어쓰기 |
+
+자세한 폴더 구조와 설계 규칙은 **[`docs/README.md`](docs/README.md)** 에 있습니다.
+
+---
+
+## 출처
+
+- 아이콘 [lucide](https://lucide.dev) (ISC License) © Lucide Contributors
+- 서체 [Pretendard](https://github.com/orioncactus/pretendard) (OFL)
+- 색 · 타이포 · 감정 15종 값은 Emour 본 저장소의
+  `frontend/src/styles/tokens.css` · `frontend/src/utils/emotions.js` 와 1:1 로 맞춰져 있습니다.
+
+© 2026 SSAFY 15기 공통 프로젝트 · B208
