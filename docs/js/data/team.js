@@ -51,7 +51,7 @@ export const TEAM = [
     tone: "--emotion-apology",
     avatar: "assets/team/hwang-minhee.svg",
     blurb: "전반적인 디자인 체계를 담당하여 화면 전체가 하나의 톤을 갖게 정리했습니다.",
-    tags: ["BI/CI 및 디자인 토큰 설계", "로그인/회원가입 · 대시보드 · 채팅방 페이지 구현"],
+    tags: ["BI/CI 및 디자인 토큰 설계", "로그인/회원가입 · 대시보드 · 채팅방 페이지 구현", "발표용 영상 및 장표 제작"],
   },
   {
     name: "윤선민",
