@@ -178,7 +178,7 @@ export const TEMPERATURE = {
  */
 export const LOGO_BUILD = {
   eyebrow: "Symbol",
-  headline: "왼쪽의 e와 오른쪽의 m이 맞물려 하트가 됩니다",
+  headline: "두 알파벳의 악수로써 해낸 형상화",
   notes: [
     { key: "e", label: "왼쪽 획 — e", desc: "안쪽으로 한 번 감기는 획. e의 열린 곡선을 그대로 눕혔습니다." },
     { key: "m", label: "오른쪽 획 — m", desc: "두 번 솟는 획. m의 두 봉우리가 하트의 오른쪽 어깨가 됩니다." },
