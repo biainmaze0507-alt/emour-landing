@@ -379,12 +379,14 @@
 }
 
 /* 입력창 글자 — 비어 있으면 안내 문구 색, 글자가 들어오면 본문 색.
-   히어로에서는 여기에 한 글자씩 쳐진다 (js/modules/heroChat.js) */
+   히어로에서는 여기에 한 글자씩 쳐진다 (js/modules/heroChat.js)
+   한 줄을 넘기면 앞부분이 왼쪽으로 밀려 나가고 방금 친 글자가 남는다. */
 .chat-window__composer-text {
+  flex: 1;
+  min-width: 0;
   font-size: var(--font-label);
   color: var(--color-text-placeholder);
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -595,6 +597,11 @@
   overscroll-behavior-x: contain;
   mask-image: linear-gradient(90deg, #000 88%, transparent);
   -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+}
+
+/* 저절로 훑는 동안에는 스냅을 끈다 — 칩마다 걸려 움직임이 끊긴다 */
+.suggests__row.is-panning {
+  scroll-snap-type: none;
 }
 
 /* 실제 앱처럼 화살표 버튼 없는 얇은 막대만 남긴다 */

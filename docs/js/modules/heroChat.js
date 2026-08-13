@@ -49,11 +49,12 @@ export function initHeroChat() {
   const suggestRow = suggestBox?.querySelector(".suggests__row");
 
   const showSuggests = (on) => {
-    suggestBox?.classList.toggle("is-on", on);
+    // 감추기 전에 처음 위치로 돌려 둔다 (칸이 사라진 뒤에는 스크롤이 먹지 않는다)
     if (!on && suggestRow) {
       suggestRow.scrollLeft = 0;
       suggestRow.classList.remove("is-end");
     }
+    suggestBox?.classList.toggle("is-on", on);
   };
 
   /**
@@ -61,23 +62,43 @@ export function initHeroChat() {
    * 칩은 세 종류(해결형 · 공감형 · 상냥하게)라 한 화면에 다 들어오지 않는다 —
    * 앱에서 손으로 넘겨 보는 자리이므로, 여기서는 그 폭을 대신 보여 준다.
    */
-  async function panSuggests(state, duration = 2200, frame = 24) {
+  async function panSuggests(state, duration = 2200) {
     if (!suggestRow) return;
 
     const distance = suggestRow.scrollWidth - suggestRow.clientWidth;
     if (distance <= 1) return;
 
-    for (let elapsed = frame; elapsed <= duration; elapsed += frame) {
-      await wait(frame);
-      if (state.cancelled) return;
+    suggestRow.classList.add("is-panning");
 
-      const progress = elapsed / duration;
-      // 시작과 끝을 부드럽게 (ease-in-out)
-      const eased =
-        progress < 0.5 ? 2 * progress * progress : 1 - (-2 * progress + 2) ** 2 / 2;
+    /* 화면이 그려지는 박자에 맞춰 한 프레임씩 옮긴다.
+       프레임이 오지 않는 동안(다른 탭에 있을 때 등)에도 멈춰 있지 않도록
+       시간 제한을 함께 걸어 둔다. */
+    await Promise.race([
+      new Promise((resolve) => {
+        let start = null;
 
-      suggestRow.scrollLeft = distance * eased;
-    }
+        const step = (now) => {
+          if (state.cancelled) return resolve();
+          start ??= now;
+
+          const progress = Math.min((now - start) / duration, 1);
+          // 시작과 끝을 부드럽게 (ease-in-out)
+          const eased =
+            progress < 0.5 ? 2 * progress * progress : 1 - (-2 * progress + 2) ** 2 / 2;
+
+          suggestRow.scrollLeft = distance * eased;
+
+          if (progress < 1) requestAnimationFrame(step);
+          else resolve();
+        };
+
+        requestAnimationFrame(step);
+      }),
+      wait(duration + 800),
+    ]);
+
+    suggestRow.classList.remove("is-panning");
+    if (state.cancelled) return;
 
     suggestRow.scrollLeft = distance;
     suggestRow.classList.add("is-end");
@@ -94,6 +115,8 @@ export function initHeroChat() {
     field?.classList.toggle("is-typing", Boolean(text));
     // 보낼 것이 있을 때만 보내기 버튼에 색이 들어온다 (앱과 같은 규칙)
     send?.classList.toggle("is-ready", Boolean(text));
+    // 커서를 따라간다 — 한 줄을 넘기면 앞부분이 왼쪽으로 밀려 나간다
+    input.scrollLeft = text ? input.scrollWidth : 0;
   };
 
   /** 입력창에 한 글자씩 쳐 넣는다 */
