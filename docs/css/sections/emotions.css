@@ -19,25 +19,21 @@
   gap: 8px;
 }
 
-.emotions__hint {
-  font-size: var(--font-caption);
-  color: var(--color-text-tertiary);
-}
 
 /* --------------------------------------------------------------------------
    그리드
    -------------------------------------------------------------------------- */
 .emotions__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
   list-style: none;
 }
 
 .emotion-card {
   position: relative;
   overflow: hidden;
-  padding: 20px 18px 18px;
+  padding: 14px 14px 12px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -45,61 +41,39 @@
   transition: opacity var(--duration-base) var(--ease-out);
 }
 
-/* 카드 위쪽에 감정색 띠 — 호버하면 두꺼워진다 */
+/* 카드 위쪽 감정색 띠 */
 .emotion-card::before {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: 3px;
+  height: 2px;
   background: var(--tone);
-  transition: height var(--duration-base) var(--ease-out);
-}
-
-/* 뒤에서 번지는 색 — 호버 시에만 옅게 */
-.emotion-card::after {
-  content: "";
-  position: absolute;
-  right: -30%;
-  top: -60%;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: var(--tone);
-  opacity: 0;
-  filter: blur(28px);
-  transition: opacity var(--duration-base) var(--ease-out);
-  pointer-events: none;
 }
 
 
-.emotion-card:hover::after  { opacity: 0.24; }
+
 
 /* 필터에서 제외된 카드 — 사라지지 않고 가라앉는다(레이아웃 유지) */
 .emotion-card.is-dimmed {
   opacity: 0.24;
   filter: saturate(0.25);
-  transform: none;
 }
 
-.emotion-card.is-dimmed:hover {
-  transform: none;
-  box-shadow: none;
-}
 
 .emotion-card__icon {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
   display: grid;
   place-items: center;
   background: color-mix(in srgb, var(--tone) 12%, white);
   color: var(--tone);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .emotion-card__icon svg {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   stroke: currentColor;
   fill: none;
   stroke-width: 2;
@@ -111,7 +85,7 @@
    (한글 표시명 / 영문 코드는 위계가 다르므로 반드시 두 줄로 둔다) */
 .emotion-card__label {
   display: block;
-  font-size: var(--font-heading);
+  font-size: var(--font-body);
   font-weight: 800;
   letter-spacing: var(--tracking-tight);
   color: var(--color-text-primary);
@@ -127,8 +101,8 @@
 }
 
 .emotion-card__foot {
-  margin-top: 16px;
-  padding-top: 12px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid var(--color-divider);
   display: flex;
   align-items: center;
