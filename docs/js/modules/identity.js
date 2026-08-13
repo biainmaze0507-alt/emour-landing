@@ -90,12 +90,17 @@ function renderMotif() {
   const legend = $(".motif__layers");
   if (!host) return;
 
-  MOTIF.layers.forEach((layer) => {
+  MOTIF.layers.forEach((layer, index) => {
     host.append(
       el("span", {
         className: "motif__layer",
         attrs: { "aria-hidden": "true" },
-        style: { "--tone": `var(${layer.token})` },
+        style: {
+          "--tone": `var(${layer.token})`,
+          "--size": `${layer.size}%`,
+          // 바깥 원이 뒤로 가야 안쪽 원이 위에 보인다
+          "z-index": String(MOTIF.layers.length - index),
+        },
       })
     );
 
