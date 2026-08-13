@@ -90,10 +90,13 @@ button {
   cursor: pointer;
 }
 
+/* 키보드 포커스 표시.
+   box-shadow가 아니라 outline을 쓴다 — outline은 요소가 가진 모서리 곡률을
+   그대로 따라가므로 알약 버튼·원형 버튼·카드가 각자의 모양을 유지한다.
+   (box-shadow 방식은 반지름을 따로 지정해야 해서 모양이 어긋났다) */
 :where(a, button, [tabindex]):focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-  border-radius: var(--radius-xs);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 ::selection {

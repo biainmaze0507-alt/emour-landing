@@ -266,6 +266,11 @@
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   place-items: center;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.nav-toggle:hover {
+  border-color: var(--color-primary);
 }
 
 .nav-toggle__bars {
@@ -350,6 +355,11 @@
   font-size: var(--font-heading);
   font-weight: 700;
   color: var(--color-text-primary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav-sheet__link:hover {
+  color: var(--color-text-accent);
 }
 
 /* 지금 보고 있는 페이지 */
@@ -365,6 +375,11 @@
   place-items: center;
   border-radius: 50%;
   color: var(--color-text-tertiary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav-sheet__toggle:hover {
+  color: var(--color-text-accent);
 }
 
 .nav-sheet__toggle svg {
@@ -399,6 +414,11 @@
   font-size: var(--font-label);
   font-weight: 600;
   color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.nav-sheet__sub:hover {
+  color: var(--color-text-primary);
 }
 
 .nav-sheet__sub.is-current {
@@ -606,8 +626,8 @@ body.is-locked {
 
 .footer-top {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 2fr);
+  gap: clamp(32px, 4vw, 56px);
   align-items: start;
 }
 
@@ -618,25 +638,39 @@ body.is-locked {
 
 .footer-tagline {
   margin-top: 20px;
-  max-width: 42ch;
+  max-width: 34ch;
   font-size: var(--font-body);
   line-height: var(--leading-relaxed);
   color: var(--color-text-secondary);
 }
 
+/* 상단바와 같은 다섯 페이지 = 다섯 칸 */
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px 16px;
 }
 
+/* 칸 제목도 그 페이지로 가는 링크다 */
 .footer-links__title {
   margin-bottom: 12px;
-  font-size: var(--font-micro);
+  font-size: var(--font-caption);
   font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
+}
+
+.footer-links__title a {
+  color: var(--color-text-primary);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footer-links__title a:hover {
+  color: var(--color-text-accent);
+}
+
+/* 마지막 줄의 외부 링크 (허깅페이스 모델 카드 등) */
+.footer-extra {
+  display: inline-flex;
+  gap: 14px;
 }
 
 .footer-links li + li {
@@ -651,6 +685,22 @@ body.is-locked {
 
 .footer-links a:hover {
   color: var(--color-text-accent);
+}
+
+@media (max-width: 980px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .footer-bottom {

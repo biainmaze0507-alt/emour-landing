@@ -51,7 +51,7 @@ export const TEAM = [
     tone: "--emotion-apology",
     avatar: "assets/team/hwang-minhee.svg",
     blurb: "디자인 시스템과 대시보드를 맡아 화면 전체가 하나의 톤을 갖게 정리했습니다.",
-    tags: ["디자인 토큰 · BI/CI", "대시보드 · 차트", "캘린더 · 앨범"],
+    tags: ["디자인 토큰 및 BI/CI 설계", "대시보드 페이지 개발"],
   },
   {
     name: "윤선민",

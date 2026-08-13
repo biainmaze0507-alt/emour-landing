@@ -263,6 +263,14 @@
   border-color: var(--color-primary-soft);
   background: var(--color-primary-faint);
   color: var(--color-primary-strong);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.tech__model-step--result:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
 .tech__model-step--result svg {

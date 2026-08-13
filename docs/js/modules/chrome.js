@@ -22,7 +22,7 @@
  *   CSS 만으로는 맞출 수 없다.
  */
 
-import { NAV, LINKS, HOME_FILE, FOOTER_GROUPS, SITE } from "../data/site.js";
+import { NAV, LINKS, HOME_FILE, FOOTER_EXTRA, SITE } from "../data/site.js";
 import { icon } from "../data/icons.js";
 import { $, $$, el, escapeHtml } from "./utils.js";
 
@@ -195,25 +195,30 @@ function renderFooter() {
   const footer = $(".site-footer");
   if (!footer) return;
 
-  const groups = FOOTER_GROUPS.map((group) => {
-    const items = group.items
-      .map((item) => {
-        // href를 직접 적은 항목은 외부 링크, page를 적은 항목은 내부 페이지
-        const href = item.href ?? hrefFor(item.page, item.hash);
-        if (!href) return "";
-        const external = item.external ? ' target="_blank" rel="noopener noreferrer"' : "";
-        return `<li><a href="${escapeHtml(href)}"${external}>${escapeHtml(item.label)}</a></li>`;
-      })
-      .filter(Boolean)
+  /* 페이지마다 한 칸. 상단바 메가패널과 같은 목차를 쓴다 (출처는 NAV 하나) */
+  const groups = NAV.map((page) => {
+    const items = page.children
+      .map(
+        (child) =>
+          `<li><a href="${escapeHtml(hrefFor(page.id, child.hash))}">${escapeHtml(child.label)}</a></li>`
+      )
       .join("");
 
-    if (!items) return "";
     return `
       <div>
-        <p class="footer-links__title">${escapeHtml(group.title)}</p>
+        <p class="footer-links__title">
+          <a href="${escapeHtml(hrefFor(page.id))}">${escapeHtml(page.label)}</a>
+        </p>
         <ul>${items}</ul>
       </div>`;
   }).join("");
+
+  const extra = FOOTER_EXTRA.filter((item) => item.href)
+    .map(
+      (item) =>
+        `<a href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.label)}</a>`
+    )
+    .join("");
 
   footer.innerHTML = `
     <div class="shell shell--wide">
@@ -231,6 +236,7 @@ function renderFooter() {
 
       <div class="footer-bottom">
         <span>© ${SITE.year} ${escapeHtml(SITE.name)}. All rights reserved.</span>
+        ${extra ? `<span class="footer-extra">${extra}</span>` : ""}
         <span>아이콘 · lucide (ISC License) © Lucide Contributors</span>
       </div>
     </div>

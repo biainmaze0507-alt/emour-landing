@@ -85,6 +85,10 @@
     border-color var(--duration-base) var(--ease-out);
 }
 
+.why__switch:hover {
+  border-color: var(--color-primary);
+}
+
 .why__switch[aria-checked="true"] {
   background: var(--color-action);
   border-color: transparent;

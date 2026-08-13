@@ -137,28 +137,11 @@ export const HERO_SUGGESTS = [
 ];
 
 /**
- * 푸터 링크 묶음.
- * page를 적으면 그 페이지 파일로, hash까지 적으면 해당 섹션으로 이어진다.
+ * 푸터의 마지막 줄에 따로 두는 링크.
+ * 페이지 목차는 NAV에서 만들므로 여기에는 사이트 밖으로 나가는 것만 적는다.
  */
-export const FOOTER_GROUPS = [
-  {
-    title: "Product",
-    items: [
-      { label: "핵심 기능", page: "product", hash: "features" },
-      { label: "감정 15종 체계", page: "product", hash: "emotions" },
-      { label: "유저 테스트", page: "proof", hash: "metrics" },
-      { label: "사용 후기", page: "proof", hash: "voices" },
-    ],
-  },
-  {
-    title: "Project",
-    items: [
-      { label: "시스템 아키텍처", page: "tech", hash: "architecture" },
-      { label: "브랜드 아이덴티티", page: "brand", hash: "naming" },
-      { label: "팀 소개", page: "team", hash: "members" },
-      { label: "AI 모델 카드", href: LINKS.model, external: true },
-    ],
-  },
+export const FOOTER_EXTRA = [
+  { label: "AI 모델 카드", href: LINKS.model },
 ];
 
 export const SITE = {
