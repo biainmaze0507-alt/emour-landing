@@ -201,10 +201,11 @@
 }
 
 .proof__f1-steps {
+  --f1-gap: 14px;
   margin-top: 24px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: var(--f1-gap);
 }
 
 .proof__f1-step {
@@ -215,11 +216,13 @@
   border: 1px solid var(--color-border);
 }
 
-/* 단계 사이 화살표 */
+/* 단계 사이 화살표.
+   두 변만 남긴 사각형을 45° 돌려 만든 꺾쇠라 획이 상자 한쪽 모서리에만 있다.
+   그래서 틈의 절반이 아니라 틈만큼 밀어야 획이 틈 가운데에 놓인다. */
 .proof__f1-step + .proof__f1-step::before {
   content: "";
   position: absolute;
-  left: -11px;
+  left: calc(-1 * var(--f1-gap));
   top: 50%;
   width: 8px;
   height: 8px;
@@ -274,7 +277,7 @@
 
   .proof__f1-step + .proof__f1-step::before {
     left: 50%;
-    top: -11px;
+    top: calc(-1 * var(--f1-gap));
     transform: translateX(-50%) rotate(45deg);
   }
 
