@@ -60,9 +60,8 @@ export const ARCH_LANES = [
 export const AI_PIPELINE = {
   chain: ["beomi/KcELECTRA", "AI Hub 데이터셋", "문맥 포함 재라벨링", "PyTorch 파인튜닝"],
   model: "chlgks/emour-emotion-kcelectra-context-v2",
-  desc:
-    "한국어 구어체에 강한 KcELECTRA를 기반 모델로 삼고, AI Hub 감정 대화 데이터에 " +
-    "직전 대화를 붙여 다시 라벨링한 뒤 파인튜닝했습니다. 답장 추천은 프롬프트 기반 생성 모델이 맡습니다.",
+  /* 앞의 섹션 설명이 이미 학습 과정을 말하므로, 여기서는 겹치지 않는 한 줄만 둔다 */
+  desc: "답장 추천은 이 모델이 아니라 프롬프트 기반 생성 모델이 맡습니다.",
 };
 
 /** 기술 스택 */

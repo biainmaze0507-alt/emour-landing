@@ -360,6 +360,7 @@
   display: block;
   font-size: var(--font-label);
   font-weight: 800;
+  color: var(--color-text-primary);
 }
 
 .identity__logo-part span {

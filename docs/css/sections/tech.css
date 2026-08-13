@@ -55,6 +55,12 @@
   padding-block: clamp(6px, 1vw, 14px);
 }
 
+/* 학습 순서는 한 줄짜리 도식이다. 여러 층이 쌓인 아키텍처 도면과 같은 여백을 주면
+   제목과 너무 멀어져 홀로 떠 보이므로, 앞 제목과의 간격을 좁힌다. */
+.section-head:has(+ .arch--ai) {
+  margin-bottom: clamp(24px, 2.8vw, 38px);
+}
+
 .arch__lanes {
   display: grid;
   gap: 16px;
@@ -229,7 +235,7 @@
    모델 카드 — 학습 파이프라인 요약
    -------------------------------------------------------------------------- */
 .tech__model-desc {
-  margin-top: 8px;
+  margin-top: 16px;
   font-size: var(--font-caption);
   line-height: var(--leading-normal);
   color: var(--color-text-secondary);
