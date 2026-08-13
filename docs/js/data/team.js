@@ -56,7 +56,7 @@ export const TEAM = [
   {
     name: "윤선민",
     roles: ["AI", "Infra"],
-    tone: "--emotion-surprise",
+    tone: "--emotion-gratitude",
     avatar: "assets/team/yun-seonmin.svg",
     blurb: "채팅 추천 AI를 설계, 구현하고 배포를 위한 인프라 파이프라인을 구성했습니다.",
     tags: ["채팅 추천 AI 설계 및 구현", "감정 카테고리 설계", "CI/CD · EC2 배포"],

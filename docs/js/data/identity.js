@@ -133,7 +133,6 @@ export const TEMPERATURE = {
     {
       key: "warm",
       hex: "#CA8495",
-      badge: "웜톤",
       title: "머무는 자리",
       body:
         "뒤로 물러나는 색입니다. 배경 · 카드 면 · 옅은 테두리처럼 " +
@@ -143,7 +142,6 @@ export const TEMPERATURE = {
     {
       key: "cool",
       hex: "#C14A67",
-      badge: "쿨톤",
       title: "가리키는 자리",
       body:
         "앞으로 나오는 색입니다. 같은 계열에서 채도를 올려 만들었습니다. " +

@@ -15,8 +15,8 @@
 
 import { FEATURES } from "../data/features.js";
 import { icon } from "../data/icons.js";
-import { $, $$, el, escapeHtml, onceInView } from "./utils.js";
-import { bubbleRow, donutSvg, flowSvg, suggestionChips } from "./render.js";
+import { $, $$, el, escapeHtml, onceInView, prefersReducedMotion } from "./utils.js";
+import { bubbleRow, donutSvg, emotionTag, flowSvg, suggestionChips } from "./render.js";
 import { getEmotion } from "../data/emotions.js";
 
 /* --------------------------------------------------------------------------
@@ -57,11 +57,35 @@ function windowComposer() {
    화면 내용 3종
    -------------------------------------------------------------------------- */
 
+/**
+ * 분석 꼬리표를 결과 감정으로 바꾼다.
+ * 말풍선이 화면에 들어온 뒤부터 재는 시간이라, 스크롤해 내려온 사람도 분석 → 결과 순서를 본다.
+ * 모션 최소화 사용자에게는 기다리지 않고 결과만 보여 준다.
+ */
+function revealEmotion(row, code, delay = 2000) {
+  const swap = () =>
+    row.querySelector(".analyzing")?.replaceWith(emotionTag(code, { pop: true }));
+
+  if (prefersReducedMotion()) {
+    swap();
+    return;
+  }
+  // 말풍선이 화면에 붙은 뒤부터 지켜본다 (붙기 전에는 보일 수가 없다)
+  setTimeout(() => onceInView(row, () => setTimeout(swap, delay)), 0);
+}
+
 /** kind: "chat" — 말풍선만 */
 function screenChat(screen) {
   const body = el("div", { className: "chat-window__body" });
   body.append(el("p", { className: "chat-window__divider", text: "오늘" }));
-  screen.rows.forEach((row) => body.append(bubbleRow(row)));
+
+  screen.rows.forEach((row) => {
+    const node = bubbleRow(row);
+    body.append(node);
+    // 분석 중인 줄은 잠깐 돌고 결과를 내놓는다 — 앱과 같은 순서다
+    if (row.analyzing && row.emotion) revealEmotion(node, row.emotion);
+  });
+
   return [body, windowComposer()];
 }
 

@@ -173,7 +173,6 @@ function renderTemperature() {
         attrs: { "data-reveal": "" },
         style: { "--tone": side.hex },
         html: `
-          <span class="temp__badge">${escapeHtml(side.badge)}</span>
           <span class="temp__chip"></span>
           <h3 class="temp__title">${escapeHtml(side.title)}</h3>
           <p class="temp__body">${escapeHtml(side.body)}</p>

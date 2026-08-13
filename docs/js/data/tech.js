@@ -10,7 +10,7 @@
 /** 규모 수치 — DOCS와 실제 저장소를 세어 넣은 값 */
 export const SCALE_NUMBERS = [
   { value: 77, suffix: "", label: "REST 엔드포인트" },
-  { value: 18, suffix: "", label: "데이터베이스 엔티티" },
+  { value: 19, suffix: "", label: "데이터베이스 테이블" },
   { value: 15, suffix: "종", label: "감정 라벨 (백엔드 열거형)" },
   { value: 3, suffix: "", label: "서비스 컨테이너 (Web · API · AI)" },
 ];
