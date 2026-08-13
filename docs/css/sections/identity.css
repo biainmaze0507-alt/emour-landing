@@ -57,14 +57,15 @@
   place-items: center;
 }
 
-/* 층 하나 — 같은 중심에서 --size 만큼 퍼진다 */
+/* 층 하나 — 같은 중심에서 --size 만큼 퍼진다.
+   테두리는 잉크 로즈(#C14A67)를 옅게 깔아 층의 경계를 한 겹씩 드러낸다. */
 .motif__layer {
   position: absolute;
   width: var(--size);
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--tone);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 0 0 1.5px rgba(193, 74, 103, 0.55);
 }
 
 .motif__body {

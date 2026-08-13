@@ -117,16 +117,15 @@ export function initProof() {
 
     const labelNode = el("span", { text: "0" });
 
-    donutHost.append(
-      el("div", {
-        html: `
-          <svg class="proof__donut-svg" viewBox="0 0 128 128" role="img"
-               aria-label="감정 분석 결과가 절반 이상 일치했다는 응답 ${AGREEMENT.percent}%">
-            <circle class="proof__donut-track" cx="64" cy="64" r="${RADIUS}"></circle>
-            <circle class="proof__donut-value" cx="64" cy="64" r="${RADIUS}"></circle>
-          </svg>
-        `,
-      })
+    /* 도넛은 격자 칸에 바로 놓는다. 한 겹 더 감싸면 원의 폭(%)이 그 겹을
+       기준으로 계산되어 가운데 정렬이 어긋난다. */
+    donutHost.insertAdjacentHTML(
+      "beforeend",
+      `<svg class="proof__donut-svg" viewBox="0 0 128 128" role="img"
+            aria-label="감정 분석 결과가 절반 이상 일치했다는 응답 ${AGREEMENT.percent}%">
+        <circle class="proof__donut-track" cx="64" cy="64" r="${RADIUS}"></circle>
+        <circle class="proof__donut-value" cx="64" cy="64" r="${RADIUS}"></circle>
+      </svg>`
     );
 
     const label = el("div", { className: "proof__donut-label" });

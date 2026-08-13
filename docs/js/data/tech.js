@@ -25,7 +25,7 @@ export const ARCH_LANES = [
     nodes: [
       { name: "GitLab", role: "코드 Push · 병합 요청", tone: "--emotion-anger" },
       { name: "GitLab Runner", role: "파이프라인 실행", tone: "--emotion-anger" },
-      { name: "Docker", role: "이미지 빌드 · 푸시", tone: "--emotion-surprise" },
+      { name: "Docker", role: "웹 · API · AI 이미지 빌드", tone: "--emotion-surprise" },
     ],
   },
   {
@@ -51,7 +51,7 @@ export const ARCH_LANES = [
     nodes: [
       { name: "MySQL 8", role: "회원 · 커플방 · 채팅 · 분석 결과 영구 저장", tone: "--emotion-worry" },
       { name: "Redis", role: "Refresh 토큰 저장 · 채팅 이벤트 Pub/Sub", tone: "--emotion-anger" },
-      { name: "Image Storage", role: "채팅 · 앨범 이미지", tone: "--emotion-plain" },
+      { name: "Image Storage", role: "채팅 · 앨범 이미지 (EC2 볼륨)", tone: "--emotion-plain" },
     ],
   },
 ];
@@ -84,7 +84,7 @@ export const STACKS = [
   {
     title: "Data",
     tone: "--emotion-worry",
-    items: ["MySQL 8", "Redis", "JPA / QueryDSL"],
+    items: ["MySQL 8", "Redis", "Spring Data JPA"],
   },
   {
     title: "Auth",

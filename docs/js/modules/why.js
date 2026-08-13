@@ -16,10 +16,11 @@ import { bubbleRow } from "./render.js";
 
 /** 스위치가 꺼졌을 때는 감정을 감춰야 하므로 감정 코드를 따로 들고 있는다. */
 const CONVERSATION = [
-  { side: "yours", text: "나 오늘 회사에서 진짜 힘들었어", emotion: "DISTRESS", time: "오후 11:12" },
-  { side: "mine", text: "그랬구나", emotion: "COMFORT", time: "오후 11:20", read: true },
-  { side: "yours", text: "…응", emotion: "HURT", time: "오후 11:21" },
-  { side: "mine", text: "그래, 네 마음대로 해.", emotion: "SADNESS", time: "오후 11:27", read: true },
+  { side: "mine", text: "나 오늘 친구들이랑 늦게까지 놀다 올게", emotion: "COMFORT", time: "오후 4:53", read: true },
+  { side: "yours", text: "어제도 늦게 왔잖아…", emotion: "HURT", time: "오후 4:53" },
+  { side: "yours", text: "오늘은 같이 있기로 한거 아니었어?", emotion: "EMBARRASSMENT", time: "오후 4:53" },
+  { side: "mine", text: "그래도 약속 미리 잡은건데 어떡해", emotion: "WORRY", time: "오후 4:54", read: true },
+  { side: "yours", text: "그래 네 마음대로 해", emotion: "ANGER", time: "오후 4:54" },
 ];
 
 export function initWhy() {

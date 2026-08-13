@@ -164,44 +164,138 @@ export function donutSvg(slices, { size = 100, thickness = 16, gap = 1.6 } = {})
   );
 }
 
+/* --------------------------------------------------------------------------
+   기록된 기분 흐름 — 실제 화면의 MoodTrendChart와 같은 그래프
+   -------------------------------------------------------------------------- */
+
+/** 그래프 자리 — 뷰박스와 여백은 실제 화면과 같은 값이다. */
+const FLOW = {
+  width: 320,
+  height: 150,
+  pad: { top: 14, right: 12, bottom: 26, left: 30 },
+  gridLines: 5,
+  dot: 3.2,
+  /** 기분 5단 — 아래가 나쁨, 위가 좋음 */
+  scale: { min: 1, max: 5, minLabel: "나쁨", maxLabel: "좋음" },
+};
+
 /**
- * 감정 흐름 그래프 — 하루를 2시간 단위로 끊은 긍정 / 부정 곡선.
- * 좁은 그래프에서는 15색을 다 쓸 수 없으므로 극성 요약색 2개만 쓴다.
+ * 두 사람이 남긴 기분 기록을 하루 24시간 위에 잇는다.
  *
- * @param {{positive:number[], negative:number[], hours:string[]}} flow
- * @param {object} [opts] width / height
+ * 기록이 없는 시간은 점을 만들지 않고 다음 점과 바로 이어진다 —
+ * 하루에 두세 번 남기는 기록이라 빈 시간을 0으로 눕히면 없던 기분이 생긴다.
+ * 선은 Catmull-Rom을 3차 베지어로 바꿔 부드럽게 그린다.
+ *
+ * @param {{mine:{at:number,mood:number}[], partner:{at:number,mood:number}[], hours:number[]}} flow
  */
-export function flowSvg(flow, { width = 300, height = 84 } = {}) {
-  const { positive = [], negative = [] } = flow;
-  const count = Math.max(positive.length, negative.length);
-  if (count < 2) return "";
+export function flowSvg(flow) {
+  const { width, height, pad, gridLines, dot, scale } = FLOW;
+  const plotWidth = width - pad.left - pad.right;
+  const plotHeight = height - pad.top - pad.bottom;
+  const bottom = pad.top + plotHeight;
 
-  const max = Math.max(1, ...positive, ...negative);
-  const padY = 8;
-  const stepX = width / (count - 1);
+  // 하루 전체가 가로축이다. 기록이 몰려 있어도 축은 0시부터 24시까지 그대로 둔다.
+  const dayMinutes = 24 * 60;
+  const x = (minute) => pad.left + (minute / dayMinutes) * plotWidth;
+  const y = (mood) =>
+    pad.top + ((scale.max - mood) / (scale.max - scale.min)) * plotHeight;
 
-  // 값 배열 → "x,y x,y …" 좌표 문자열
-  const points = (values) =>
-    values
-      .map((value, index) => {
-        const x = index * stepX;
-        const y = height - padY - (value / max) * (height - padY * 2);
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      })
-      .join(" ");
+  const project = (points = []) =>
+    points.map((point) => ({ cx: x(point.at), cy: y(point.mood) }));
 
-  const line = (values, token, dash) =>
-    `<polyline points="${points(values)}" fill="none" stroke="var(${token})" ` +
-    `stroke-width="2" stroke-linecap="round" stroke-linejoin="round"${dash ? ` stroke-dasharray="${dash}"` : ""}/>`;
+  const series = [
+    { key: "mine", label: "나", token: "--color-primary", points: project(flow.mine) },
+    { key: "partner", label: "상대방", token: "--emotion-surprise", dashed: true, points: project(flow.partner) },
+  ].filter((line) => line.points.length > 0);
 
-  // 긍정 곡선 아래는 옅게 채워 "좋았던 시간"이 면적으로 읽히게 한다
+  if (series.length === 0) return "";
+
+  const grid = Array.from({ length: gridLines }, (_, index) => {
+    const value = scale.min + ((scale.max - scale.min) * index) / (gridLines - 1);
+    return (
+      `<line x1="${pad.left}" x2="${width - pad.right}" y1="${y(value)}" y2="${y(value)}" ` +
+      `stroke="var(--color-divider)" stroke-width="1"/>`
+    );
+  }).join("");
+
+  const label = (text, atY) =>
+    `<text x="4" y="${atY + 4}" fill="var(--color-text-tertiary)" font-size="8" font-weight="700">${text}</text>`;
+
+  const ticks = flow.hours
+    .map((hour, index) => {
+      const anchor = index === 0 ? "start" : index === flow.hours.length - 1 ? "end" : "middle";
+      return (
+        `<text x="${x(hour * 60)}" y="${height - 8}" text-anchor="${anchor}" ` +
+        `fill="var(--color-text-tertiary)" font-size="8" font-weight="700">${hour}시</text>`
+      );
+    })
+    .join("");
+
+  // 면은 첫 시리즈에만 깐다. 둘 다 채우면 서로 가린다.
+  const [primary] = series;
   const area =
-    `<polygon points="0,${height} ${points(positive)} ${width},${height}" ` +
-    `fill="var(--emotion-positive)" opacity="0.14"/>`;
+    primary.points.length > 1
+      ? `<path d="${smoothPath(primary.points)} L ${primary.points.at(-1).cx} ${bottom} ` +
+        `L ${primary.points[0].cx} ${bottom} Z" fill="url(#flow-area)" stroke="none"/>`
+      : "";
+
+  // 뒤 시리즈부터 그려서 '나'가 위에 온다
+  const lines = [...series]
+    .reverse()
+    .map((line) =>
+      line.points.length > 1
+        ? `<path d="${smoothPath(line.points)}" fill="none" stroke="var(${line.token})" ` +
+          `stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"` +
+          `${line.dashed ? ' stroke-dasharray="4 3"' : ""}/>`
+        : ""
+    )
+    .join("");
+
+  const dots = series
+    .map((line) =>
+      line.points
+        .map(
+          (point) =>
+            `<circle cx="${point.cx}" cy="${point.cy}" r="${dot}" fill="var(${line.token})" ` +
+            `stroke="var(--color-surface)" stroke-width="1.6"/>`
+        )
+        .join("")
+    )
+    .join("");
 
   return (
-    `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" ` +
-    `aria-label="하루 감정 흐름 그래프 — 2시간 단위 긍정 · 부정 추이">` +
-    `${area}${line(positive, "--emotion-positive")}${line(negative, "--emotion-negative", "3 3")}</svg>`
+    `<svg viewBox="0 0 ${width} ${height}" role="img" ` +
+    `aria-label="기록된 기분 흐름 — 하루 24시간 동안 두 사람이 남긴 기분">` +
+    `<defs><linearGradient id="flow-area" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0%" stop-color="var(${primary.token})" stop-opacity="0.2"/>` +
+    `<stop offset="100%" stop-color="var(${primary.token})" stop-opacity="0"/>` +
+    `</linearGradient></defs>` +
+    `${grid}${label(scale.maxLabel, y(scale.max))}${label(scale.minLabel, y(scale.min))}` +
+    `${area}${lines}${dots}${ticks}</svg>`
   );
+}
+
+/**
+ * Catmull-Rom 스플라인을 3차 베지어로 바꿔 부드러운 곡선을 만든다.
+ * 장력 1/6이라 점을 그대로 지나면서도 과하게 출렁이지 않는다.
+ */
+function smoothPath(points) {
+  const round = (value) => Math.round(value * 100) / 100;
+  let path = `M ${round(points[0].cx)} ${round(points[0].cy)}`;
+
+  for (let i = 0; i < points.length - 1; i += 1) {
+    const p0 = points[i - 1] ?? points[i];
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const p3 = points[i + 2] ?? p2;
+
+    const c1x = p1.cx + (p2.cx - p0.cx) / 6;
+    const c1y = p1.cy + (p2.cy - p0.cy) / 6;
+    const c2x = p2.cx - (p3.cx - p1.cx) / 6;
+    const c2y = p2.cy - (p3.cy - p1.cy) / 6;
+
+    path += ` C ${round(c1x)} ${round(c1y)}, ${round(c2x)} ${round(c2y)}, ${round(p2.cx)} ${round(p2.cy)}`;
+  }
+
+  return path;
 }

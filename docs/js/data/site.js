@@ -123,12 +123,12 @@ export const HERO_SCRIPT = [
   { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
   { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
   { type: "suggest" },
-  { type: "wait", ms: 2600 },
+  { type: "wait", ms: 1200 },
 ];
 
 /**
  * 입력창 위 "문장 다듬기 추천" 칩.
- * 대화가 바뀌어도 이 칸의 높이는 변하지 않는다(창 윤곽을 고정하기 위해).
+ * 세 종류는 한 화면에 다 들어오지 않는다 — 가로로 넘겨 보는 자리다.
  */
 export const HERO_SUGGESTS = [
   { kind: "해결형", text: "알겠어, 그럼 다음엔 언제 괜찮을지 알려줄래?" },

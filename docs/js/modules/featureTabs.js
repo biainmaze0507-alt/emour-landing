@@ -124,12 +124,8 @@ function screenDashboard(screen) {
     })
   );
 
-  // 감정 흐름 그래프
+  // 기록된 기분 흐름 — 눈금과 축 이름은 그래프 안에 들어 있다
   if (screen.flow) {
-    const axis = screen.flow.hours
-      .map((hour) => `<span>${escapeHtml(hour)}</span>`)
-      .join("");
-
     body.append(
       el("div", {
         className: "report__card",
@@ -137,10 +133,9 @@ function screenDashboard(screen) {
           <span class="report__card-title">기록된 기분 흐름</span>
           <span class="report__card-sub">하루 중 어느 시간에 마음이 오르내렸는지 이어봤어요</span>
           <div class="report__flow">${flowSvg(screen.flow)}</div>
-          <div class="report__axis">${axis}</div>
           <div class="report__flow-legend">
-            <span><i style="--tone: var(--emotion-positive)"></i>긍정</span>
-            <span><i style="--tone: var(--emotion-negative)"></i>부정</span>
+            <span><i style="--tone: var(--color-primary)"></i>나</span>
+            <span><i style="--tone: var(--emotion-surprise)"></i>상대방</span>
           </div>
         `,
       })
