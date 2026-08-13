@@ -636,12 +636,14 @@ body.is-locked {
   width: auto;
 }
 
+/* 서비스 한 줄 소개 — 넓은 화면에서는 문장이 끊기지 않고 한 줄로 놓인다 */
 .footer-tagline {
   margin-top: 18px;
-  max-width: 46ch;
+  max-width: 72ch;
   font-size: var(--font-body);
   line-height: var(--leading-relaxed);
   color: var(--color-text-secondary);
+  word-break: keep-all;
 }
 
 /* 상단바와 같은 목차. 칸 수를 적어 두지 않고 남는 폭에 맞춰 나눈다 —
