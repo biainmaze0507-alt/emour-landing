@@ -110,28 +110,29 @@ export const HERO_FACTS = [
  * heroChat.js 가 이 배열을 위에서부터 재생한다.
  *
  * type
- *   "mine"    내가 보낸 말풍선 (타이핑 연출 포함)
- *   "yours"   상대가 보낸 말풍선
- *   "wait"    잠깐 멈춤
- *   "suggest" 문장 다듬기 추천 칩 노출
+ *   "mine"   내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
+ *   "yours"  상대가 보낸 말 — 바로 말풍선으로 올라간다
+ *   "wait"   잠깐 멈춤 (ms)
  *
  * emotion 에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
  * time 은 앱의 formatTime() 표기(오후 h:mm)를 그대로 쓴다.
  */
 export const HERO_SCRIPT = [
   { type: "yours", text: "이번 주말엔 혼자 쉬고 싶어", emotion: "DISTRESS", time: "오후 10:10" },
+  { type: "wait", ms: 400 },
   { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
   { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
-  { type: "wait", ms: 500 },
-  {
-    type: "suggest",
-    items: [
-      { kind: "해결형", text: "알겠어, 그럼 다음엔 언제 괜찮을지 알려줄래?" },
-      { kind: "공감형", text: "많이 힘든가 보네, 괜찮아?" },
-      { kind: "상냥하게", text: "그래, 네가 쉬고 싶으면 그렇게 해도 돼" },
-    ],
-  },
-  { type: "wait", ms: 3400 },
+  { type: "wait", ms: 2200 },
+];
+
+/**
+ * 입력창 위 "문장 다듬기 추천" 칩.
+ * 대화가 바뀌어도 이 칸의 높이는 변하지 않는다(창 윤곽을 고정하기 위해).
+ */
+export const HERO_SUGGESTS = [
+  { kind: "해결형", text: "알겠어, 그럼 다음엔 언제 괜찮을지 알려줄래?" },
+  { kind: "공감형", text: "많이 힘든가 보네, 괜찮아?" },
+  { kind: "상냥하게", text: "그래, 네가 쉬고 싶으면 그렇게 해도 돼" },
 ];
 
 /**

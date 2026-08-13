@@ -203,7 +203,7 @@
    -------------------------------------------------------------------------- */
 .mood-scale {
   margin-top: 34px;
-  padding: 24px;
+  padding-block: 10px;
 }
 
 .mood-scale__title {

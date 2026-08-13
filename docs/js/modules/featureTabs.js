@@ -46,7 +46,7 @@ function windowComposer() {
     html: `
       <span class="chat-window__composer-icon">${icon("imagePlus", 20)}</span>
       <span class="chat-window__composer-field">
-        <span class="chat-window__composer-placeholder">메시지를 입력하세요</span>
+        <span class="chat-window__composer-text">메시지를 입력하세요</span>
         <span class="chat-window__correct">${icon("wand", 13)}<span>교정</span></span>
       </span>
       <span class="chat-window__send">${icon("send", 17)}</span>

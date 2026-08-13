@@ -7,11 +7,24 @@
 /* --------------------------------------------------------------------------
    1단 — 테스트 규모
    -------------------------------------------------------------------------- */
+/* 수치 띠 — 카드로 띄우지 않는다. 숫자 세 개는 서로 견주어 읽는 값이라
+   상자보다 같은 바닥 위에 나란히 놓는 편이 비교가 쉽다. */
 .proof__scale {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
+  border-block: 1px solid var(--color-border);
   margin-bottom: clamp(40px, 5vw, 64px);
+}
+
+.proof__scale > .stat + .stat {
+  border-left: 1px solid var(--color-divider);
+}
+
+@media (max-width: 640px) {
+  .proof__scale > .stat + .stat {
+    border-left: 0;
+    border-top: 1px solid var(--color-divider);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -26,7 +39,7 @@
 }
 
 .proof__ratings {
-  padding: clamp(24px, 2.6vw, 34px);
+  padding-block: clamp(6px, 1vw, 14px);
   display: grid;
   gap: 22px;
   align-content: center;
@@ -62,7 +75,7 @@
 
 /* 도넛 카드 */
 .proof__donut {
-  padding: clamp(24px, 2.6vw, 34px);
+  padding-block: clamp(6px, 1vw, 14px);
   display: grid;
   place-items: center;
   align-content: center;

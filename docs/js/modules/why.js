@@ -7,11 +7,11 @@
  * 감정 태그와 색만 CSS 클래스(.is-on)로 켜고 끈다.
  * → 스위치를 눌러도 레이아웃이 전혀 흔들리지 않는다.
  *
- * 처음 화면에 들어오면 잠깐 뒤 자동으로 한 번 켜져서
- * "여기 눌러 볼 게 있다"는 걸 알려 준다(모션 최소화 시에는 켠 채로 시작).
+ * 상태는 사용자가 누를 때만 바뀐다. 저절로 켜지지 않는다 —
+ * 읽는 중에 화면이 알아서 변하면 무엇 때문에 바뀌었는지 알 수 없다.
  */
 
-import { $, onceInView, prefersReducedMotion } from "./utils.js";
+import { $ } from "./utils.js";
 import { bubbleRow } from "./render.js";
 
 /** 스위치가 꺼졌을 때는 감정을 감춰야 하므로 감정 코드를 따로 들고 있는다. */
@@ -61,21 +61,4 @@ export function initWhy() {
   });
 
   setState(false);
-
-  /* 처음 보일 때 자동으로 한 번 켜 준다 */
-  if (prefersReducedMotion()) {
-    setState(true);
-    return;
-  }
-
-  onceInView(
-    stage,
-    () => {
-      setTimeout(() => {
-        // 사용자가 이미 눌러 봤다면 건드리지 않는다
-        if (toggle.getAttribute("aria-checked") !== "true") setState(true);
-      }, 1200);
-    },
-    { threshold: 0.4 }
-  );
 }

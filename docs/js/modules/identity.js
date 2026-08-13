@@ -4,7 +4,7 @@
  * 브랜드 페이지.
  *   · 이름 조립 — Emotion 과 Amour 에서 글자를 덜어내 our 를 남긴다
  *   · 디자인 모티프 — 진주 층을 실제로 겹쳐 그린다
- *   · 컬러 아이덴티티 — 색마다 담긴 뜻 (스와치에 올리면 설명이 바뀐다)
+ *   · 컬러 아이덴티티 — 색마다 담긴 뜻 (한 줄씩 아래로 흐른다)
  *   · 웜톤 / 쿨톤 두 축
  *   · 로고 두 색 · 타이포 스케일 · 대비 근거 · 사용 규칙
  */
@@ -23,7 +23,7 @@ import {
   RULES,
 } from "../data/identity.js";
 import { icon } from "../data/icons.js";
-import { $, $$, el, escapeHtml, contrastRatio, contrastGrade, onceInView } from "./utils.js";
+import { $, el, escapeHtml, contrastRatio, contrastGrade, onceInView } from "./utils.js";
 
 /* --------------------------------------------------------------------------
    1. 이름 — 글자를 덜어내는 과정
@@ -157,72 +157,35 @@ function renderMotif() {
    3. 컬러 아이덴티티 — 색마다 담긴 뜻
    -------------------------------------------------------------------------- */
 function renderPalette() {
-  const track = $(".palette__track");
-  const detail = $(".palette__detail");
-  if (!track || !detail) return;
-
-  const chip = detail.querySelector(".palette__detail-chip");
-  const role = detail.querySelector(".palette__detail-role");
-  const name = detail.querySelector(".palette__detail-name");
-  const meaning = detail.querySelector(".palette__detail-meaning");
-  const desc = detail.querySelector(".palette__detail-desc");
+  const host = $(".palette");
   const note = $(".palette__note");
+  if (!host) return;
 
   if (note) note.innerHTML = PALETTE_NOTE;
 
-  const show = (color) => {
-    detail.style.setProperty("--tone", color.applied);
-    if (chip) {
-      // 원안 → 적용값. 색 두 개를 나란히 두는 것으로 설명을 대신한다.
-      chip.style.setProperty("--origin", color.origin);
-      chip.style.setProperty("--applied", color.applied);
-    }
-    if (role) role.textContent = color.role;
-    if (name) name.textContent = color.name;
-    if (meaning) meaning.textContent = color.meaning;
-    if (desc) {
-      // 글자만 살짝 페이드하며 교체
-      desc.style.opacity = "0";
-      setTimeout(() => {
-        desc.textContent = color.desc;
-        desc.style.opacity = "1";
-      }, 120);
-    }
-  };
-
-  ORIGIN_PALETTE.forEach((color, index) => {
-    const swatch = el("button", {
-      className: "palette__swatch",
-      attrs: {
-        type: "button",
-        "aria-selected": index === 0,
-        "aria-label": `${color.role} — ${color.name}`,
-      },
-      style: {
-        "--tone": color.applied,
-        "--origin": color.origin,
-        "--ink": color.ink,
-      },
-      html: `
-        <span class="palette__swatch-role">${escapeHtml(color.role)}</span>
-        <span class="palette__swatch-meaning">${escapeHtml(color.meaning)}</span>
-      `,
-    });
-
-    const select = () => {
-      $$(".palette__swatch", track).forEach((node) => node.setAttribute("aria-selected", "false"));
-      swatch.setAttribute("aria-selected", "true");
-      show(color);
-    };
-
-    swatch.addEventListener("pointerenter", select);
-    swatch.addEventListener("click", select);
-    swatch.addEventListener("focus", select);
-
-    track.append(swatch);
+  ORIGIN_PALETTE.forEach((color) => {
+    host.append(
+      el("li", {
+        className: "palette__row",
+        attrs: { "data-reveal": "" },
+        // 진주 바깥 테 = CI 원안, 안쪽 알 = 화면 적용값
+        style: { "--origin": color.origin, "--applied": color.applied },
+        html: `
+          <span class="palette__pearl" aria-hidden="true"></span>
+          <span class="palette__row-id">
+            <b class="palette__row-name">${escapeHtml(color.name)}</b>
+            <span class="palette__row-role">${escapeHtml(color.role)}</span>
+          </span>
+          <span class="palette__row-body">
+            <span class="palette__row-meaning">${escapeHtml(color.meaning)}</span>
+            <span class="palette__row-desc">${escapeHtml(color.desc)}</span>
+          </span>
+        `,
+      })
+    );
   });
 
-  show(ORIGIN_PALETTE[0]);
+  window.__emourObserveReveal?.(host);
 }
 
 /* --------------------------------------------------------------------------

@@ -9,11 +9,17 @@
  *
  * 상단바 구조
  *   항목(제품 · 검증 · 기술 · 브랜드 · 팀)은 그 페이지로 가는 링크이면서,
- *   동시에 그 페이지의 상세 목차를 여는 트리거다.
- *     · 데스크톱 : 올리거나 탭 포커스가 닿으면 패널이 펼쳐진다
+ *   동시에 전체 목차를 여는 트리거다.
+ *     · 데스크톱 : 어느 항목에든 닿으면 화면 폭을 다 쓰는 패널 하나가 내려오고,
+ *                 다섯 페이지의 상세 목차가 각 항목 바로 아래 열로 정렬된다.
+ *                 (항목마다 따로 열리는 작은 패널이 아니라 한 판이다)
  *     · 모바일   : 햄버거 → 시트 안에서 아코디언으로 펼쳐진다
  *   현재 보고 있는 페이지의 항목에는 밑줄이 남고,
- *   그 페이지 안에서 스크롤하면 패널 안의 현재 섹션에 점이 붙는다.
+ *   그 페이지 안에서 스크롤하면 목차의 현재 섹션에 점이 붙는다.
+ *
+ *   열을 항목 아래에 정확히 맞추려고 --mega-left / --mega-right 두 값을
+ *   실측해서 넣는다. 링크 묶음의 위치는 로고·버튼 폭에 따라 달라지므로
+ *   CSS 만으로는 맞출 수 없다.
  */
 
 import { NAV, LINKS, HOME_FILE, FOOTER_GROUPS, SITE } from "../data/site.js";
@@ -37,53 +43,53 @@ function hrefFor(pageId, hash) {
    상단바
    -------------------------------------------------------------------------- */
 
-/** 드롭다운 패널 — 페이지 소개 + 그 페이지의 섹션 목록 */
-function navPanel(page) {
+/** 메가패널 한 열 — 페이지 하나의 상세 목차 */
+function megaColumn(page, active) {
   const items = page.children
     .map(
       (child) => `
-        <a class="nav-panel__item" href="${escapeHtml(hrefFor(page.id, child.hash))}"
+        <a class="nav-mega__item" href="${escapeHtml(hrefFor(page.id, child.hash))}"
            data-section="${escapeHtml(child.hash)}" data-section-page="${escapeHtml(page.id)}">
-          <span class="nav-panel__item-label">${escapeHtml(child.label)}</span>
-          <span class="nav-panel__item-desc">${escapeHtml(child.desc)}</span>
+          ${escapeHtml(child.label)}
         </a>`
     )
     .join("");
 
   return el("div", {
-    className: "nav-panel",
-    attrs: { id: `nav-panel-${page.id}`, hidden: true },
-    html: `
-      <div class="nav-panel__inner">
-        <div class="nav-panel__lead">
-          <p class="nav-panel__lead-title">${escapeHtml(page.label)}</p>
-          <p class="nav-panel__lead-desc">${escapeHtml(page.summary)}</p>
-          <a class="nav-panel__lead-link" href="${escapeHtml(hrefFor(page.id))}">
-            페이지 전체 보기 ${icon("arrowRight", 14)}
-          </a>
-        </div>
-        <div class="nav-panel__list">${items}</div>
-      </div>
-    `,
+    className: `nav-mega__col${active ? " is-current" : ""}`,
+    attrs: { "data-mega-col": page.id },
+    // 열이 항목 바로 아래에 서므로 제목을 다시 적지 않는다
+    html: `<div class="nav-mega__items">${items}</div>`,
   });
 }
 
-/** 상단바 항목 하나 = 링크 + 패널 */
-function navItem(page, active) {
-  const group = el("div", { className: "nav-item", attrs: { "data-nav-item": page.id } });
+/** 메가패널 — 화면 폭을 다 쓰는 한 판. 다섯 열이 항목 아래에 맞춰 선다. */
+function megaPanel(page) {
+  return el("div", {
+    className: "nav-mega",
+    attrs: { id: "nav-mega", hidden: true },
+    children: [
+      el("div", {
+        className: "nav-mega__cols",
+        style: { "--mega-count": String(NAV.length) },
+        children: NAV.map((item) => megaColumn(item, item.id === page)),
+      }),
+    ],
+  });
+}
 
-  const link = el("a", {
+/** 상단바 항목 하나 — 그 페이지로 가는 링크이면서 메가패널 트리거 */
+function navItem(page, active) {
+  return el("a", {
     className: `nav-item__link${active ? " is-active" : ""}`,
     attrs: {
       href: hrefFor(page.id),
+      "data-nav-item": page.id,
       "aria-expanded": "false",
-      "aria-controls": `nav-panel-${page.id}`,
+      "aria-controls": "nav-mega",
     },
-    html: `<span>${escapeHtml(page.label)}</span>${icon("chevronDown", 14)}`,
+    html: `<span>${escapeHtml(page.label)}</span>`,
   });
-
-  group.append(link, navPanel(page));
-  return group;
 }
 
 /** 모바일 시트 — 페이지마다 아코디언 한 칸 */
@@ -130,7 +136,18 @@ function renderNav() {
 
       <div class="nav-actions">
         <a class="btn btn--ghost" data-link="repository" href="#" hidden>GitHub</a>
-        <a class="btn btn--solid" data-link="service" href="#" hidden>서비스 체험하기</a>
+        ${
+          /*
+           * 주 행동 버튼.
+           * 서버를 상시로 열어 둘 수 없으므로, LINKS.service 가 비어 있으면
+           * "체험하기"를 내걸지 않는다. 대신 언제나 볼 수 있는 소개 영상으로 보낸다.
+           * 나중에 서비스 주소가 생기면 js/data/site.js 의 LINKS.service 만 채우면
+           * 이 버튼이 자동으로 "서비스 체험하기"로 바뀐다.
+           */
+          LINKS.service
+            ? `<a class="btn btn--solid" data-link="service" href="#">서비스 체험하기</a>`
+            : `<a class="btn btn--solid" href="${escapeHtml(page === "home" ? "#film" : `${HOME_FILE}#film`)}">소개 영상 보기</a>`
+        }
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-sheet" aria-label="메뉴 열기">
           <span class="nav-toggle__bars"><span></span><span></span><span></span></span>
         </button>
@@ -139,7 +156,26 @@ function renderNav() {
   `;
 
   const linksBox = $(".nav-links", nav);
+  linksBox.style.setProperty("--nav-count", String(NAV.length));
   NAV.forEach((item) => linksBox.append(navItem(item, item.id === page)));
+
+  // 메가패널은 상단바 안, 링크 묶음 아래에 놓인다
+  nav.append(megaPanel(page));
+
+  /* 열을 항목 아래에 정확히 세운다.
+     링크 묶음의 좌표는 로고 · 오른쪽 버튼 폭에 따라 달라져 CSS 로는 알 수 없다. */
+  const alignMega = () => {
+    const shell = $(".nav-shell", nav);
+    if (!shell) return;
+    const a = linksBox.getBoundingClientRect();
+    const b = shell.getBoundingClientRect();
+    nav.style.setProperty("--mega-left", `${Math.round(a.left - b.left)}px`);
+    nav.style.setProperty("--mega-right", `${Math.round(b.right - a.right)}px`);
+  };
+  alignMega();
+  window.addEventListener("resize", alignMega);
+  // 서체가 늦게 오면 링크 폭이 바뀌므로 한 번 더 맞춘다
+  document.fonts?.ready.then(alignMega).catch(() => {});
 
   // 모바일 시트는 상단바 바깥에 둔다 (상단바가 overflow 를 자르기 때문)
   const sheet = el("nav", {
@@ -224,75 +260,86 @@ export function applyExternalLinks(root = document) {
 }
 
 /* --------------------------------------------------------------------------
-   드롭다운 동작
+   메가패널 동작
+
+   항목마다 따로 열리는 패널이 아니라 한 판이므로, 여닫는 상태도 하나다.
+   상단바 전체에서 포인터가 빠질 때 닫는다 — 항목과 패널 사이를 지나갈 때
+   깜빡이지 않도록 유예를 둔다.
    -------------------------------------------------------------------------- */
-function initDropdowns(nav) {
-  const groups = $$(".nav-item", nav);
-  let openTimer = null;
+function initMega(nav) {
+  const mega = $(".nav-mega", nav);
+  const links = $$(".nav-item__link", nav);
+  if (!mega || !links.length) return () => {};
 
-  const closeAll = () => {
-    groups.forEach((group) => {
-      group.classList.remove("is-open");
-      $(".nav-item__link", group)?.setAttribute("aria-expanded", "false");
-      $(".nav-panel", group)?.setAttribute("hidden", "");
+  let closeTimer = null;
+
+  const close = () => {
+    clearTimeout(closeTimer);
+    nav.classList.remove("is-mega-open");
+    mega.setAttribute("hidden", "");
+    links.forEach((link) => {
+      link.setAttribute("aria-expanded", "false");
+      link.classList.remove("is-hot");
+    });
+    $$(".nav-mega__col", mega).forEach((col) => col.classList.remove("is-hot"));
+  };
+
+  /** 패널을 열고, 지금 가리키는 항목의 열을 강조한다 */
+  const open = (id) => {
+    clearTimeout(closeTimer);
+    nav.classList.add("is-mega-open");
+    mega.removeAttribute("hidden");
+    links.forEach((link) => {
+      const on = link.dataset.navItem === id;
+      link.setAttribute("aria-expanded", String(on));
+      link.classList.toggle("is-hot", on);
+    });
+    $$(".nav-mega__col", mega).forEach((col) => {
+      col.classList.toggle("is-hot", col.dataset.megaCol === id);
     });
   };
 
-  const open = (group) => {
-    if (group.classList.contains("is-open")) return;
-    closeAll();
-    group.classList.add("is-open");
-    $(".nav-item__link", group)?.setAttribute("aria-expanded", "true");
-    $(".nav-panel", group)?.removeAttribute("hidden");
-  };
-
-  groups.forEach((group) => {
-    const link = $(".nav-item__link", group);
-
-    // 올리면 펼치고, 벗어나면 잠깐 뒤 닫는다
-    // (항목과 패널 사이를 지나갈 때 깜빡이지 않도록 유예를 둔다)
-    group.addEventListener("pointerenter", (event) => {
+  links.forEach((link) => {
+    link.addEventListener("pointerenter", (event) => {
       if (event.pointerType === "touch") return;
-      clearTimeout(openTimer);
-      open(group);
-    });
-
-    group.addEventListener("pointerleave", (event) => {
-      if (event.pointerType === "touch") return;
-      clearTimeout(openTimer);
-      openTimer = setTimeout(closeAll, 140);
+      open(link.dataset.navItem);
     });
 
     // 탭 이동으로 항목에 닿으면 펼친다
-    link?.addEventListener("focus", () => open(group));
+    link.addEventListener("focus", () => open(link.dataset.navItem));
 
-    // ↓ 로 패널 안 첫 항목으로 들어간다
-    link?.addEventListener("keydown", (event) => {
+    // ↓ 로 그 항목의 열 첫 링크로 들어간다
+    link.addEventListener("keydown", (event) => {
       if (event.key !== "ArrowDown") return;
       event.preventDefault();
-      open(group);
-      $(".nav-panel__item", group)?.focus();
+      open(link.dataset.navItem);
+      $(`[data-mega-col="${link.dataset.navItem}"] .nav-mega__item`, mega)?.focus();
     });
+  });
 
-    // 패널 밖으로 포커스가 빠져나가면 닫는다
-    group.addEventListener("focusout", (event) => {
-      if (!group.contains(event.relatedTarget)) {
-        group.classList.remove("is-open");
-        link?.setAttribute("aria-expanded", "false");
-        $(".nav-panel", group)?.setAttribute("hidden", "");
-      }
-    });
+  // 패널 위에 있는 동안은 열어 둔다
+  mega.addEventListener("pointerenter", () => clearTimeout(closeTimer));
+
+  // 상단바(항목 + 패널) 밖으로 나가면 닫는다
+  nav.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "touch") return;
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(close, 160);
+  });
+
+  // 포커스가 상단바 밖으로 빠지면 닫는다
+  nav.addEventListener("focusout", (event) => {
+    if (!nav.contains(event.relatedTarget)) close();
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    const openGroup = groups.find((group) => group.classList.contains("is-open"));
-    if (!openGroup) return;
-    closeAll();
-    $(".nav-item__link", openGroup)?.focus();
+    if (event.key !== "Escape" || !nav.classList.contains("is-mega-open")) return;
+    const hot = links.find((link) => link.classList.contains("is-hot"));
+    close();
+    hot?.focus();
   });
 
-  return closeAll;
+  return close;
 }
 
 /* --------------------------------------------------------------------------
@@ -455,7 +502,7 @@ export function initChrome() {
 
   if (!nav) return;
 
-  const closeDropdowns = initDropdowns(nav);
+  const closeDropdowns = initMega(nav);
   initSheet(nav);
   initScrollState(nav);
   initSmoothAnchors(nav, closeDropdowns);

@@ -59,23 +59,18 @@
    카드의 --tone 은 테두리에만 아주 옅게 남긴다. */
 .member__avatar {
   position: relative;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 26%, white);
-  margin-bottom: 18px;
+  width: 104px;
+  height: 104px;
+  margin-bottom: 16px;
   flex-shrink: 0;
 }
 
-/* 원본 SVG 는 바깥에 옅은 회색 링이 두 겹 둘러 있어, 그대로 넣으면 얼굴이
-   지름의 88% 안으로 들어가 작게 보인다. 링 두 겹만큼 키워서 잘라 낸다. */
+/* 원본 SVG 는 바깥 링까지가 하나의 그림이다. 잘라내지 않고 그대로 넣는다.
+   대신 지름을 키워서 얼굴이 읽히게 한다. */
 .member__avatar img {
   display: block;
-  width: 114%;
-  height: 114%;
-  margin: -7%;
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .member__roles {

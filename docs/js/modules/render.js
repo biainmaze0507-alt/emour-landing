@@ -90,7 +90,10 @@ export function metaColumn({ read = false, time = "" } = {}) {
 
 /**
  * 문장 다듬기 추천 묶음 — 앱의 SuggestionChips 와 같은 구조.
- * 제목 한 줄 + 가로로 넘기는 알약 칩 + 안내 문구.
+ *
+ * 랜딩에서는 눌러도 아무 일이 일어나지 않으므로 <button> 이 아니라 표시로 둔다.
+ * 누를 수 있어 보이는 것은 누를 수 있어야 한다. 같은 이유로
+ * "탭하면 입력창에 반영돼요" 안내도 두지 않는다.
  *
  * @param {Array<{kind:string, text:string}>} items
  * @param {object} [opts] stagger: 칩마다 등장 지연을 줄지 여부
@@ -108,9 +111,8 @@ export function suggestionChips(items, { stagger = false } = {}) {
   const row = el("div", { className: "suggests__row" });
   items.forEach((item, index) => {
     row.append(
-      el("button", {
+      el("span", {
         className: "suggests__chip",
-        attrs: { type: "button" },
         html:
           `<b class="suggests__chip-kind">${escapeHtml(item.kind)}</b>` +
           `<span>${escapeHtml(item.text)}</span>`,
@@ -120,9 +122,6 @@ export function suggestionChips(items, { stagger = false } = {}) {
   });
   wrap.append(row);
 
-  wrap.append(
-    el("p", { className: "suggests__hint", text: "추천 문장을 탭하면 입력창에 반영돼요." })
-  );
 
   return wrap;
 }

@@ -123,221 +123,125 @@
 }
 
 /* --------------------------------------------------------------------------
-   가운데 링크 묶음 — 항목마다 상세 목차 패널이 딸려 있다
+   가운데 링크 묶음 + 전체폭 메가패널
 
-   항목은 링크이면서 동시에 트리거다. 눌러도 그 페이지로 가고,
-   올리거나 탭 포커스가 닿으면 아래로 패널이 펼쳐진다.
-   (5개 항목 · 2단 구조 — 전면 메가메뉴보다 이 규모에 맞는 방식이다)
+   항목은 링크이면서 트리거다. 눌러도 그 페이지로 가고, 올리거나 탭 포커스가
+   닿으면 화면 폭을 다 쓰는 패널 하나가 내려온다.
+
+   항목을 같은 폭의 다섯 칸에 나눠 세우고, 패널의 열도 같은 격자를 쓴다.
+   그래서 "제품" 아래에 제품의 목차가, "검증" 아래에 검증의 목차가 선다.
+   격자의 시작 위치·폭은 로고와 오른쪽 버튼 폭에 따라 달라지므로
+   chrome.js 가 실측해 --mega-left / --mega-width 로 넣어 준다.
    -------------------------------------------------------------------------- */
 .nav-links {
-  margin: 0 auto;
-  display: flex;
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--nav-count, 5), minmax(0, 1fr));
   align-items: center;
-  gap: 2px;
-}
-
-.nav-item {
-  position: relative;
 }
 
 .nav-item__link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 8px 13px;
-  border-radius: var(--radius-pill);
+  gap: 5px;
+  padding: 9px 2px;
   font-size: var(--font-label);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: var(--tracking-normal);
   color: var(--color-text-secondary);
-  transition:
-    color var(--duration-fast) var(--ease-out),
-    background var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-out);
 }
 
-.nav-item__link svg {
-  width: 13px;
-  height: 13px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.5;
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-.nav-item__link:hover {
-  color: var(--color-text-primary);
-  background: var(--color-surface-tint);
+.nav-item__link:hover,
+.nav-item__link.is-hot {
+  color: var(--color-text-accent);
 }
 
 /* 지금 보고 있는 페이지 */
 .nav-item__link.is-active {
-  color: var(--color-text-accent);
-  background: var(--color-primary-faint);
-}
-
-.nav-item.is-open .nav-item__link {
   color: var(--color-text-primary);
-  background: var(--color-surface-tint);
+  box-shadow: inset 0 -2px 0 0 var(--color-primary);
 }
 
-.nav-item.is-open .nav-item__link svg {
-  transform: rotate(180deg);
-}
-
-/* 드롭다운 패널 */
-.nav-panel {
+/* --------------------------------------------------------------------------
+   메가패널 — 상단바 아래로 내려오는 한 판
+   -------------------------------------------------------------------------- */
+.nav-mega {
   position: absolute;
-  top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  width: max-content;
-  max-width: min(600px, calc(100vw - 40px));
-  padding: 8px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow: var(--shadow-float);
-  animation: panel-in var(--duration-base) var(--ease-out);
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-raised);
+  animation: mega-drop var(--duration-base) var(--ease-out) both;
 }
 
-.nav-panel[hidden] {
+.nav-mega[hidden] {
   display: none;
 }
 
-/*
- * 오른쪽에 있는 항목의 패널은 항목의 오른쪽 끝에 맞춘다.
- * 전부 가운데 정렬로 두면 좁은 데스크톱 폭(상단바가 살아 있는 900~1150px)에서
- * 마지막 항목들의 패널이 화면 밖으로 밀려 잘린다.
- */
-.nav-item:nth-last-child(-n + 3) .nav-panel {
-  left: auto;
-  right: 0;
-  transform: none;
+@keyframes mega-drop {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
 }
 
-/* 상단바가 아직 가로로 놓이는 좁은 폭에서는 패널도 함께 좁힌다 */
-@media (max-width: 1150px) {
-  .nav-panel {
-    max-width: min(440px, calc(100vw - 28px));
-  }
+/* 열 격자 — 위 항목과 같은 시작점 · 같은 폭 · 같은 칸 수.
 
-  .nav-panel__inner {
-    grid-template-columns: minmax(0, 158px) minmax(0, 1fr);
-  }
-}
-
-/* 항목과 패널 사이의 빈 틈 — 마우스가 지나갈 때 패널이 닫히지 않게 덮어 둔다 */
-.nav-panel::before {
-  content: "";
-  position: absolute;
-  inset: -12px 0 100% 0;
-}
-
-.nav-panel__inner {
+   좌우 여백을 링크 묶음의 좌우 여백과 똑같이 주면, 남는 내용 폭이 링크 묶음의
+   폭과 정확히 같아진다. 그 위에 같은 칸 수의 균등 격자를 얹으므로
+   각 열이 위 항목 바로 아래에 선다. (두 값은 chrome.js 가 실측해 넣는다) */
+.nav-mega__cols {
+  width: 100%;
+  max-width: var(--shell-wide);
+  margin: 0 auto;
+  padding: 22px var(--mega-right, var(--shell-pad)) 30px var(--mega-left, var(--shell-pad));
   display: grid;
-  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(var(--mega-count, 5), minmax(0, 1fr));
 }
 
-.nav-panel__lead {
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background: var(--panel-tint);
+.nav-mega__items {
+  display: grid;
+  gap: 2px;
 }
 
-.nav-panel__lead-title {
-  font-size: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: var(--tracking-tight);
-  color: var(--color-text-primary);
-}
-
-.nav-panel__lead-desc {
-  margin-top: 8px;
-  font-size: var(--font-caption);
-  line-height: var(--leading-normal);
+.nav-mega__item {
+  position: relative;
+  padding: 7px 0 7px 12px;
+  font-size: var(--font-label);
   color: var(--color-text-secondary);
+  transition: color var(--duration-fast) var(--ease-out);
   word-break: keep-all;
 }
 
-.nav-panel__lead-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 14px;
-  font-size: var(--font-caption);
-  font-weight: 800;
-  color: var(--color-text-accent);
-  transition: gap var(--duration-fast) var(--ease-out);
+.nav-mega__item:hover {
+  color: var(--color-text-primary);
 }
 
-.nav-panel__lead-link:hover {
-  gap: 9px;
-}
-
-.nav-panel__lead-link svg {
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.nav-panel__list {
-  display: grid;
-  gap: 2px;
-  align-content: start;
-}
-
-.nav-panel__item {
-  position: relative;
-  display: grid;
-  gap: 2px;
-  padding: 10px 14px 10px 20px;
-  border-radius: var(--radius-md);
-  transition: background var(--duration-fast) var(--ease-out);
-}
-
-.nav-panel__item:hover {
-  background: var(--color-surface-tint);
-}
-
-/* 이 페이지에서 지금 보고 있는 섹션에 점이 붙는다 */
-.nav-panel__item::before {
+/* 지금 보고 있는 섹션에 붙는 점 */
+.nav-mega__item::before {
   content: "";
   position: absolute;
-  left: 8px;
+  left: 0;
   top: 50%;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
   border-radius: 50%;
   background: var(--color-primary);
-  transform: translateY(-50%) scale(0);
-  transition: transform var(--duration-base) var(--ease-spring);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-.nav-panel__item.is-current::before {
-  transform: translateY(-50%) scale(1);
-}
-
-.nav-panel__item-label {
-  font-size: var(--font-label);
-  font-weight: 700;
+.nav-mega__item.is-current {
   color: var(--color-text-primary);
+  font-weight: 700;
 }
 
-.nav-panel__item-desc {
-  font-size: var(--font-micro);
-  line-height: 1.45;
-  color: var(--color-text-tertiary);
-  word-break: keep-all;
+.nav-mega__item.is-current::before {
+  opacity: 1;
 }
 
 .nav-actions {

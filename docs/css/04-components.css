@@ -391,12 +391,31 @@
   background: var(--color-surface);
 }
 
-.chat-window__composer-placeholder {
+/* 입력창 글자.
+   비어 있으면 안내 문구 색, 글자가 들어오면 본문 색으로 바뀐다.
+   히어로에서는 여기에 실제로 한 글자씩 쳐진다(js/modules/heroChat.js). */
+.chat-window__composer-text {
   font-size: var(--font-label);
   color: var(--color-text-placeholder);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chat-window__composer-field.is-typing .chat-window__composer-text {
+  color: var(--color-text-primary);
+}
+
+/* 치는 중임을 알리는 커서 */
+.chat-window__composer-field.is-typing .chat-window__composer-text::after {
+  content: "";
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.16em;
+  background: var(--color-primary);
+  animation: caret-blink 900ms steps(1, end) infinite;
 }
 
 /* 입력창 안쪽 오른쪽에 붙는 교정 버튼 */
@@ -429,8 +448,14 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--color-action);
+  /* 보낼 것이 없으면 비활성 색 — 앱의 .sendBtn:disabled 와 같은 규칙 */
+  background: var(--color-action-disabled);
   color: var(--color-text-on-primary);
+  transition: background var(--duration-base) var(--ease-out);
+}
+
+.chat-window__send.is-ready {
+  background: var(--color-action);
 }
 
 .chat-window__send svg {
@@ -615,12 +640,6 @@
   font-size: 10px;
   font-weight: 800;
   color: var(--color-action);
-}
-
-.suggests__hint {
-  padding-bottom: 8px;
-  font-size: 10px;
-  color: var(--color-text-placeholder);
 }
 
 /* --------------------------------------------------------------------------

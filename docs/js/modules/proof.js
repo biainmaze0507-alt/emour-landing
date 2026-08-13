@@ -54,7 +54,7 @@ export function initProof() {
     TEST_SCALE.forEach((item) => {
       const number = el("span", { text: "0" });
       const card = el("div", {
-        className: "stat surface-panel lift",
+        className: "stat",
         attrs: { "data-reveal": "" },
         children: [
           el("div", {
