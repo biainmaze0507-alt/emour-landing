@@ -61,7 +61,7 @@ export const AI_PIPELINE = {
   chain: ["beomi/KcELECTRA", "AI Hub 데이터셋", "문맥 포함 재라벨링", "PyTorch 파인튜닝"],
   model: "chlgks/emour-emotion-kcelectra-context-v2",
   /* 앞의 섹션 설명이 이미 학습 과정을 말하므로, 여기서는 겹치지 않는 한 줄만 둔다 */
-  desc: "답장 추천은 이 모델이 아니라 프롬프트 기반 생성 모델이 맡습니다.",
+  desc: "답장 추천에는 이 모델을 쓰지 않고, 프롬프트 기반 생성 모델을 사용합니다.",
 };
 
 /** 기술 스택 */
