@@ -99,3 +99,21 @@ VS Code 를 쓴다면 Live Server 확장을 설치하고 `docs/index.html` 우�
   `frontend/src/components/chat/` 와 1:1 로 맞춰져 있습니다.
 
 © 2026 Emour
+
+---
+
+## 페이지 소개 영상
+
+각 기능의 실제 동작 화면을 영상으로 확인할 수 있습니다.
+
+| 페이지 | 영상 |
+| --- | --- |
+| 대시보드 | [영상 보기](./assets/videos/dashboard.mp4) |
+| 커플 연결 | [영상 보기](./assets/videos/couple-connect.mp4) |
+| 채팅 | [영상 보기](./assets/videos/chat.mp4) |
+| 캘린더 | [영상 보기](./assets/videos/calendar.mp4) |
+| 앨범 | [영상 보기](./assets/videos/album.mp4) |
+| 프로필 수정 | [영상 보기](./assets/videos/profile-edit.mp4) |
+| 마이페이지 수정 | [영상 보기](./assets/videos/mypage-edit.mp4) |
+
+> GitHub에서는 각 링크를 선택하면 원본 MP4 영상을 열어 확인할 수 있습니다.
