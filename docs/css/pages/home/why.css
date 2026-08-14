@@ -1,0 +1,270 @@
+/* ==========================================================================
+   pages/home/why.css — 기획 배경
+   "감정 단서" 스위치 하나로 같은 대화가 어떻게 달라지는지 보여준다.
+   AS IS(단서 없음) ↔ TO BE(감정 보임)
+   ========================================================================== */
+
+.why__theory {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(28px, 3.4vw, 44px);
+  margin-bottom: clamp(48px, 6vw, 80px);
+}
+
+.why__theory-source {
+  font-size: var(--font-caption);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+}
+
+.why__theory-term {
+  margin-top: 10px;
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-accent);
+}
+
+.why__theory-term span {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--font-label);
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.why__theory-body {
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.why__theory-body strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   스위치 — AS IS / TO BE
+   -------------------------------------------------------------------------- */
+.why__switchbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.why__switch-label {
+  font-size: var(--font-label);
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.why__switch-label.is-on {
+  color: var(--color-text-accent);
+}
+
+.why__switch {
+  position: relative;
+  width: 74px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-sunken);
+  transition:
+    background var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+.why__switch:hover {
+  border-color: var(--color-primary);
+}
+
+.why__switch[aria-checked="true"] {
+  background: var(--color-action);
+  border-color: transparent;
+}
+
+.why__switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--duration-base) var(--ease-spring);
+}
+
+.why__switch[aria-checked="true"]::after {
+  transform: translateX(36px);
+}
+
+/* --------------------------------------------------------------------------
+   비교 무대 — 왼쪽 대화, 오른쪽 해석
+   -------------------------------------------------------------------------- */
+.why__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 2.6vw, 34px);
+  align-items: stretch;
+}
+
+/* 대화 패널 */
+.why__chat {
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: border-color var(--duration-slow) var(--ease-out);
+}
+
+/* 말풍선의 기본 좌우 여백은 대화 창(.chat-window) 기준이다.
+   여기서는 패널 자체의 padding이 그 자리를 맡으므로 좌우만 걷어낸다. */
+.why__chat .chat-row {
+  margin-inline: 0;
+}
+
+.why__stage.is-on .why__chat {
+  border-color: var(--color-primary-soft);
+}
+
+/* 감정 태그는 기본적으로 자리를 차지한 채 숨어 있다가(레이아웃 흔들림 방지)
+   스위치가 켜지면 나타난다. */
+.why__chat .emotion-tag {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.9);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-spring);
+  transition-delay: var(--delay, 0ms);
+}
+
+.why__stage.is-on .why__chat .emotion-tag {
+  opacity: 1;
+  transform: none;
+}
+
+/* 스위치가 꺼져 있을 때는 말풍선에서 색을 뺀다 */
+.why__chat .chat-bubble {
+  transition:
+    background var(--duration-slow) var(--ease-out),
+    color var(--duration-slow) var(--ease-out),
+    box-shadow var(--duration-slow) var(--ease-out);
+}
+
+.why__stage:not(.is-on) .chat-row--mine .chat-bubble {
+  background: #9d9491;
+  color: #fff;
+  box-shadow: none;
+}
+
+.why__stage:not(.is-on) .chat-row--yours .chat-bubble {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  box-shadow: none;
+}
+
+/* 읽음 표시도 감정 단서의 하나이므로 꺼진 상태에서는 색을 뺀다 */
+.why__stage:not(.is-on) .chat-row__read {
+  color: var(--color-text-placeholder);
+}
+
+/* 해석 패널 */
+.why__read {
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  transition: background var(--duration-slow) var(--ease-out);
+}
+
+.why__read-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-caption);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.why__stage:not(.is-on) .why__read-verdict {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.why__stage.is-on .why__read-verdict {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.why__read-title {
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+}
+
+.why__read-desc {
+  font-size: var(--font-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+/* 두 상태의 글이 겹쳐 있다가 교차 전환된다 */
+.why__read-slot {
+  display: grid;
+}
+
+.why__read-slot > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.why__read-slot > [data-state="off"] { opacity: 1; transform: none; }
+.why__read-slot > [data-state="on"]  { opacity: 0; transform: translateY(8px); pointer-events: none; }
+
+.why__stage.is-on .why__read-slot > [data-state="off"] { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+.why__stage.is-on .why__read-slot > [data-state="on"]  { opacity: 1; transform: none; pointer-events: auto; }
+
+/* 마무리 문장 */
+.why__closing {
+  margin-top: clamp(44px, 5vw, 72px);
+  text-align: center;
+  font-size: clamp(21px, 2.6vw, 32px);
+  font-weight: 800;
+  line-height: 1.55;
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+}
+
+.why__closing em {
+  font-style: normal;
+  color: var(--color-text-accent);
+}
+
+@media (max-width: 900px) {
+  .why__theory,
+  .why__stage {
+    grid-template-columns: 1fr;
+  }
+}

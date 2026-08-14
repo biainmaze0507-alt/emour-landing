@@ -14,18 +14,19 @@
  * 모듈 하나가 실패해도 나머지 섹션은 살아 있도록 각각 try로 감싼다.
  */
 
-import { initChrome } from "./modules/chrome.js";
-import { initReveal, initCursorGlow } from "./modules/reveal.js";
-import { initHeroChat } from "./modules/heroChat.js";
-import { initWhy } from "./modules/why.js";
-import { initFeatureTabs } from "./modules/featureTabs.js";
-import { initEmotionGrid } from "./modules/emotionGrid.js";
-import { initFilm } from "./modules/film.js";
-import { initProof, initHeroFacts } from "./modules/proof.js";
-import { initFeedback } from "./modules/feedbackCards.js";
-import { initArchitecture } from "./modules/architecture.js";
-import { initIdentity } from "./modules/identity.js";
-import { initTeam } from "./modules/team.js";
+import { initChrome } from "./shared/chrome.js";
+import { initReveal, initCursorGlow } from "./shared/reveal.js";
+import { initHeroChat } from "./pages/home/heroChat.js";
+import { initWhy } from "./pages/home/why.js";
+import { initFeatureTabs } from "./pages/product/featureTabs.js";
+import { initEmotionGrid } from "./pages/product/emotionGrid.js";
+import { initFilm } from "./pages/home/film.js";
+import { initProof } from "./pages/proof/proof.js";
+import { initHeroFacts } from "./pages/home/heroFacts.js";
+import { initFeedback } from "./pages/proof/feedbackCards.js";
+import { initArchitecture } from "./pages/tech/architecture.js";
+import { initIdentity } from "./pages/brand/identity.js";
+import { initTeam } from "./pages/team/team.js";
 
 /**
  * 페이지마다 켤 모듈.

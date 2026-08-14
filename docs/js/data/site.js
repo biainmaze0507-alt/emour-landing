@@ -35,6 +35,17 @@ export const LINKS = {
  */
 export const NAV = [
   {
+    id: "home",
+    label: "홈",
+    file: "index.html",
+    summary: "무엇을 만들었고 왜 만들었는지, 한 화면에서 훑어보는 자리.",
+    children: [
+      { hash: "why", label: "기획 배경", desc: "텍스트만 남으면 사라지는 것들" },
+      { hash: "glance", label: "기능 요약", desc: "세 가지 일을 한눈에" },
+      { hash: "film", label: "소개 영상", desc: "1분으로 보는 Emour" },
+    ],
+  },
+  {
     id: "product",
     label: "제품",
     file: "product.html",
@@ -78,7 +89,7 @@ export const NAV = [
       { hash: "naming", label: "이름의 뜻", desc: "Emotion과 Amour 사이에 남은 our" },
       { hash: "motif", label: "디자인 모티프", desc: "층층이 쌓여 완성되는 핑크 진주" },
       { hash: "palette", label: "컬러 아이덴티티", desc: "색마다 담긴 뜻" },
-      { hash: "temperature", label: "웜톤과 쿨톤", desc: "정서의 색과 결심의 색" },
+      { hash: "temperature", label: "색의 두 온도", desc: "정서의 색과 결심의 색" },
       { hash: "logo", label: "로고와 타이포", desc: "두 색이 화면의 두 축이 되는 방식" },
     ],
   },
@@ -93,7 +104,7 @@ export const NAV = [
   },
 ];
 
-/** 홈(index.html)은 상단바 항목이 아니라 로고 클릭으로 갑니다. */
+/** 로고를 눌렀을 때 돌아가는 곳. 상단바 첫 항목("홈")과 같은 문서입니다. */
 export const HOME_FILE = "index.html";
 
 /** 히어로 아래 요약 수치 */
@@ -111,7 +122,8 @@ export const HERO_FACTS = [
  * type
  *   "mine"    내가 보낸 말 — 입력창에 한 글자씩 쳐진 뒤 말풍선으로 올라간다
  *   "yours"   상대가 보낸 말 — 바로 말풍선으로 올라간다
- *   "suggest" 문장 다듬기 추천이 올라오는 시점
+ *   "draft"   입력창에 쓰다 만 문장 — 보내지 않고 그대로 둔다
+ *   "suggest" 교정 버튼을 눌러 문장 다듬기 추천을 부르는 시점
  *   "wait"    잠깐 멈춤 (ms)
  *
  * emotion에 감정 코드를 적으면 AI 분석 연출 뒤 그 감정 태그가 붙는다.
@@ -122,13 +134,14 @@ export const HERO_SCRIPT = [
   { type: "wait", ms: 400 },
   { type: "mine", text: "그래도 우리 한 달 전부터 약속한 데이트잖아…", emotion: "SADNESS", time: "오후 10:10" },
   { type: "yours", text: "미안해 근데 이번 주는 진짜 안 될 것 같아", emotion: "APOLOGY", time: "오후 10:12" },
+  { type: "draft", text: "그래 알겠어" },
   { type: "suggest" },
-  { type: "wait", ms: 2600 },
+  { type: "wait", ms: 1200 },
 ];
 
 /**
  * 입력창 위 "문장 다듬기 추천" 칩.
- * 대화가 바뀌어도 이 칸의 높이는 변하지 않는다(창 윤곽을 고정하기 위해).
+ * 세 종류는 한 화면에 다 들어오지 않는다 — 가로로 넘겨 보는 자리다.
  */
 export const HERO_SUGGESTS = [
   { kind: "해결형", text: "알겠어, 그럼 다음엔 언제 괜찮을지 알려줄래?" },

@@ -1,0 +1,195 @@
+/* ==========================================================================
+   01-base.css — 리셋 · 타이포 기본값 · 공통 텍스트 요소
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* 앵커 이동 시 고정 상단바에 제목이 가리지 않게 */
+  scroll-padding-top: calc(var(--nav-height) + 16px);
+  -webkit-text-size-adjust: 100%;
+
+  /* 등장 전 좌우로 밀어 둔 요소([data-reveal="right"] 등)가
+     잠깐 가로 스크롤을 만드는 것을 막는다.
+     hidden이 아니라 clip을 쓰는 이유: hidden은 스크롤 컨테이너를 만들어
+     position: sticky와 scroll-padding-top이 함께 깨진다. */
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-body);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* 메뉴 시트가 열려 있는 동안 배경 스크롤 잠금 */
+body.is-locked {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* hidden 속성이 항상 이기게 한다.
+   .btn처럼 display를 지정한 클래스가 붙으면 브라우저 기본 [hidden] 규칙이
+   밀려나서, 주소가 없어 감춘 버튼이 그대로 보이는 문제가 있다. */
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 키보드 포커스 표시.
+   box-shadow가 아니라 outline을 쓴다 — outline은 요소가 가진 모서리 곡률을
+   그대로 따라가므로 알약 버튼·원형 버튼·카드가 각자의 모양을 유지한다.
+   (box-shadow 방식은 반지름을 따로 지정해야 해서 모양이 어긋났다) */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-primary-soft);
+  color: var(--ci-ink);
+}
+
+/* --------------------------------------------------------------------------
+   공통 타이포 유틸 — 섹션마다 반복되는 3종 세트
+   -------------------------------------------------------------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  font-size: var(--font-eyebrow);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-accent);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--color-primary-soft);
+}
+
+.section-title {
+  font-size: var(--font-section);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+  text-wrap: balance;
+}
+
+.section-lead {
+  margin-top: 18px;
+  max-width: 58ch;
+  font-size: var(--font-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+/* 좌우 맞춤 — 한 줄에 40자쯤 들어가는 본문에만 준다.
+   한글은 낱말 단위로만 줄이 바뀌므로(word-break: keep-all) 오른쪽 끝을 맞추는 몫이
+   낱말 사이로 몰린다. 줄이 짧으면 그 틈이 눈에 보이게 벌어지므로,
+   좁은 화면과 폭이 좁은 칸(팀 카드 · 기능 근거 · 히어로 본문)은 왼쪽 맞춤으로 둔다. */
+@media (min-width: 760px) {
+  .page-hero__lead,
+  .section-lead,
+  .naming__closing,
+  .temp__lead,
+  .palette__row-desc,
+  .quote {
+    text-align: justify;
+  }
+}
+
+.accent {
+  color: var(--color-text-accent);
+}
+
+/* 브랜드 로즈 형광펜 — 발표자료의 하이라이트 표현과 동일한 인상 */
+.mark {
+  background: linear-gradient(
+    to top,
+    var(--color-primary-soft) 0 42%,
+    transparent 42% 100%
+  );
+  padding: 0 2px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  letter-spacing: 0;
+}
+
+/* 스크린리더 전용 — 시각적으로 감추되 접근성 트리에는 남긴다 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

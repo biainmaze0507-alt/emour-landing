@@ -23,28 +23,25 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/logo-mark.svg">
 
-  <!-- 서체 — Pretendard (앱과 동일). 실패해도 시스템 서체로 자연스럽게 떨어진다. -->
+  <!-- 서체 — Pretendard (앱과 동일). 실패해도 시스템 서체로 자연스럽게 떨어진다.
+       굵기별 파일(static)을 먼저 걸고, 가변 글꼴을 쓸 수 있는 기기에서만
+       한 파일로 모든 굵기를 내는 variable을 쓴다 (css/base/00-tokens.css의 @supports).
+       가변만 걸어 두면 그것을 못 다루는 기기에서 굵기가 전부 같아 보인다. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
-  <!-- ── 스타일 (읽는 순서 = 겹치는 순서) ─────────────────────────
-       페이지 5장이 같은 목록을 쓴다. 스타일을 추가하면 모든 페이지에 넣어야 한다.
+  <!-- ── 스타일 ────────────────────────────────────────────────────
+       css/base 는 여섯 페이지가 함께 쓰고, css/pages/<페이지> 는 이 페이지 전용입니다.
+       읽는 순서 = 겹치는 순서.
        ------------------------------------------------------------ -->
-  <link rel="stylesheet" href="css/00-tokens.css">
-  <link rel="stylesheet" href="css/01-base.css">
-  <link rel="stylesheet" href="css/02-layout.css">
-  <link rel="stylesheet" href="css/03-motion.css">
-  <link rel="stylesheet" href="css/04-components.css">
-  <link rel="stylesheet" href="css/sections/hero.css">
-  <link rel="stylesheet" href="css/sections/why.css">
-  <link rel="stylesheet" href="css/sections/features.css">
-  <link rel="stylesheet" href="css/sections/emotions.css">
-  <link rel="stylesheet" href="css/sections/film.css">
-  <link rel="stylesheet" href="css/sections/proof.css">
-  <link rel="stylesheet" href="css/sections/feedback.css">
-  <link rel="stylesheet" href="css/sections/tech.css">
-  <link rel="stylesheet" href="css/sections/identity.css">
-  <link rel="stylesheet" href="css/sections/team.css">
+  <link rel="stylesheet" href="css/base/00-tokens.css">
+  <link rel="stylesheet" href="css/base/01-base.css">
+  <link rel="stylesheet" href="css/base/02-layout.css">
+  <link rel="stylesheet" href="css/base/03-motion.css">
+  <link rel="stylesheet" href="css/base/04-components.css">
+  <link rel="stylesheet" href="css/base/05-closing.css">
+  <link rel="stylesheet" href="css/pages/brand/identity.css">
 
   <script type="module" src="js/main.js"></script>
 
@@ -66,7 +63,7 @@
 
   <div class="page-atmosphere" aria-hidden="true"></div>
 
-  <!-- 상단바와 푸터는 js/modules/chrome.js가 js/data/site.js의 NAV로 만든다. -->
+  <!-- 상단바와 푸터는 js/shared/chrome.js가 js/data/site.js의 NAV로 만든다. -->
   <header class="site-nav"></header>
   <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -84,7 +81,7 @@
             <a class="chip chip--brand" href="#naming">이름의 뜻</a>
             <a class="chip chip--brand" href="#motif">디자인 모티프</a>
             <a class="chip chip--brand" href="#palette">컬러 아이덴티티</a>
-            <a class="chip chip--brand" href="#temperature">웜톤과 쿨톤</a>
+            <a class="chip chip--brand" href="#temperature">색의 두 온도</a>
             <a class="chip chip--brand" href="#logo">로고와 타이포</a>
         </div>
       </div>
@@ -92,7 +89,7 @@
 
     <!-- ══════════════════════════════════════════════════════════
          이름의 뜻 — Em(otion) + (am)our
-         글자를 덜어내는 과정은 js/modules/identity.js가 조립한다.
+         글자를 덜어내는 과정은 js/pages/brand/identity.js가 조립한다.
          ══════════════════════════════════════════════════════════ -->
     <section class="section" id="naming">
       <div class="shell shell--wide">
@@ -104,7 +101,7 @@
 
         <blockquote class="naming__slogan" data-reveal="fade"></blockquote>
 
-        <!-- 남긴 글자 · 덜어낸 글자 한 줄 (js/modules/identity.js) -->
+        <!-- 남긴 글자 · 덜어낸 글자 한 줄 (js/pages/brand/identity.js) -->
         <p class="naming__build" data-reveal></p>
 
         <p class="naming__closing" data-reveal="fade"></p>
@@ -120,7 +117,7 @@
 
         <div class="motif">
           <div class="motif__stage" data-reveal="scale">
-            <!-- 층은 js/modules/identity.js가 안쪽부터 쌓는다 -->
+            <!-- 층은 js/pages/brand/identity.js가 안쪽부터 쌓는다 -->
             <div class="motif__pearl"></div>
           </div>
 
@@ -160,13 +157,13 @@
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         웜톤과 쿨톤 — 하나의 핑크를 시간으로 나눈 이야기
+         색의 두 온도 — 하나의 핑크를 시간으로 나눈 이야기
          ══════════════════════════════════════════════════════════ -->
     <section class="section" id="temperature">
       <div class="shell shell--wide">
 
         <div class="section-head" data-reveal-group>
-          <p class="eyebrow" data-reveal="fade">Warm &amp; Cool</p>
+          <p class="eyebrow" data-reveal="fade">Color Temperature</p>
           <h2 class="section-title" data-reveal>두 온도가<br>함께 쓰이는 방식</h2>
           <p class="temp__lead" data-reveal>
             초기 CI 컨셉의 핑크는 진주에서 온 웜톤 아이보리 핑크 하나였습니다. 쌓인 시간의 색입니다. 
@@ -187,7 +184,7 @@
 
         <div class="section-head" data-reveal-group>
           <p class="eyebrow" data-reveal="fade">Logo &amp; Type</p>
-          <h2 class="section-title" data-reveal>왼쪽의 e와 오른쪽의 m이 맞물려 하트가 됩니다</h2>
+          <h2 class="section-title" data-reveal>두 알파벳의 악수로써 해낸 형상화</h2>
         </div>
 
         <!-- 격자 위에 두 조합을 세로로 놓는다. 격자와 로고 외에는 아무것도 두지 않는다. -->
@@ -209,8 +206,8 @@
         </div>
 
         <div class="typescale" data-reveal>
-          <h3 class="proof__block-title">타이포그래피 스케일</h3>
-          <p class="proof__block-sub">
+          <h3 class="typescale__title">타이포그래피 스케일</h3>
+          <p class="typescale__sub">
             기본 서체는 Pretendard입니다. 아래는 위계를 만드는 네 단으로, 실제 크기입니다.
           </p>
           <div class="typescale__rows"></div>
