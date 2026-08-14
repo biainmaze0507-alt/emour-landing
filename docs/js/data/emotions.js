@@ -15,7 +15,7 @@
  *
  * ⚠️ 감정을 늘리거나 줄이려면 백엔드 열거형과 함께 진행해야 한다.
  *    hex는 CSS 토큰과 같은 값을 복제해 둔 것이다(복사 배지·대비 계산에 필요).
- *    색을 바꿀 때는 css/00-tokens.css와 여기를 함께 고친다.
+ *    색을 바꿀 때는 css/base/00-tokens.css와 여기를 함께 고친다.
  */
 
 export const EMOTION_GROUPS = {

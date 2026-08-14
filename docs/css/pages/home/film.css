@@ -1,0 +1,229 @@
+/* ==========================================================================
+   pages/home/film.css — 소개 영상
+   포스터 이미지 대신 브랜드 면으로 덮어 두고, 누르면 재생한다.
+   (영상 파일은 재생을 누르기 전까지 내려받지 않는다 — preload="none")
+   동작: js/pages/home/film.js
+   ========================================================================== */
+
+.film__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(var(--radius-xl), 3vw, 40px);
+  border: 1px solid var(--color-border);
+  background: var(--ci-ink);
+  box-shadow: var(--shadow-float);
+  aspect-ratio: 16 / 9;
+}
+
+.film__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--ci-ink);
+}
+
+/* 재생 전 덮개 — 브랜드 로즈 그라데이션 + 로고 */
+.film__cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 18px;
+  align-content: center;
+  padding-inline: clamp(18px, 5vw, 48px);
+  background:
+    radial-gradient(60% 80% at 50% 40%, rgba(209, 116, 141, 0.34), transparent 70%),
+    linear-gradient(150deg, #4a3f3c, #2b2422 58%, #3d3230);
+  color: var(--color-text-on-primary);
+  text-align: center;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.film__frame.is-playing .film__cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.film__cover-mark {
+  width: 54px;
+  height: 54px;
+  opacity: 0.92;
+}
+
+.film__cover-title {
+  font-size: clamp(15px, 4.2vw, 30px);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+  text-wrap: balance;
+}
+
+.film__cover-sub {
+  font-size: var(--font-label);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 재생 버튼 */
+.film__play {
+  margin-top: 6px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-action);
+  color: var(--color-text-on-primary);
+  box-shadow: 0 10px 34px rgba(193, 74, 103, 0.5);
+  transition: transform var(--duration-base) var(--ease-spring), background var(--duration-fast);
+  animation: pulse-ring 2.6s var(--ease-out) infinite;
+}
+
+.film__play:hover {
+  transform: scale(1.07);
+  background: var(--color-action-hover);
+}
+
+.film__play svg {
+  width: 26px;
+  height: 26px;
+  margin-left: 3px; /* 삼각형 시각 중심 보정 */
+  fill: currentColor;
+  stroke: none;
+}
+
+/* 재생 중 하단 컨트롤 — 마우스를 올리면 나타난다 */
+.film__controls {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(to top, rgba(24, 19, 18, 0.78), transparent);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+}
+
+.film__frame.is-playing:hover .film__controls,
+.film__frame.is-playing:focus-within .film__controls {
+  opacity: 1;
+  transform: none;
+}
+
+.film__ctrl {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  flex-shrink: 0;
+  transition: background var(--duration-fast);
+}
+
+.film__ctrl:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.film__ctrl svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.film__ctrl.is-on svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* 진행 막대 */
+.film__bar {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.24);
+  cursor: pointer;
+}
+
+.film__bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.film__time {
+  font-family: var(--font-mono);
+  font-size: var(--font-micro);
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   좁은 화면 — 16:9 틀 안에 덮개 내용이 다 들어와야 한다.
+   로고 · 문구 · 재생 버튼을 함께 줄이지 않으면 아래쪽이 잘린다.
+   -------------------------------------------------------------------------- */
+@media (max-width: 560px) {
+  .film__cover {
+    gap: 8px;
+  }
+
+  .film__cover-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .film__cover-sub {
+    font-size: var(--font-micro);
+  }
+
+  .film__play {
+    margin-top: 0;
+    width: 48px;
+    height: 48px;
+  }
+
+  .film__play svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .film__controls {
+    gap: 10px;
+    padding: 12px 14px;
+  }
+}
+
+/* 아주 좁은 화면(320px 대)에서는 한 단 더 줄인다 */
+@media (max-width: 380px) {
+  .film__cover {
+    gap: 6px;
+  }
+
+  .film__cover-mark {
+    width: 26px;
+    height: 26px;
+  }
+
+  .film__play {
+    width: 40px;
+    height: 40px;
+  }
+
+  .film__play svg {
+    width: 15px;
+    height: 15px;
+  }
+}

@@ -1,0 +1,33 @@
+/* ==========================================================================
+   base/05-closing.css — 마무리 블록 (홈 · 팀 페이지의 끝)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   마무리 — 브랜드 문구
+   -------------------------------------------------------------------------- */
+.closing {
+  /* 섹션과 같은 토큰을 쓴다. 위는 앞 섹션의 아래 여백과 더해지므로 절반만. */
+  padding-block: calc(var(--section-gap) * 0.5) var(--section-gap);
+  text-align: center;
+}
+
+.closing__mark {
+  width: clamp(56px, 7vw, 88px);
+  margin: 0 auto 26px;
+}
+
+.closing__line {
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: var(--tracking-tight);
+  word-break: keep-all;
+}
+
+.closing__actions {
+  margin-top: 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}

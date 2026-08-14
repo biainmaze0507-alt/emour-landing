@@ -1,0 +1,92 @@
+/* ==========================================================================
+   pages/home/glance.css — 홈: 기능 요약 3장
+   제품 페이지로 넘어가는 미리보기 카드. 카드 자체가 링크다.
+   ========================================================================== */
+
+.glance {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+}
+
+.glance__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(26px, 3vw, 36px);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+/* 카드마다 다른 감정색이 위쪽에서 옅게 번진다 */
+.glance__card::before {
+  content: "";
+  position: absolute;
+  inset: -46% 34% auto -24%;
+  height: 190px;
+  border-radius: 50%;
+  background: var(--tone);
+  opacity: 0.12;
+  filter: blur(36px);
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.glance__card:hover::before {
+  opacity: 0.22;
+}
+
+.glance__num {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: var(--font-caption);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-text-accent);
+}
+
+.glance__title {
+  position: relative;
+  margin-top: 16px;
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.glance__desc {
+  position: relative;
+  margin-top: 12px;
+  font-size: var(--font-label);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-secondary);
+  word-break: keep-all;
+}
+
+.glance__more {
+  position: relative;
+  margin-top: auto;
+  padding-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-caption);
+  font-weight: 800;
+  color: var(--color-text-accent);
+  transition: gap var(--duration-fast) var(--ease-out);
+}
+
+.glance__more::after {
+  content: "→";
+}
+
+.glance__card:hover .glance__more {
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   기능 탭 레이아웃 (제품 페이지)
+   -------------------------------------------------------------------------- */
+/* 세 열의 높이를 서로 맞춘다 */

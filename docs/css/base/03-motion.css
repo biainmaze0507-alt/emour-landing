@@ -1,0 +1,138 @@
+/* ==========================================================================
+   03-motion.css — 스크롤 등장 · 반복 애니메이션
+   --------------------------------------------------------------------------
+   규칙: 등장 연출은 전부 [data-reveal] 하나로 통일한다.
+        js/shared/reveal.js가 화면에 들어온 요소에 .is-in을 붙인다.
+        같은 부모 안에서 순서를 주려면 --delay를 쓴다(자동 계산됨).
+   ========================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+  will-change: opacity, transform;
+}
+
+/* 방향 변형 */
+[data-reveal="left"]  { transform: translate3d(-26px, 0, 0); }
+[data-reveal="right"] { transform: translate3d(26px, 0, 0); }
+[data-reveal="scale"] { transform: scale(0.965); }
+[data-reveal="fade"]  { transform: none; }
+
+/* 좁은 화면에서는 좌우 등장을 쓰지 않는다.
+   한 칸으로 접힌 레이아웃에서 옆으로 밀려 들어오면 방향이 어색하고,
+   등장 전 요소가 화면 밖으로 나가 가로 스크롤이 생긴다. */
+@media (max-width: 760px) {
+  [data-reveal="left"],
+  [data-reveal="right"] {
+    transform: translate3d(0, 22px, 0);
+  }
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* 안전장치 — JS가 꺼져 있거나(html에 .js 없음) 모듈 로드가 실패했을 때
+   (index.html의 인라인 스크립트가 .reveal-fallback을 붙인다)
+   숨겨 둔 내용이 그대로 보이게 한다. 빈 화면이 남는 일은 없어야 한다. */
+html:not(.js) [data-reveal],
+html.reveal-fallback [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+html:not(.js) .line-mask > span,
+html.reveal-fallback .line-mask > span {
+  transform: none !important;
+}
+
+
+
+.is-in .line-mask > span,
+
+/* --------------------------------------------------------------------------
+   반복 모션
+   -------------------------------------------------------------------------- */
+
+/* 스크롤 유도 화살표 */
+@keyframes nudge-down {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(7px); opacity: 1; }
+}
+
+/* AI 분석 중 스피너 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 감정 칩이 툭 나타날 때 */
+@keyframes pop-in {
+  0%   { opacity: 0; transform: translateY(6px) scale(0.86); }
+  60%  { opacity: 1; transform: translateY(0) scale(1.06); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 말풍선 등장 */
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 진주 층이 안쪽부터 부풀어 오를 때 */
+@keyframes pearl-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.72); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 드롭다운 패널이 내려올 때 */
+@keyframes panel-in {
+  from { opacity: 0; transform: translate3d(0, -6px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 타이핑 커서 */
+@keyframes caret-blink {
+  0%, 45%   { opacity: 1; }
+  50%, 95%  { opacity: 0; }
+  100%      { opacity: 1; }
+}
+
+/* 무한 흐름 띠(marquee) */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* 브랜드 로즈 맥박 — CTA 링 */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(209, 116, 141, 0.34); }
+  70%  { box-shadow: 0 0 0 14px rgba(209, 116, 141, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(209, 116, 141, 0); }
+}
+
+/* --------------------------------------------------------------------------
+   접근성 — 모션 최소화
+   등장 연출은 "이미 등장한 상태"로 고정하고 반복 애니메이션만 멈춘다.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
