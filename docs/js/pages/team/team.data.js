@@ -18,7 +18,7 @@ export const TEAM = [
     roles: ["PM", "Backend"],
     tone: "--emotion-joy",
     avatar: "assets/team/shin-seungmin.svg",
-    blurb: "요구사항 정의부터 일정 관리까지, 팀 전체의 방향성과 진행도를 관리했습니다.",
+    blurb: "팀 전체의 방향성과 진행도를 관리하고 채팅 및 대시보드 구현을 맡았습니다",
     tags: ["기획 · 요구사항 명세 작성", "채팅 관련 API 설계 및 구현", "데이터 암호화 구현"],
   },
   {
