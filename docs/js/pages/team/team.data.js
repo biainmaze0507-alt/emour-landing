@@ -26,8 +26,8 @@ export const TEAM = [
     roles: ["Backend"],
     tone: "--emotion-comfort",
     avatar: "assets/team/gi-hayeong.svg",
-    blurb: "커플 연결과 대시보드 집계 기능을 주로 맡아 데이터의 흐름을 관리했습니다.",
-    tags: ["감정 정보 라벨링", "커플 연결 및 감정 집계 기능 구현", "대시보드 집계용 DB 설계 및 구현"],
+    blurb: "커플 연결과 공동 홈의 프로필·글귀, 캘린더 및 무드 알림 기능을 개발했습니다.",
+    tags: ["커플 연결 기능", "공동 홈 · 캘린더 · 무드 알림", "감정 정보 라벨링"],
   },
   {
     name: "최영우",
