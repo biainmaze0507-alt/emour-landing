@@ -129,5 +129,3 @@ VS Code 를 쓴다면 Live Server 확장을 설치하고 `docs/index.html` 우�
 | 앨범 | [영상 보기](./assets/videos/album.mp4) |
 | 프로필 수정 | [영상 보기](./assets/videos/profile-edit.mp4) |
 | 마이페이지 수정 | [영상 보기](./assets/videos/mypage-edit.mp4) |
-
-> GitHub에서는 각 링크를 선택하면 원본 MP4 영상을 열어 확인할 수 있습니다.
