@@ -18,7 +18,7 @@ export const TEAM = [
     roles: ["PM", "Backend"],
     tone: "--emotion-joy",
     avatar: "assets/team/shin-seungmin.svg",
-    blurb: "요구사항 정의부터 일정 관리까지, 팀 전체의 방향성과 진행도를 관리하였습니다.",
+    blurb: "요구사항 정의부터 일정 관리까지, 팀 전체의 방향성과 진행도를 관리했습니다.",
     tags: ["기획 · 요구사항 명세 작성", "채팅 관련 API 설계 및 구현", "데이터 암호화 구현"],
   },
   {
@@ -26,7 +26,7 @@ export const TEAM = [
     roles: ["Backend"],
     tone: "--emotion-comfort",
     avatar: "assets/team/gi-hayeong.svg",
-    blurb: "커플 연결과 대시보드 집계 기능을 주로 맡아 데이터의 흐름을 관리하였습니다.",
+    blurb: "커플 연결과 대시보드 집계 기능을 주로 맡아 데이터의 흐름을 관리했습니다.",
     tags: ["감정 정보 라벨링", "커플 연결 및 감정 집계 기능 구현", "대시보드 집계용 DB 설계 및 구현"],
   },
   {
@@ -34,8 +34,8 @@ export const TEAM = [
     roles: ["Backend", "AI"],
     tone: "--emotion-curiosity",
     avatar: "assets/team/choi-yeongu.svg",
-    blurb: "회원·인증과 커플 앨범을 구현하고, 감정 분석 AI 모델을 직접 학습·고도화하며 ERD 설계를 주도했습니다.",
-    tags: ["KcELECTRA 파인 튜닝", "데이터 크롤링", "ERD 설계"],
+    blurb: "회원 인증과 커플 앨범을 구현하고, 감정 분석 모델이 문맥까지 읽도록 고도화했습니다.",
+    tags: ["JWT · Google 소셜 로그인 구현", "ERD 설계 · 커플 앨범 구현", "KcELECTRA 파인튜닝 · Hugging Face 배포"],
   },
   {
     name: "하수연",
@@ -51,7 +51,7 @@ export const TEAM = [
     tone: "--emotion-apology",
     avatar: "assets/team/hwang-minhee.svg",
     blurb: "전반적인 디자인 체계를 담당하여 화면 전체가 하나의 톤을 갖게 정리했습니다.",
-    tags: ["BI/CI 및 디자인 토큰 설계", "발표용 영상 및 장표 제작", "로그인/회원가입 · 대시보드 · 채팅방 페이지 구현"],
+    tags: ["BI/CI 및 디자인 토큰 설계", "발표용 영상 및 장표 제작", "로그인 · 회원가입 · 대시보드 · 채팅방 페이지 구현"],
   },
   {
     name: "윤선민",

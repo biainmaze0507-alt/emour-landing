@@ -220,7 +220,6 @@ function renderFooter() {
         <div>
           <img class="footer-word" src="assets/logo-wordmark.svg" alt="Emour">
           <p class="footer-tagline">
-            ${escapeHtml(SITE.meaning)}.<br>
             커플의 대화를 AI로 분석해 감정을 보여주고,
             지나간 대화를 둘의 기록으로 되돌려 주는 모바일 웹 서비스입니다.
           </p>

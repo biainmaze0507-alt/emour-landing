@@ -102,19 +102,26 @@ export function initHeroChat() {
     const distance = suggestRow.scrollWidth - suggestRow.clientWidth;
     if (distance <= 1) return;
 
-    // 첫 번째로 멈추는 자리 — 두 번째 칩이 왼쪽에 걸리는 지점
-    const second = suggestRow.querySelectorAll(".suggests__chip")[1];
-    const gap = second
-      ? second.getBoundingClientRect().left - suggestRow.getBoundingClientRect().left
-      : distance * 0.55;
-    const mid = Math.min(Math.max(gap, 40), distance);
+    /* 중간에 멈추는 자리 — 두 번째 칩이 화면 한가운데 오는 지점.
+       앞뒤 칩이 양옆으로 걸쳐 보여서 아직 더 남았다는 것이 드러나고,
+       가는 길의 절반쯤이라 미는 동작이 두 번으로 또렷하게 나뉜다.
+       (칩의 자리는 offsetLeft로 잰다 — 등장 애니메이션의 확대·축소에 흔들리지 않는다) */
+    const chips = suggestRow.querySelectorAll(".suggests__chip");
+    const second = chips[1];
+    const center = second
+      ? second.offsetLeft - chips[0].offsetLeft + second.offsetWidth / 2
+      : suggestRow.scrollWidth * 0.5;
+    const mid = Math.min(
+      Math.max(center - suggestRow.clientWidth / 2, 40),
+      Math.max(distance - 40, 40)
+    );
 
     suggestRow.classList.add("is-panning");
 
-    await flick(0, Math.min(mid + 12, distance), 420, state);
+    await flick(0, Math.min(mid + 12, distance), 400, state);
     if (!state.cancelled) await flick(suggestRow.scrollLeft, mid, 160, state);
-    if (!state.cancelled) await wait(360);
-    if (!state.cancelled) await flick(mid, distance, 380, state);
+    if (!state.cancelled) await wait(420);
+    if (!state.cancelled) await flick(mid, distance, 340, state);
 
     suggestRow.classList.remove("is-panning");
     if (state.cancelled) return;
